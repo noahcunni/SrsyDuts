@@ -1,7 +1,10 @@
-import Card from './Card.jsx'
+import HomePage from './HomePage.jsx'
 function App() {
   return(
-    <Card/>
+    <>
+      
+      <HomePage/>
+    </>
   );
 }
 

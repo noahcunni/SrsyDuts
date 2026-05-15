@@ -1,0 +1,17 @@
+.header {
+    font-size: 30px;
+    color: hsl(153, 90%, 36%);
+    background-color: rgb(2, 74, 60);
+}
+
+.headerLabel {
+    height: 100px;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;  /* Centers buttons horizontally */
+    align-items: flex-start;  /* Aligns buttons strictly to the top */
+    gap: 0px;                 /* Sets tight spacing between buttons */
+    padding-top: 4px; 
+}
