@@ -1,6 +1,7 @@
 import styles from './Navbar.module.css'
 import { Link, NavLink } from "react-router-dom";
 import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
 
 export const Navbar = () => {
     const [ practice, setPractice ] = useState(null);
@@ -21,6 +22,7 @@ export const Navbar = () => {
                     </NavLink>
                 </navBar>
 
+                <Outlet />
             </div>
         </div>
     );

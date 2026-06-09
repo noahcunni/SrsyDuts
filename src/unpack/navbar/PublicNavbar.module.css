@@ -1,0 +1,57 @@
+.navbar {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+/**/
+.navbarButtonGroup {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    gap: 30px;
+}
+
+/**/
+.authButtonGroup {
+    display: flex;
+    gap: 15px;
+}   
+
+.authButton {
+    border: 2px solid rgb(37, 37, 138);
+    border-radius: 3px;
+    padding: 10px 15px 10px 15px;  
+    gap: 20px
+}
+
+.authButton:hover {
+    cursor: pointer;
+    background-color: grey;
+}
+
+
+.aboutButton {
+    border: 2px solid rgb(37, 37, 138);
+    border-radius: 3px;
+    padding: 10px 15px 10px 15px;  
+}
+
+.aboutButton:hover {
+    cursor: pointer;
+    background-color: grey;
+}
+
+.dashContainer {
+    justify-content: left;
+}
+
+.img {
+    width: 50px;
+    height: auto;
+
+    justify-content: left;   
+}
+
+.img:hover {
+    cursor:pointer;
+}

@@ -17,8 +17,9 @@ export const AuthContextProvider = ({ children }) => {
         console.error("There was a problem signing up: ", error);
         return {success: false, error};
     }
+
     return {success: true, data};
-    }
+}
 
     // login
     const logInUser = async ( email, password ) => {
@@ -32,6 +33,7 @@ export const AuthContextProvider = ({ children }) => {
                 console.error('Sign in error occured:', error);
                 return { success: false, error: error.message };
             }
+
             console.log("Sign-in success: ", data);
             return {success: true, data};
         } catch (error) {
