@@ -1,5 +1,7 @@
 function Lesson() {
-    return(<></>);
+    return(
+        <p>Lesson!</p>
+    );
 }
 
 export default Lessson

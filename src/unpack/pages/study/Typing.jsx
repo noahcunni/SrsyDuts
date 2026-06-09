@@ -1,5 +1,7 @@
 function Typing() {
-    return(<></>)
+    return(
+        <p>Typing!</p>
+    );
 }
 
 export default Typing

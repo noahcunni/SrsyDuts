@@ -5,10 +5,12 @@ import AuthLayout from './layouts/AuthLayout.jsx';
 import AppLayout from './layouts/AppLayout.jsx';
 
 import Landing from './pages/Landing.jsx';
-import Signup from './pages/Signup.jsx';
-import Signin from './pages/SignIn.jsx';
+import Signup from './pages/auth/Signup.jsx';
+import Signin from './pages/auth/SignIn.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import About from './pages/About.jsx';
+
+import Writing from './pages/study/Writing.jsx';
 
 export const router = createBrowserRouter([
     {
@@ -27,9 +29,14 @@ export const router = createBrowserRouter([
         element: <AppLayout />,
         children: [
             {path: '/dashboard', element: <Dashboard/>},
-            {path: '/lesson', element: <></>},
-            {path: '/writing', element: <></>},
-            {path: '/typing', element: <></>}
+            {   
+                path: '/study', children: [
+                    {path: 'lesson', element: <></>},
+                    {path: 'writing', element: <Writing />},
+                    {path: 'typing', element: <></>}
+                ]
+
+            }
         ]
     }
 ]); 
