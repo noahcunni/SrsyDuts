@@ -11,6 +11,8 @@ import Dashboard from './pages/Dashboard.jsx';
 import About from './pages/About.jsx';
 
 import Writing from './pages/study/Writing.jsx';
+import { UserAuth } from "../context/AuthContext.jsx";
+import ProtectedRoute from "./ProtectedRoute.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -26,16 +28,20 @@ export const router = createBrowserRouter([
             {path: '/signin', element: <Signin/>}
         ]
     },{
-        element: <AppLayout />,
+        element: <ProtectedRoute />,
         children: [
-            {path: '/dashboard', element: <Dashboard/>},
-            {   
-                path: '/study', children: [
-                    {path: 'lesson', element: <></>},
-                    {path: 'writing', element: <Writing />},
-                    {path: 'typing', element: <></>}
+            {
+                element: <AppLayout />,
+                children: [
+                    {path: '/dashboard', element: <Dashboard/>},
+                    {   
+                        path: '/study', children: [
+                            {path: 'lesson', element: <></>},
+                            {path: 'writing', element: <Writing />},
+                            {path: 'typing', element: <></>}
+                        ]
+                    }
                 ]
-
             }
         ]
     }
