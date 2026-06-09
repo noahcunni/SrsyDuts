@@ -16,9 +16,9 @@ function AppNavbar() {
             </div>
         
             <div className={styles.studyButtonGroup}>
-                <Link>Lesson</Link>
-                <Link>Writing</Link>
-                <Link>Typing</Link>
+                <Link to='/lesson' className={styles.studyButton}>Lesson</Link>
+                <Link to='/writing' className={styles.studyButton}>Writing</Link>
+                <Link to='/typing' className={styles.studyButton}>Typing</Link>
             </div>
             <div className={styles.signOut}>
                 <Link>Sign Out</Link>
