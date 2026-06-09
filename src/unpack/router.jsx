@@ -10,8 +10,10 @@ import Signin from './pages/auth/SignIn.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import About from './pages/About.jsx';
 
+import Lesson from './pages/study/Lesson.jsx';
 import Writing from './pages/study/Writing.jsx';
-import { UserAuth } from "../context/AuthContext.jsx";
+import Typing from './pages/study/Typing.jsx';
+
 import ProtectedRoute from "./ProtectedRoute.jsx";
 
 export const router = createBrowserRouter([
@@ -36,9 +38,9 @@ export const router = createBrowserRouter([
                     {path: '/dashboard', element: <Dashboard/>},
                     {   
                         path: '/study', children: [
-                            {path: 'lesson', element: <></>},
+                            {path: 'lesson', element: <Lesson />},
                             {path: 'writing', element: <Writing />},
-                            {path: 'typing', element: <></>}
+                            {path: 'typing', element: <Typing />}
                         ]
                     }
                 ]
