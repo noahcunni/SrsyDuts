@@ -1,43 +1,41 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import { supabase } from "../../lib/supabaseClient";
+import { UserAuth } from "../../context/AuthContext";
 
 function Dashboard() {
-    const navigate = useNavigate();
-    const [jwt, setJwt] = useState('');
+    const { session } = UserAuth();
     const [batch, setBatch] = useState();
-
-    useEffect(() => { 
-        const getJwt = async () => {
-            const { data: { session } } = await supabase.auth.getSession(); 
-            setJwt(session.access_token);
-        }
-        getJwt();
-    }, []);
 
     useEffect(() => {
         const getBatch = async () => {
+            if (!session) {
+                console.log('Session invalid!');
+                return;
+            }
             try {
                 const response = await fetch('http://localhost:8080/api/getBatch', {
                     headers: {
-                        "Authorization": `Bearer ${jwt}`
+                        "Authorization": `Bearer ${session.access_token}`
                     }
-                });
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("http status Error: ${response.status}");
+            }
+            const mes = await response.text();
+            setBatch(mes);
+
             } catch (error) {
                 console.log("Error getting batch, " + error);
                 setBatch(null);
             }
-
-            if (response.ok) {
-                setBatch(response.batch);
-                console.log("Batch recieved!");
-            }
         }
 
         getBatch();
-    }, []);
+    }, [session]);
 
-    return <p>Dashboard</p>; 
+    return <p>{batch}</p>; 
 } 
 
 export default Dashboard;

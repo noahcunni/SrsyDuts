@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"; 
 import { supabase } from "../../../lib/supabaseClient";
+import { UserAuth } from "../../../context/AuthContext";
 
 function Writing() { 
     const [message, setMessage] = useState('Loading about info...'); 
+    const { session } = UserAuth();
     
     useEffect(() => { 
         const fetchAboutData = async () => {

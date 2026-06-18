@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState, useContext } from "react";
 import { supabase } from "../lib/supabaseClient";
 
+// Create global storage container for context.
 const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
@@ -18,8 +19,8 @@ export const AuthContextProvider = ({ children }) => {
         return {success: false, error};
     }
 
-    return {success: true, data};
-}
+        return {success: true, data};
+    }
 
     // login
     const logInUser = async ( email, password ) => {
@@ -57,7 +58,6 @@ export const AuthContextProvider = ({ children }) => {
         const { error } = await supabase.auth.signOut();
         if (error) {
             console.error("There was an error signing out: ", error);
-
         }
     }
 
