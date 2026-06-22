@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+
 # Ignore local database and API secret keys
 **/src/main/resources/application-secrets.properties
 
