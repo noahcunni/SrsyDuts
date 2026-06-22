@@ -1,0 +1,26 @@
+package com.srsyduts.card.kanji;
+
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface KanjiRepository extends JpaRepository<Kanji, Long> {
+    @Query(value = """
+    SELECT k.* FROM kanji k
+    WHERE
+        NOT EXISTS (
+            SELECT 1 FROM user_cards uc
+            WHERE uc.vocab_id = k.id
+            AND uc.user_id = :userId
+            AND uc.card_type = 'kanji'
+        )
+    ORDER BY k.id
+    LIMIT :limit
+    """, nativeQuery = true)
+    List<Kanji> getReadyKanjiForUser(@Param("userId") UUID userId, @Param("limit") int limit);
+}

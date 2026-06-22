@@ -1,4 +1,4 @@
-package com.srsyduts.srsyduts_backend;
+package com.srsyduts.filter;
 
 import java.util.List;
 
