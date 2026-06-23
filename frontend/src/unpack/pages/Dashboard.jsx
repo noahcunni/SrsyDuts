@@ -1,41 +1,17 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { UserAuth } from "../../context/AuthContext";
+import { UserDeck } from "../../context/CardContext";
 
 function Dashboard() {
+    const { summary, loadSummary } = UserDeck();
     const { session } = UserAuth();
-    const [batch, setBatch] = useState();
 
     useEffect(() => {
-        const getBatch = async () => {
-            if (!session) {
-                console.log('Session invalid!');
-                return;
-            }
-            try {
-                const response = await fetch('http://localhost:8080/api/getBatch', {
-                    headers: {
-                        "Authorization": `Bearer ${session.access_token}`
-                    }
-                }
-            );
+      loadSummary();  
+    }, [loadSummary]);
 
-            if (!response.ok) {
-                throw new Error("http status Error: ${response.status}");
-            }
-            const mes = await response.text();
-            setBatch(mes);
-
-            } catch (error) {
-                console.log("Error getting batch, " + error);
-                setBatch(null);
-            }
-        }
-
-        getBatch();
-    }, [session]);
-
-    return <p>{batch}</p>; 
+    return <p>{JSON.stringify(summary)}</p>; 
 } 
 
 export default Dashboard;
