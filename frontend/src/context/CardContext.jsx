@@ -27,8 +27,16 @@ export const CardContextProvider = ({ children }) => {
         newCard: null
     });
 
+    const loadThreshold = 1_000;
+
+
     // ANY LOAD METHOD NEEDS TO BE GAURDED FROM MULTIPLE REQUESTS
     const loadSummary = async () => {
+        // Check if a minute has passed
+        if (lastFetchedAt.summary && (Date.now() - lastFetchedAt.summary <= loadThreshold))
+            return;
+
+
         let isAlreadyLoading = false;
     
         setLoading((prev) => {
@@ -42,7 +50,7 @@ export const CardContextProvider = ({ children }) => {
         if (isAlreadyLoading) return;
 
         try {
-            const response = await fetch('http://localhost:8080/api/getBatch', {
+            const response = await fetch('http://localhost:8080/api/cards/summary', {
                     headers: {
                         "Authorization": `Bearer ${session.access_token}`
                     }
@@ -50,6 +58,7 @@ export const CardContextProvider = ({ children }) => {
             const data = await response.json();
             setSummary(data);
             setLastFetchedAt(prev => ({ ...prev, summary: Date.now() }));
+            console.log("SUCCESSFULLY LOADED SUMMARY")
         } catch (e) {
             console.log("Failed to load summary" + e);
         } finally {

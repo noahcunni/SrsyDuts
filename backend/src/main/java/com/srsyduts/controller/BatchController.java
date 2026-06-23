@@ -12,6 +12,7 @@ import com.srsyduts.card.Batch;
 import com.srsyduts.card.NewCards;
 import com.srsyduts.card.kanji.Kanji;
 import com.srsyduts.card.kanji.KanjiService;
+import com.srsyduts.card.usercards.Summary;
 import com.srsyduts.card.usercards.UserCardsService;
 import com.srsyduts.card.vocab.Vocab;
 import com.srsyduts.card.vocab.VocabService;
@@ -43,4 +44,19 @@ public class BatchController {
 
         return new Batch(uuid, new NewCards(newKanji, newVocab));
     } 
+
+    @GetMapping("/api/cards/summary")
+    public Object getSummary(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
+
+        int newVocab = vocabService.getReadyVocabForUser(uuid, 8).size();
+        int newKanji = kanjiService.getReadyKanjiForUser(uuid, 3).size();
+
+        int dueVocab = 0;
+        int dueKanji = 0;
+
+        Summary cardSummary = new Summary(newKanji, newVocab, dueKanji, dueVocab);
+        return cardSummary;
+    }
 }

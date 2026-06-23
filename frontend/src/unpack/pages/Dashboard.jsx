@@ -12,6 +12,6 @@ function Dashboard() {
     }, [loadSummary]);
 
     return <p>{JSON.stringify(summary)}</p>; 
-} 
+}
 
 export default Dashboard;
