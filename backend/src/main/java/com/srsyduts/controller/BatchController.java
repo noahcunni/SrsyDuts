@@ -46,7 +46,7 @@ public class BatchController {
     } 
 
     @GetMapping("/api/cards/summary")
-    public Object getSummary(@RequestHeader("Authorization") String authHeader) {
+    public Summary getSummary(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");
         UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
 
