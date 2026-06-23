@@ -9,14 +9,14 @@ export const CardContextProvider = ({ children }) => {
     const [ summary, setSummary ] = useState();
     const [ writing, setWriting ] = useState();
     const [ typing, setTyping ] = useState();
-    const [ newCard, setNewCard ] = useState();
+    const [ newCards, setNewCards ] = useState();
 
     // Blocks fast requests
     const [ loading, setLoading ] = useState({
         summary: false,
         writing: false,
         typing: false,
-        newCard: false
+        newCards: false
     });
 
     // PLAN TO BLOCK REPEATED REQUESTS
@@ -24,7 +24,7 @@ export const CardContextProvider = ({ children }) => {
         summary: null,
         writing: null,
         typing: null,
-        newCard: null
+        newCards: null
     });
 
     const loadThreshold = 1_000;
@@ -96,13 +96,45 @@ export const CardContextProvider = ({ children }) => {
         // query for typing
     });
 
-    const loadNewCard = (() => {
+    const loadNewCards = async () => {
         // query for new cards
-    });
+        // Check if a minute has passed
+        if (lastFetchedAt.newCards && (Date.now() - lastFetchedAt.newCards <= loadThreshold))
+            return;
+
+
+        let isAlreadyLoading = false;
+    
+        setLoading((prev) => {
+            if (prev.newCards) {
+            isAlreadyLoading = true;
+            return prev;
+        }
+            return { ...prev, newCards: true };
+        });
+
+        if (isAlreadyLoading) return;
+
+        try {
+            const response = await fetch('http://localhost:8080/api/cards/newCards', {
+                    headers: {
+                        "Authorization": `Bearer ${session.access_token}`
+                    }
+            });
+            const data = await response.json();
+            setNewCards(data);
+            setLastFetchedAt(prev => ({ ...prev, newCards: Date.now() }));
+            console.log("SUCCESSFULLY LOADED NEW CARDS")
+        } catch (e) {
+            console.log("Failed to load summary" + e);
+        } finally {
+            setLoading(prev => ({...prev, newCards:false}));
+        }
+    };
 
     return (
         <CardContext.Provider value={{ summary, loadSummary, writing, loadWriting,
-         typing, loadTyping, newCard, loadNewCard }}>
+         typing, loadTyping, newCards, loadNewCards }}>
             {children}
         </CardContext.Provider>
     );

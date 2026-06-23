@@ -1,46 +1,33 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../../lib/supabaseClient";
+import { UserAuth } from "../../../context/AuthContext";
+import { UserDeck } from "../../../context/CardContext";
 
+// call the cards/newCards or something.
+    // Cards are loaded everytime page is loaded. 
+
+    // Introduce each cards with all information once, then 
+    // throw it into a testing pile. 
+
+    // The testing section is the only one a user can cheat in, because all information is availbale
+
+    // So how do we deal with writing and typing vocab, writing first?
+
+    // It also needs to be limited to # of cards a day.
 function Lesson() {
-    const [message, setMessage] = useState();
-    const [answer, setAnswer] = useState('');
-
-    const checkAnswer = async (e) => {
-        e.preventDefault();
-        const {data, error} = await supabase.rpc('hello_world');
-        console.log('result:', data, error);
-    }
-
+    const { newCards, loadNewCards } = UserDeck();
+    const [ jsonObject, setJsonObject ] = useState();
 
     useEffect(() => {
-        async function getMessage() {
-            const { data, error } = await supabase
-                .from('kanji')
-                .select('*')
+        loadNewCards();
+        setJsonObject(newCards);
+    }, [newCards])
 
-            if (error) {
-                console.error(error)
-                return
-            }
+    if (!jsonObject) return <p>Loading new cards...</p>;
 
-            setMessage(data[0].kanji)
-        }
-
-        getMessage()
-    }, [])
-
-    return (
-        <form onSubmit={checkAnswer} >
-            <h1>{message}</h1>
-            <input  
-                onChange={(e) => setAnswer(e.target.value)}
-                placeholder='Answer' 
-                type="text"/>
-            <button type='submit'>submit</button>
-        </form>
-
-
-    )
-}
+    return(
+        <p>{JSON.stringify(jsonObject)}</p>
+    );
+}   
 
 export default Lesson

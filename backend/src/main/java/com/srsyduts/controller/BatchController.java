@@ -59,4 +59,15 @@ public class BatchController {
         Summary cardSummary = new Summary(newKanji, newVocab, dueKanji, dueVocab);
         return cardSummary;
     }
+
+    @GetMapping("/api/cards/newCards")
+    public NewCards getNewCards(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
+
+        List<Vocab> newVocab = vocabService.getReadyVocabForUser(uuid, 8);
+        List<Kanji> newKanji = kanjiService.getReadyKanjiForUser(uuid, 3);
+
+        return new NewCards(newKanji, newVocab);
+    }
 }

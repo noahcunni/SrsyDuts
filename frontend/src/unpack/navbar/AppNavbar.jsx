@@ -8,7 +8,7 @@ function AppNavbar() {
         <div className={styles.navbar}>
             <div className={styles.dashContainer}>
                 <Link to='/dashboard'>
-                    <img className={styles.dashButton} src='https://preview.redd.it/i-drew-lois-griffin-as-l-second-picture-is-with-loiss-colors-v0-fmi3ns9juned1.jpg?width=640&crop=smart&auto=webp&s=ea3516f510b74f5c086cf30082ee6bf00dcb585b' alt='Luis'/>            
+                    <img className={styles.dashButton} src='https://i.pinimg.com/236x/47/59/d7/4759d72744726f90ff3926185e7e3eec.jpg' alt='Luis'/>            
                 </Link>
             </div>
         
