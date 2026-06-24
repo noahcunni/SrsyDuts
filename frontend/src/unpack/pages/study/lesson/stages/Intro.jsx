@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { LessonKanjiCard, LessonVocabCard } from "../../LessonCardContainer";
 
+import styles from './Intro.module.css';
+
 function Intro({ cards, next }) {
     const [ index, setIndex ] = useState(0);
     const [ order, setOrder ] = useState("VOCAB");
@@ -38,14 +40,25 @@ function Intro({ cards, next }) {
     }
 
     return(
-        <div>
-            <h1>INTRO STAGE</h1>
-            {order === "KANJI" && <KanjiContainer newKanji={newKanji[index]}/>}
-            {order === "VOCAB" && <VocabContainer newVocab={newVocab[index]}/>}
+        <div className={styles.page}>
+            <div className={styles.progress}>
+                <div>
+                    <p>progress bar goes here...</p>
+                </div>
+            </div>
 
-            <button onClick={() => iterateBackward()}>Back</button>
-            {order !== "END" && <button onClick={() => iterateForward()}>Next</button>}
-            {order === "END" && <button onClick={() => next()}>FINISHED</button>}
+
+            <div className={styles.cardContainer}>
+                <h1 className={styles.cardType}>{order.charAt(0).toUpperCase() + order.slice(1).toLowerCase()}</h1>
+                {order === "KANJI" && <KanjiContainer newKanji={newKanji[index]}/>}
+                {order === "VOCAB" && <VocabContainer newVocab={newVocab[index]}/>}
+            </div>
+
+            <div className={styles.buttons}>
+                <button className={styles.backButton} onClick={() => iterateBackward()}>Back</button>
+                {order !== "END" && <button className={styles.nextButton} onClick={() => iterateForward()}>Next</button>}
+                {order === "END" && <button className={styles.finButton} onClick={() => next()}>FINISHED</button>}
+            </div>
         </div>
     );
 }
@@ -53,21 +66,25 @@ function Intro({ cards, next }) {
 function VocabContainer({newVocab}) {
     return(
         <div>
-            <p>JPN: {newVocab.jpn}</p>
-            <p>Hiragana: {newVocab.hiragana}</p>
-            <p>English: {newVocab.english}</p>
+            <div className={styles.kanjiCharacter}>{newVocab.jpn}</div>
+            <div className={styles.kanjiDisplay}>
+                <p>Hiragana: {newVocab.hiragana}</p>
+                <p>English: {newVocab.english}</p>
+            </div>
         </div>
     );
 }
 
 function KanjiContainer({newKanji}) {
     return(
-        <div>
-            <p>Kanji: {newKanji.kanji}</p>
-            <p>Kunyomi: {newKanji.kunyomi}</p>
-            <p>Onyomi: {newKanji.onyomi}</p>
-            <p>Meaning: {newKanji.meaning}</p>
-        </div>
+        <>
+            <div className={styles.kanjiCharacter}><h1>{newKanji.kanji}</h1></div>
+            <div className={styles.kanjiDisplay}>
+                <p>Kunyomi: {newKanji.kunyomi}</p>
+                <p>Onyomi: {newKanji.onyomi}</p>
+                <p>Meaning: {newKanji.meaning}</p>
+            </div>
+        </>
     );
 }
 

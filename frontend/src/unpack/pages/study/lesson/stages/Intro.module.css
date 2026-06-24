@@ -1,0 +1,85 @@
+.page {
+    color: white;
+    display: flex;
+    flex-direction: column;  
+    align-items: center;
+}
+
+.progress {
+    border: 2px solid rgb(228, 189, 189);
+    width: fit-content;
+    padding-right: 350px;
+    padding-left: 30px;
+    border-radius : 10px;
+}
+
+.cardType { 
+    border: 2px solid rgb(228, 189, 189);
+    border-radius : 10px;
+    width: fit-content;
+    padding: 5px 10px;
+}
+
+.cardContainer {
+    flex-direction: column;    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px;
+    padding: 10px 10px 10px 10px;
+    border: 2px solid rgb(228, 189, 189);
+    background-color: rgb(27, 25, 36);
+}
+
+.buttons {
+    display:flex;
+    gap: 30px;
+}
+
+.backButton {
+    color: white;
+    cursor: pointer;
+    padding: 10px 10px 10px 10px;
+    border: 2px solid rgb(228, 189, 189);
+    background-color: rgb(160, 145, 230);
+}
+
+.nextButton {
+    cursor: pointer;
+    color: white;
+    padding: 10px 10px 10px 10px;
+    border: 2px solid rgb(228, 189, 189);
+    background-color: rgb(143, 225, 67);
+}
+
+.finButton {
+    cursor: pointer;
+    color: white;
+    padding: 10px 10px 10px 10px;
+    border: 2px solid rgb(228, 189, 189);
+    background-color: rgb(124, 34, 102);
+}
+
+.kanjiCharacter {
+    margin: 40px;
+    padding: 10px;
+    border: 2px solid rgb(228, 189, 189);
+    border-radius : 10px;
+    font-size: 200px;
+}
+
+.kanjiDisplay {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    border: 2px solid rgb(228, 189, 189);
+    border-radius : 10px;
+    margin: 10px 30px;
+    padding: 5px 5px;
+}
+
+.kanjiDisplay p:not(:last-child) {
+    border-right: 2px solid rgb(228, 189, 189);
+    padding-right: 10px;
+}

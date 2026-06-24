@@ -26,7 +26,7 @@ function buildQueue(cards) {
 function Quiz({ cards, next }) {
     const [queue, setQueue] = useState(() => buildQueue(cards));
 
-    function next(correct) {
+    function advance(correct) {
         const restOfQueue = queue.slice(1);
         if (correct) {
             setQueue(restOfQueue);
@@ -36,20 +36,20 @@ function Quiz({ cards, next }) {
     }
 
     return(
-        <p>
-            {queue.length !== 0 && <Card card={queue[0]} next={next}/>}
+        <div>
+            {queue.length !== 0 && <Card card={queue[0]} advance={advance}/>}
             {queue.length === 0 && <button onClick={() => next()}>All done!</button>}
-        </p>
+        </div>
     );
 }
 
-function Card({ card, next }) {
+function Card({ card, advance }) {
     return(
         <div>
             <p>{card.front}</p>
             <p>{card.back}</p>
-            <button onClick={() => next(false)}>False</button>
-            <button onClick={() => next(true)}>True</button>
+            <button onClick={() => advance(false)}>False</button>
+            <button onClick={() => advance(true)}>True</button>
         </div>
     );
 }

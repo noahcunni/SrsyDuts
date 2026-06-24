@@ -16,6 +16,8 @@ import Typing from './pages/study/Typing.jsx';
 
 import ProtectedRoute from "./ProtectedRoute.jsx";
 
+import "./../index.css"
+
 export const router = createBrowserRouter([
     {
         element: <PublicLayout />,
