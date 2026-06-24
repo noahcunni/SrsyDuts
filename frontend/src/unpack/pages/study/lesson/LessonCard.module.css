@@ -1,0 +1,18 @@
+.kanjiCard {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 16px;
+    text-align: center;
+    background-color: #98d177;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.vocabCard {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 16px;
+    text-align: center;
+    background-color: #98d177;
+    background-color: #187a97;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
