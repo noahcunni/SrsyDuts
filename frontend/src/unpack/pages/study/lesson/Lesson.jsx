@@ -19,8 +19,6 @@ function reducer(state, action) {
 
             case "WRITING": return { stage: "REVIEW" }
 
-            case "REVIEW": return null
-
             default: return state;
         }
     else
@@ -48,13 +46,11 @@ function Lesson() {
     return(
         <div>
             <p>{JSON.stringify(jsonObject)}</p>
-            {state.stage === "INTRO" && <Intro cards={newCards}/>}
-            {state.stage === "QUIZ" && <Quiz cards={newCards}/>}
+            {state.stage === "INTRO" && <Intro cards={newCards} next={() => dispatch({type: "NEXT"})}/>}
+            {state.stage === "QUIZ" && <Quiz cards={newCards} next={() => dispatch({type: "NEXT"})}/>}
             {state.stage === "WRITING" && <Writing cards={newCards} />}
             {state.stage === "REVIEW" && <Review cards={newCards}/>} 
-            
-
-            <button onClick={() => dispatch({type: "NEXT"})}>Next</button>
+        
         </div>
     );
 }   
