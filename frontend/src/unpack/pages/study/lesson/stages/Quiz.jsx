@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from './Quiz.module.css';
 
 function buildQueue(cards) {
   const kanjiCards = cards.newKanji.map(card => ({
@@ -45,11 +46,11 @@ function Quiz({ cards, next }) {
 
 function Card({ card, advance }) {
     return(
-        <div>
+        <div className={styles.card}>
             <p>{card.front}</p>
             <p>{card.back}</p>
-            <button onClick={() => advance(false)}>False</button>
-            <button onClick={() => advance(true)}>True</button>
+            <button className={styles.wrongButton} onClick={() => advance(false)}>False</button>
+            <button className={styles.correctButton} onClick={() => advance(true)}>True</button>
         </div>
     );
 }

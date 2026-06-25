@@ -38,11 +38,13 @@ function Lesson() {
 
     useEffect(() => {
         loadNewCards();
-        setJsonObject(newCards);
-        setCardCount(newCards.newKanji.length + newCards.newVocab.length);
     }, [])
 
-    if (!jsonObject) return <p>Loading new cards...</p>;
+    useEffect(() => {
+        setCardCount(newCards.newKanji.length + newCards.newVocab.length);
+    }, [newCards])
+
+    if (!newCards) return <p>Loading new cards...</p>;
 
     const newKanji = newCards.newKanji;
     const newVocab = newCards.newVocab;

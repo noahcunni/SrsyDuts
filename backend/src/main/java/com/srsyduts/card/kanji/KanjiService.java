@@ -25,4 +25,8 @@ public class KanjiService {
     public List<Kanji> getReadyKanjiForUser(UUID userId, int limit) {
         return kanjiRepository.getReadyKanjiForUser(userId, limit);
     }
+
+    public List<Kanji> getWritingKanjiForUser(UUID userId) {
+        return kanjiRepository.getWritingKanjiForUser(userId);
+    }
 }

@@ -70,4 +70,14 @@ public class BatchController {
 
         return new NewCards(newKanji, newVocab);
     }
+
+    @GetMapping("/api/cards/writing")
+    public WritingCards getWritingCards(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
+
+        List<Kanji> kanji = kanjiService.getWritingKanjiForUser(uuid);
+        List<Vocab> vocab = vocabService.getWritingVocabForUser(uuid);
+        return new WritingCards(kanji, vocab);
+    }
 }

@@ -49,4 +49,16 @@ public interface VocabRepository extends JpaRepository<Vocab, Long> {
         )
     """, nativeQuery = true)
     boolean isVocabReadyForUser(@Param("userId") UUID userId, @Param("vocabId") Long vocabId);
+
+    @Query(value = """
+    SELECT v.* FROM vocab v
+    JOIN user_cards uc ON uc.vocab_id = v.id
+    WHERE
+        uc.user_id = :userId
+        AND uc.card_type = 'vocab'
+        AND uc.direction = 'writing'
+        AND uc.next_review < NOW()
+    ORDER BY v.id
+    """, nativeQuery = true)
+    List<Vocab> getWritingVocabForUser(@Param("userId") UUID userId);
 }

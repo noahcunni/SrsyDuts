@@ -81,7 +81,9 @@ export const CardContextProvider = ({ children }) => {
         if (isAlreadyLoading) return;
 
         try {
-            const response = await fetch("/api/cards/writing");
+            const response = await fetch("http://localhost:8080/api/cards/writing", {
+                headers: {"Authorization": `Bearer ${session.access_token}`}
+            });
             const data = await response.json();
             setWriting(data);
             setLastFetchedAt(prev => ({ ...prev, writing: Date.now() }));

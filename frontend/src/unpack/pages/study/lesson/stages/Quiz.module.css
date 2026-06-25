@@ -1,0 +1,19 @@
+.card {
+    border: 2px solid rgb(228, 189, 189);
+    border-radius : 10px;
+    color: white;
+}
+
+.wrongButton {
+    border: 2px solid rgb(228, 189, 189);
+    border-radius : 10px;
+    color: white;
+    background-color: rgb(205, 55, 55);
+}
+
+.correctButton {
+    border: 2px solid rgb(228, 189, 189);
+    border-radius : 10px;
+    color: white;
+    background-color: rgb(125, 228, 77);
+}

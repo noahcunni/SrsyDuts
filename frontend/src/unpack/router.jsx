@@ -11,7 +11,7 @@ import Dashboard from './pages/Dashboard.jsx';
 import About from './pages/About.jsx';
 
 import Lesson from './pages/study/lesson/Lesson.jsx';
-import Writing from './pages/study/Writing.jsx';
+import Writing from './pages/study/writing/Writing.jsx';
 import Typing from './pages/study/Typing.jsx';
 
 import ProtectedRoute from "./ProtectedRoute.jsx";

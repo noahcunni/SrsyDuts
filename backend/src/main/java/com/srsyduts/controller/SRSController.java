@@ -97,4 +97,15 @@ public class SRSController {
         typing2.setDirection("jpn_hira");
         userCardsService.save(typing2);
     }
+
+    @PostMapping("api/srs/writingCorrect")
+    public String writingCorrect(@RequestHeader("Authorization") String authHeader,
+            @RequestBody WritingRequest request) {
+        String token = authHeader.replace("Bearer ", "");
+        UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
+        // Validate first if this card can be even be updated.
+        // UserCardService.updateCard
+
+        return "SUCESS";
+    }
 }

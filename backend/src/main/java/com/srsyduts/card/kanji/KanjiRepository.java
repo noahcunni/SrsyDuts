@@ -23,4 +23,15 @@ public interface KanjiRepository extends JpaRepository<Kanji, Long> {
     LIMIT :limit
     """, nativeQuery = true)
     List<Kanji> getReadyKanjiForUser(@Param("userId") UUID userId, @Param("limit") int limit);
+
+    @Query(value = """
+    SELECT k.* FROM kanji k
+    JOIN user_cards uc ON uc.vocab_id = k.id
+    WHERE
+        uc.user_id = :userId
+        AND uc.card_type = 'kanji'
+        AND uc.next_review < NOW()
+    ORDER BY k.id
+    """, nativeQuery = true)
+    List<Kanji> getWritingKanjiForUser(@Param("userId") UUID userId);
 }

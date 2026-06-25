@@ -21,4 +21,8 @@ public class VocabService {
     public boolean isVocabReadyForUser(UUID userId, Long vocabId) {
         return vocabRepository.isVocabReadyForUser(userId, vocabId);
     }
+
+    public List<Vocab> getWritingVocabForUser(UUID userId) {
+        return vocabRepository.getWritingVocabForUser(userId);
+    }
 }
