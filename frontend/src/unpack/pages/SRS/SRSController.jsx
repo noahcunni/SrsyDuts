@@ -1,8 +1,8 @@
 import { UserAuth } from "../../../context/AuthContext";
 
-function writingCorrect (uuid, cardId) {
+function writingCorrect (cardId, cardType) {
     const {session} = UserAuth();
-    const payLoad = JSON.stringify({ uuid, cardId });
+    const payLoad = JSON.stringify({cardId, cardType});
     try {
         const response = await fetch('http://localhost:8080/api/srs/writingCorrect', {
             method: 'POST',
@@ -10,7 +10,7 @@ function writingCorrect (uuid, cardId) {
                 "Authorization": `Bearer ${session.access_token}`,
                 'Content-Type': 'application/json', // Critical for Spring Boot to identify JSON
             },
-            body: JSON.stringify(payLoad), // Converts JSX state object into a JSON string
+            body: payLoad, // Converts JSX state object into a JSON string
         });
 
         if (response.ok) {
@@ -22,9 +22,9 @@ function writingCorrect (uuid, cardId) {
     }
 }
 
-function writingIncorrect (cardId) {
+function writingIncorrect (cardId, cardType) {
     const {session} = UserAuth();
-    const payLoad = JSON.stringify({ uuid, cardId });
+    const payLoad = JSON.stringify({ cardId, cardType });
 
     try {
         const response = await fetch('http://localhost:8080/api/srs/writingIncorrect', {
@@ -33,7 +33,7 @@ function writingIncorrect (cardId) {
                 "Authorization": `Bearer ${session.access_token}`,
                 'Content-Type': 'application/json', // Critical for Spring Boot to identify JSON
             },
-            body: JSON.stringify(payLoad), // Converts JSX state object into a JSON string
+            body: payLoad, // Converts JSX state object into a JSON string
         });
 
         if (response.ok) {

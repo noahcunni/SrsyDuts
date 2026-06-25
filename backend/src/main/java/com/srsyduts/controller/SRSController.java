@@ -105,7 +105,12 @@ public class SRSController {
         UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
         // Validate first if this card can be even be updated.
         // UserCardService.updateCard
-
-        return "SUCESS";
+        if (userCardsService.writingIsReady(uuid, request.getCardId(), request.getCardType())) {
+            // Run srs algorithm thingy 
+            // update userCard
+        } else {
+            return "Failed to update card.";
+        }
+        return "Success, added card: " + request.getCardId() + " " + request.getCardType();
     }
 }

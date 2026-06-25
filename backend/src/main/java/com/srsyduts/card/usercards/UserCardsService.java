@@ -30,6 +30,10 @@ public class UserCardsService {
         return userCardsRepository.existsByUserIdAndVocabId(userId, vocabId);
     }
 
+    public boolean writingIsReady(UUID userId, Long cardId, String cardType) {
+        return userCardsRepository.writingIsReady(userId, cardId, cardType);
+    }
+
     public void save(UserCard card) {
         userCardsRepository.save(card);
     }
