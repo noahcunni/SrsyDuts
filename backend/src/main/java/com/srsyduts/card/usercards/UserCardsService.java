@@ -34,6 +34,10 @@ public class UserCardsService {
         return userCardsRepository.writingIsReady(userId, cardId, cardType);
     }
 
+    public UserCard getWritingUserCard(UUID userId, Long cardId, String cardType) {
+        return userCardsRepository.findByUserIdAndVocabIdAndCardType(userId, cardId, cardType);
+    }
+
     public void save(UserCard card) {
         userCardsRepository.save(card);
     }

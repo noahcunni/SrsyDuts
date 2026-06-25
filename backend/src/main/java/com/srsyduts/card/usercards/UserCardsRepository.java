@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface UserCardsRepository extends JpaRepository<UserCard, Long>  {
     List<UserCard> findByUserId(UUID userId);
     boolean existsByUserIdAndVocabId(UUID userId, Long vocabId);
+    UserCard findByUserIdAndVocabIdAndCardType(UUID userId, Long vocabId, String cardType);
 
     @Query(value = """
     SELECT EXISTS (
@@ -25,4 +26,6 @@ public interface UserCardsRepository extends JpaRepository<UserCard, Long>  {
     boolean writingIsReady(@Param("userId") UUID userId,
         @Param("cardId") Long cardId,
         @Param("cardType") String cardType);
+
+    
 }

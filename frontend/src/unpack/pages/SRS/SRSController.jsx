@@ -1,7 +1,6 @@
 import { UserAuth } from "../../../context/AuthContext";
 
-function writingCorrect (cardId, cardType) {
-    const {session} = UserAuth();
+export async function writingCorrect (session, cardId, cardType) {
     const payLoad = JSON.stringify({cardId, cardType});
     try {
         const response = await fetch('http://localhost:8080/api/srs/writingCorrect', {
@@ -22,8 +21,7 @@ function writingCorrect (cardId, cardType) {
     }
 }
 
-function writingIncorrect (cardId, cardType) {
-    const {session} = UserAuth();
+export async function writingIncorrect (session, cardId, cardType) {
     const payLoad = JSON.stringify({ cardId, cardType });
 
     try {

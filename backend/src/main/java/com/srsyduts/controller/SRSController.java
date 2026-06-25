@@ -1,6 +1,7 @@
 package com.srsyduts.controller;
 
 import java.util.UUID;
+import java.time.OffsetDateTime;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -106,11 +107,82 @@ public class SRSController {
         // Validate first if this card can be even be updated.
         // UserCardService.updateCard
         if (userCardsService.writingIsReady(uuid, request.getCardId(), request.getCardType())) {
-            // Run srs algorithm thingy 
-            // update userCard
+            UserCard userCard = userCardsService.getWritingUserCard(uuid, request.getCardId(), request.getCardType());
+            setWritingSRS(userCard, true);
         } else {
             return "Failed to update card.";
         }
         return "Success, added card: " + request.getCardId() + " " + request.getCardType();
+    }
+
+    @PostMapping("api/srs/writingIncorrect")
+    public String writingIncorrect(@RequestHeader("Authorization") String authHeader,
+            @RequestBody WritingRequest request) {
+        String token = authHeader.replace("Bearer ", "");
+        UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
+        // Validate first if this card can be even be updated.
+        // UserCardService.updateCard
+        if (userCardsService.writingIsReady(uuid, request.getCardId(), request.getCardType())) {
+            UserCard userCard = userCardsService.getWritingUserCard(uuid, request.getCardId(), request.getCardType());
+            setWritingSRS(userCard, false);
+        } else {
+            return "Failed to update card.";
+        }
+        return "Success, added card: " + request.getCardId() + " " + request.getCardType();
+    }
+
+    private void setWritingSRS(UserCard userCard, boolean correct) {
+        short srs = userCard.getSrsLevel();
+        OffsetDateTime next = userCard.getNextReview();
+        OffsetDateTime last = userCard.getLastReview();
+        OffsetDateTime now = OffsetDateTime.now();
+        if (correct) {
+            if (srs == 0) {
+                userCard.setLastReview(now);
+                userCard.setNextReview(setNextDate(srs));
+                userCard.setSrsLevel((short) (srs + 1));
+            } else if (next.compareTo(now) < 0) {
+                userCard.setLastReview(now);
+                userCard.setNextReview(setNextDate(srs));
+                userCard.setSrsLevel((short) (srs + 1));
+            } else if (last.compareTo(next) >= 0) {
+                userCard.setLastReview(now);
+                userCard.setNextReview(setNextDate(srs));
+                if (userCard.getSrsLevel() != 0) {
+                    userCard.setSrsLevel((short) (srs - 1));
+                }
+            }
+        }
+        else {
+            // Incorrect.
+            userCard.setLastReview(now);
+            userCard.setNextReview(now);
+        }
+        userCardsService.save(userCard);
+    }
+
+    private OffsetDateTime setNextDate(short srs) {
+        switch (srs) {
+            case 0: 
+                return (OffsetDateTime.now().plusHours(4));
+            case 1: 
+                return (OffsetDateTime.now().plusHours(8));
+            case 2:
+                return (OffsetDateTime.now().plusDays(1));
+            case 3:
+                return (OffsetDateTime.now().plusDays(2));
+            case 4:
+                return (OffsetDateTime.now().plusDays(7));
+            case 5:
+                return (OffsetDateTime.now().plusDays(14));
+            case 6:
+                return (OffsetDateTime.now().plusDays(30));
+            case 7:
+                return (OffsetDateTime.now().plusDays(120));
+            case 8:
+                return (OffsetDateTime.now().plusDays(270));
+            default: 
+                return (OffsetDateTime.now().plusDays(540));
+        }
     }
 }

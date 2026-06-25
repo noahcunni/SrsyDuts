@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { supabase } from "../../../../lib/supabaseClient";
 import { UserAuth } from "../../../../context/AuthContext";
 import { UserDeck } from "../../../../context/CardContext";
+import { writingCorrect, writingIncorrect } from '../../SRS/SRSController.jsx';
 
 function buildQueue(cards) {
   const kanjiCards = cards.kanji.map(card => ({
     type: "kanji",
+    id: card.id,
     front: {
         meaning: card.meaning,
         kunyomi: card.kunyomi,
@@ -16,6 +18,7 @@ function buildQueue(cards) {
 
   const vocabCards = cards.vocab.map(card => ({
     type: "vocab",
+    id: card.id,
     front: {
         english: card.english,
         hiragana: card.hiragana
@@ -34,7 +37,8 @@ function Writing() {
     const { writing, loadWriting } = UserDeck();
     const [queue, setQueue] = useState();
     const [ flip, setFlip ] = useState(false);
-    
+
+            
         function advance(correct) {
             setFlip(false);
             const restOfQueue = queue.slice(1);
@@ -66,7 +70,7 @@ function Writing() {
             {/* Displaying the server message on the screen */}
             <p style={{ color: 'gray' }}>{JSON.stringify(writing)}</p>
             {queue.length !== 0 && <Front card={queue[0]} setFlip={setFlip} flip={flip}/>}
-            {queue.length !== 0 && flip === true && <Back card={queue[0]} advance={advance}/>} 
+            {queue.length !== 0 && flip === true && <Back card={queue[0]} advance={advance} writingCorrect={writingCorrect} writingIncorrect={writingIncorrect} session={session}/>} 
 
             {queue.length === 0 && <EndScreen/>}
         </div> 
@@ -84,12 +88,12 @@ function Front({card, setFlip, flip}) {
     );
 }
 
-function Back({card, advance}) {
+function Back({card, advance, writingCorrect, writingIncorrect, session}) {
     return(
         <div>   
             <p>{card.back}</p>
-            <button onClick={() => advance(false)}>False</button>
-            <button onClick={() => advance(true)}>True</button>
+            <button onClick={() => {advance(false); writingIncorrect(session, card.id, card.type)}}>False</button>
+            <button onClick={() => {advance(true); writingCorrect(session, card.id, card.type)}}>True</button>
         </div>
     );
 }
