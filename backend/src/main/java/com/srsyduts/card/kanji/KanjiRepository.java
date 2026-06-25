@@ -30,7 +30,7 @@ public interface KanjiRepository extends JpaRepository<Kanji, Long> {
     WHERE
         uc.user_id = :userId
         AND uc.card_type = 'kanji'
-        AND uc.next_review < NOW()
+        AND (uc.next_review IS NULL OR uc.next_review < NOW())
     ORDER BY k.id
     """, nativeQuery = true)
     List<Kanji> getWritingKanjiForUser(@Param("userId") UUID userId);

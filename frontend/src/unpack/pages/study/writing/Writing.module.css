@@ -1,0 +1,127 @@
+@import url('https://googleapis.com');
+
+.page {
+    background-color: rgb(16, 15, 22);    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+
+    gap: 10px;
+}
+
+.header {
+    padding-top: 20px;
+}
+
+.icon {
+    font-family: "Zen Kaku Gothic New", sans-serif;
+    font-weight: 400;
+    line-height: 1.2;
+    width: fit-content;
+    border: 2px solid rgb(164, 141, 141);
+    padding: 4px 4px 4px 4px;
+    border-radius : 10px;
+    font-size: 59px;
+    background-image: linear-gradient(to bottom right, rgb(133, 62, 62), rgb(96, 96, 17));
+    color: white;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.frontContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-size: 40px;
+    min-height: 100vh;
+    justify-content: space-between;
+}
+
+.frontContainer button {
+    margin-top: auto;    /* shoves the button to the bottom */
+    margin-bottom: 20px;
+}
+
+/* ===== Kanji Front ===== */
+.kanjiFront {
+    border: 2px solid rgb(164, 141, 141);
+    padding: 4px 4px 4px 4px;
+    border-radius : 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ------ BACK OF CARD ----- */
+
+.back { 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.answer {
+    font-size: 160px;
+
+    border: 2px solid rgb(164, 141, 141);
+    padding: 10px;
+    border-radius : 10px;
+
+    background-color:rgb(35, 32, 52);
+
+}
+
+/* ===== Back Buttons =====*/
+.answerButtons {
+    display: flex;
+    flex-direction: row;
+    gap: 300px;
+    
+    font-size: 30px;
+}
+
+.trueButton {
+    border: 2px solid rgb(164, 141, 141);
+    padding: 20px;
+    border-radius : 10px;
+
+    background-color: green;
+}
+
+.falseButton {
+    border: 2px solid rgb(164, 141, 141);
+    padding: 20px;
+    border-radius : 10px;
+
+    background-color: rgb(151, 19, 19);
+}
+
+.trueButton:hover {
+    cursor: pointer;
+}
+
+.falseButton:hover {
+    cursor: pointer;
+}
+
+
+/* ------- BUTTONS ------- */
+
+.flipButton {
+    border: 2px solid rgb(164, 141, 141);
+    padding: 4px 4px 4px 4px;
+    border-radius : 10px;
+}
+
+.flipButton:hover {
+    cursor: pointer;
+}

@@ -18,7 +18,7 @@ public interface VocabRepository extends JpaRepository<Vocab, Long> {
                 SELECT 1 FROM user_cards uc
                 WHERE uc.vocab_id = v.id
                 AND uc.user_id = :userId
-                AND uc.card_type IN ('writing', 'typing')
+                AND uc.card_type = 'vocab'
             )
             AND
             NOT EXISTS (
@@ -57,7 +57,7 @@ public interface VocabRepository extends JpaRepository<Vocab, Long> {
         uc.user_id = :userId
         AND uc.card_type = 'vocab'
         AND uc.direction = 'writing'
-        AND uc.next_review < NOW()
+        AND (uc.next_review IS NULL OR uc.next_review < NOW())
     ORDER BY v.id
     """, nativeQuery = true)
     List<Vocab> getWritingVocabForUser(@Param("userId") UUID userId);

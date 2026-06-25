@@ -26,16 +26,16 @@ public class UserCardsService {
         return userCardsRepository.findByUserId(userId);       
     }
 
-    public boolean existsByUserIdAndVocabId(UUID userId, Long vocabId) {
-        return userCardsRepository.existsByUserIdAndVocabId(userId, vocabId);
+    public boolean existsByUserIdAndVocabIdAndCardType(UUID userId, Long vocabId, String cardType) {
+        return userCardsRepository.existsByUserIdAndVocabIdAndCardType(userId, vocabId, cardType);
     }
 
-    public boolean writingIsReady(UUID userId, Long cardId, String cardType) {
-        return userCardsRepository.writingIsReady(userId, cardId, cardType);
+    public boolean writingIsReady(UUID userId, Long cardId, String cardType, String cardDirection) {
+        return userCardsRepository.writingIsReady(userId, cardId, cardType, cardDirection);
     }
 
-    public UserCard getWritingUserCard(UUID userId, Long cardId, String cardType) {
-        return userCardsRepository.findByUserIdAndVocabIdAndCardType(userId, cardId, cardType);
+    public UserCard getWritingUserCard(UUID userId, Long cardId, String cardType, String direction) {
+        return userCardsRepository.findByUserIdAndVocabIdAndCardTypeAndDirection(userId, cardId, cardType, direction);
     }
 
     public void save(UserCard card) {

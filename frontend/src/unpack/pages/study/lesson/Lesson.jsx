@@ -41,7 +41,7 @@ function Lesson() {
     }, [])
 
     useEffect(() => {
-        setCardCount(newCards.newKanji.length + newCards.newVocab.length);
+        if (newCards) setCardCount(newCards.newKanji.length + newCards.newVocab.length);
     }, [newCards])
 
     if (!newCards) return <p>Loading new cards...</p>;

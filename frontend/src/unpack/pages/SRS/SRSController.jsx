@@ -42,3 +42,29 @@ export async function writingIncorrect (session, cardId, cardType) {
         console.error("Error sending data:", error);
     }
 }
+
+export async function introduce(session, card) {
+    if (!session) { // Check the session
+        console.log('Session invalid!');
+        return;}
+            try { // Go for it
+                const response = await fetch('http://localhost:8080/api/introduce', {
+                    method: 'POST',
+                    headers: {
+                        "Authorization": `Bearer ${session.access_token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        cardId: card.id,
+                        cardType: card.type
+                })
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(`http status Error: ${response.status}`);
+        }
+    } catch (error) {
+        console.log("Error getting batch, " + error);
+    }
+}

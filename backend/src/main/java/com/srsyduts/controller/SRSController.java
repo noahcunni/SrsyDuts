@@ -39,7 +39,7 @@ public class SRSController {
         // Check if the card the user is trying to introduce is even available for them, or hasn't been introduced before.
 
         // If the card does exist
-        if (!userCardsService.existsByUserIdAndVocabId(uuid, request.getCardId())) {
+        if (!userCardsService.existsByUserIdAndVocabIdAndCardType(uuid, request.getCardId(), request.getCardType())) {
             // Check type.
             if (request.getCardType().compareTo("kanji") == 0) {
                 // ADD KANJI HERE
@@ -68,7 +68,7 @@ public class SRSController {
         card.setUserId(uuid);
         card.setVocabId(request.getCardId());
         card.setCardType(request.getCardType());
-        card.setDirection(null);
+        card.setDirection("writing");
         card.setSrsLevel((short) 0);
         userCardsService.save(card);
     }
@@ -78,15 +78,15 @@ public class SRSController {
         writing.setUserId(uuid);
         writing.setVocabId(request.getCardId());
         writing.setSrsLevel((short) 0);
-        writing.setCardType("writing");
-        writing.setDirection("hira_jpn");
+        writing.setCardType("vocab");
+        writing.setDirection("writing");
         userCardsService.save(writing); // Set Writing
 
         UserCard typing1 = new UserCard();
         typing1.setUserId(uuid);
         typing1.setVocabId(request.getCardId());
         typing1.setSrsLevel((short) 0);
-        typing1.setCardType("typing");
+        typing1.setCardType("vocab");
         typing1.setDirection("jpn_eng");
         userCardsService.save(typing1);
         
@@ -94,7 +94,7 @@ public class SRSController {
         typing2.setUserId(uuid);
         typing2.setVocabId(request.getCardId());
         typing2.setSrsLevel((short) 0);
-        typing2.setCardType("typing");
+        typing2.setCardType("vocab");
         typing2.setDirection("jpn_hira");
         userCardsService.save(typing2);
     }
@@ -106,11 +106,11 @@ public class SRSController {
         UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
         // Validate first if this card can be even be updated.
         // UserCardService.updateCard
-        if (userCardsService.writingIsReady(uuid, request.getCardId(), request.getCardType())) {
-            UserCard userCard = userCardsService.getWritingUserCard(uuid, request.getCardId(), request.getCardType());
+        if (userCardsService.writingIsReady(uuid, request.getCardId(), request.getCardType(), "writing")) {
+            UserCard userCard = userCardsService.getWritingUserCard(uuid, request.getCardId(), request.getCardType(), "writing");
             setWritingSRS(userCard, true);
         } else {
-            return "Failed to update card.";
+            return "Failed to update card, reason: Next_Review > Now";
         }
         return "Success, added card: " + request.getCardId() + " " + request.getCardType();
     }
@@ -122,11 +122,11 @@ public class SRSController {
         UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
         // Validate first if this card can be even be updated.
         // UserCardService.updateCard
-        if (userCardsService.writingIsReady(uuid, request.getCardId(), request.getCardType())) {
-            UserCard userCard = userCardsService.getWritingUserCard(uuid, request.getCardId(), request.getCardType());
+        if (userCardsService.writingIsReady(uuid, request.getCardId(), request.getCardType(), "writing")) {
+            UserCard userCard = userCardsService.getWritingUserCard(uuid, request.getCardId(), request.getCardType(), "writing");
             setWritingSRS(userCard, false);
         } else {
-            return "Failed to update card.";
+            return "Failed to update card, reason: Next_Review > Now";
         }
         return "Success, added card: " + request.getCardId() + " " + request.getCardType();
     }
@@ -136,12 +136,9 @@ public class SRSController {
         OffsetDateTime next = userCard.getNextReview();
         OffsetDateTime last = userCard.getLastReview();
         OffsetDateTime now = OffsetDateTime.now();
+
         if (correct) {
             if (srs == 0) {
-                userCard.setLastReview(now);
-                userCard.setNextReview(setNextDate(srs));
-                userCard.setSrsLevel((short) (srs + 1));
-            } else if (next.compareTo(now) < 0) {
                 userCard.setLastReview(now);
                 userCard.setNextReview(setNextDate(srs));
                 userCard.setSrsLevel((short) (srs + 1));
@@ -151,7 +148,11 @@ public class SRSController {
                 if (userCard.getSrsLevel() != 0) {
                     userCard.setSrsLevel((short) (srs - 1));
                 }
-            }
+            } else if (next.compareTo(now) < 0) {
+                userCard.setLastReview(now);
+                userCard.setNextReview(setNextDate(srs));
+                userCard.setSrsLevel((short) (srs + 1));
+            } 
         }
         else {
             // Incorrect.

@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { UserAuth } from "../../../../../context/AuthContext";
+import { introduce } from "../../../SRS/SRSController";
 
 function buildQueue(cards) {
   const kanjiCards = cards.newKanji.map(card => ({
+    id: card.id,
     type: "kanji",
     meaning: card.meaning,
     onyomi: card.onyomi,
@@ -10,6 +13,7 @@ function buildQueue(cards) {
   }));
 
   const vocabCards = cards.newVocab.map(card => ({
+    id: card.id,
     type: "vocab",
     eng: card.english,
     hira: card.hiragana,
@@ -22,12 +26,13 @@ function buildQueue(cards) {
 
 function Writing({ cards, next }) {
     const [queue, setQueue] = useState(() => buildQueue(cards));
+    const { session } = UserAuth();
     
     function advance(correct) {
         const restOfQueue = queue.slice(1);
         if (correct) {
+            introduce(session, queue[0]);
             setQueue(restOfQueue);
-            // INTRODUCE CARD TO DATABASE
         } else {
             setQueue([...restOfQueue, queue[0]]);
         }

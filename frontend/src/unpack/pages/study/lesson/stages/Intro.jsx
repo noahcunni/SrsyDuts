@@ -50,8 +50,8 @@ function Intro({ cards, next }) {
 
             <div className={styles.cardContainer}>
                 <h1 className={styles.cardType}>{order.charAt(0).toUpperCase() + order.slice(1).toLowerCase()}</h1>
-                {order === "KANJI" && <KanjiContainer newKanji={newKanji[index]}/>}
-                {order === "VOCAB" && <VocabContainer newVocab={newVocab[index]}/>}
+                {order === "KANJI" && newKanji[index] && <KanjiContainer newKanji={newKanji[index]}/>}
+                {order === "VOCAB" && newVocab[index] && <VocabContainer newVocab={newVocab[index]}/>}
             </div>
 
             <div className={styles.buttons}>
