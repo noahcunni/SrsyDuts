@@ -10,7 +10,7 @@ function PublicNavbar() {
 
     return(
         <div className={styles.navbar}>
-            <img className={styles.img} onClick={handleLanding} src='https://i.pinimg.com/236x/47/59/d7/4759d72744726f90ff3926185e7e3eec.jpg' alt='Luis'/>
+            <h1 className={styles.icon}>間隔学習</h1>
             <div className={styles.navbarButtonGroup}>
                 <Link to="/about" className={styles.aboutButton}>About</Link>
                 <div className={styles.authButtonGroup}>

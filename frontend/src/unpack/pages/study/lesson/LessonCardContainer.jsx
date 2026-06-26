@@ -1,4 +1,4 @@
-import styles from './lesson/LessonCard.module.css'
+import styles from './LessonCard.module.css'
 
 export function LessonKanjiCard({ card }) {
     // funtime  

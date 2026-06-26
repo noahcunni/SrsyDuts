@@ -1,6 +1,9 @@
 .navbar {
     display: flex;
     justify-content: space-evenly;
+    position: sticky;
+    top: 0;
+    z-index: 1000;;
 }
 
 /**/
@@ -45,13 +48,7 @@
     justify-content: left;
 }
 
-.img {
-    width: 50px;
-    height: auto;
-
-    justify-content: left;   
-}
-
-.img:hover {
-    cursor:pointer;
+.icon {
+    size: 30px;
+    
 }

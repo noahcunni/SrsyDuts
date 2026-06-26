@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Shippori+Mincho:wght@400;700&display=swap');
+
 .page {
     color: white;
     display: flex;
@@ -13,43 +15,78 @@
     border-radius : 10px;
 }
 
-.cardType { 
-    border: 2px solid rgb(228, 189, 189);
-    border-radius : 10px;
-    width: fit-content;
-    padding: 5px 10px;
-}
-
 .cardContainer {
     flex-direction: column;    
     display: flex;
     justify-content: center;
     align-items: center;
+
+    width: 900px;
+    height: 600px;
+    padding: 20px;
+
     margin: 30px;
-    padding: 10px 10px 10px 10px;
-    border: 2px solid rgb(228, 189, 189);
+    padding: 20px 60px;
+
+    border: 2px solid rgb(43, 40, 56);
+    border-radius: 20px;
     background-color: rgb(27, 25, 36);
+
+
+}
+
+.cardType { 
+    background-color: rgba(255, 93, 143, 0.15);
+
+    border-radius : 40px;
+    width: fit-content;
+
+    color: rgb(255, 93, 143);
+    font-size: 30px;
+    font-weight: 800;
+
+    padding: 3px 20px;
+
 }
 
 .buttons {
     display:flex;
-    gap: 30px;
+    gap: 60px;
+    
 }
 
 .backButton {
-    color: white;
+    color: rgb(43, 40, 56);
     cursor: pointer;
-    padding: 10px 10px 10px 10px;
-    border: 2px solid rgb(228, 189, 189);
+    padding: 10px 30px;
+    border: 2px solid rgb(43, 40, 56);
+    border-radius: 30px;
     background-color: rgb(160, 145, 230);
+    transition: all .15s ease; 
+
 }
+
+.backButton:hover {
+    filter: brightness(1.12) saturate(1.1);
+    transform: translateY(-2px) scale(1.02);
+}
+
 
 .nextButton {
     cursor: pointer;
-    color: white;
-    padding: 10px 10px 10px 10px;
-    border: 2px solid rgb(228, 189, 189);
+    color: rgb(43, 40, 56);
+    padding: 10px 30px;
+    border: 2px solid rgb(43, 40, 56);
+    border-radius: 30px;
     background-color: rgb(143, 225, 67);
+
+    transition: all .15s ease; 
+
+}
+
+.nextButton:hover {
+    filter: brightness(1.12) saturate(1.1);
+    transform: translateY(-2px) scale(1.02);
 }
 
 .finButton {
@@ -60,26 +97,63 @@
     background-color: rgb(124, 34, 102);
 }
 
+.kanjiContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .kanjiCharacter {
-    margin: 40px;
-    padding: 10px;
-    border: 2px solid rgb(228, 189, 189);
-    border-radius : 10px;
+    padding: 0px;
     font-size: 200px;
+    color: rgb(255, 93, 143);
+
+    line-height: 1.2;
 }
 
 .kanjiDisplay {
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    gap: 10px;
-    border: 2px solid rgb(228, 189, 189);
-    border-radius : 10px;
+    align-self: stretch;
+
     margin: 10px 30px;
-    padding: 5px 5px;
+    border: 2px solid rgb(43, 40, 56);
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: rgb(27, 25, 36);
+    width: 100%;
 }
 
-.kanjiDisplay p:not(:last-child) {
-    border-right: 2px solid rgb(228, 189, 189);
-    padding-right: 10px;
+.displayBox {
+    align-items: flex-start;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 16px;
+    
+}
+
+.displayBox:not(:last-child) {
+    border: 2px solid rgb(43, 40, 56);
+}
+
+.displayLabel {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: rgb(160, 140, 140);
+}
+
+.displayValue {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    font-size: 25px;
+    font-style: bold;
+    font-weight: 800;
+    color: white;
+    margin-top: -12px;
+    
 }

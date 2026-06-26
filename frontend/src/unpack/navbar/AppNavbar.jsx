@@ -1,25 +1,26 @@
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 import styles from './AppNavbar.module.css';
 
 function AppNavbar() {
+    const location = useLocation();
+    const isActive = (path) => location.pathname === path; // evals current path
+
     return (
 
         <div className={styles.navbar}>
             <div className={styles.dashContainer}>
-                <Link to='/dashboard'>
-                    <img className={styles.dashButton} src='https://i.pinimg.com/236x/47/59/d7/4759d72744726f90ff3926185e7e3eec.jpg' alt='Luis'/>            
-                </Link>
+                <Link to='/dashboard'>家</Link>
             </div>
         
             <div className={styles.studyButtonGroup}>
-                <Link to='/study/lesson' className={styles.studyButton}>Lesson</Link>
-                <Link to='/study/writing' className={styles.studyButton}>Writing</Link>
-                <Link to='/study/typing' className={styles.studyButton}>Typing</Link>
-                <Link to='/study/create' className={styles.studyButton}>Create</Link>
+                <Link to='/study/lesson' className={`${styles.studyButton} ${isActive('/study/lesson') ? styles.activeButton : ''}`}>Lesson</Link>
+                <Link to='/study/writing' className={`${styles.studyButton} ${isActive('/study/writing') ? styles.activeButton : ''}`}>Writing</Link>
+                <Link to='/study/typing' className={`${styles.studyButton} ${isActive('/study/typing') ? styles.activeButton : ''}`}>Typing</Link>
+                <Link to='/study/create' className={`${styles.studyButton} ${isActive('/study/create') ? styles.activeButton : ''}`}>Create</Link>
             </div>
-            <div className={styles.signOut}>
-                <Link>Sign Out</Link>
+            <div>
+                <Link className={styles.signOut}>Sign Out</Link>
             </div>
         </div>
     );

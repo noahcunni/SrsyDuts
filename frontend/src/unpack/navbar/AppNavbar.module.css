@@ -1,12 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
+
+
 .navbar {
     display: flex;
     gap: 15px;
 
+    background-color: rgb(27, 25, 36);
+    border-bottom: 2px solid rgb(43, 40, 56);
+
     align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    
+    font-family: "Space Grotesk", Helvetica, Arial, sans-serif;
+    font-weight: 700;
 }
 
 .dashContainer {
     margin-left: 20px;  
+    font-family: "Zen Kaku Gothic New", sans-serif;
+    font-weight: 400;
+    line-height: 1.2;
+    width: fit-content;
+    border: 2px solid rgb(164, 141, 141);
+    padding: 4px 4px 4px 4px;
+    border-radius : 10px;
+    font-size: 30px;
+    background-image: linear-gradient(to bottom right, rgb(133, 62, 62), rgb(96, 96, 17));
+    margin-left: 30px;
+    color: white;
 }
 
 .dashButton {
@@ -23,19 +46,51 @@
     margin-left: auto;
     margin-right: auto;
 
-    gap: 30px;
+    gap: 100px;
+
+    font-size: 25px;
+
+    color: rgb(138, 126, 126);
+    font-weight: 500;
 }
 
 .studyButton {
-    border: 2px solid black;
-    padding: 10px 2px 10px 2px;
-    border-radius : 10px;
+    padding: 8px 20px 8px 20px;
+    transition: all .15s ease;  
+}
+
+.studyButton:hover {
+    filter: brightness(1.12) saturate(1.1);
+    transform: translateY(-2px) scale(1.02);
+
+    border-radius: 20px;
+
+    background: #2b2838;           /* --border: the solid bg that appears */
+    color: #f6f4f1;    
+}
+
+.activeButton {
+    color: whitesmoke;
 }
 
 .signOut {
-    margin-right: 20px;
-    border: 2px solid black;
-    padding: 10px 2px 10px 2px;
-    border-radius : 10px;
+    padding: 8px 20px;
+    font-size: 25px;
+    color: rgb(138, 126, 126);
+    font-weight: 500;
+
+    margin-right: 40px;
+}
+
+.signOut:hover {
+    padding: 8px 20px 8px 20px;
+    transition: all .15s ease; 
+    filter: brightness(1.12) saturate(1.1);
+    transform: translateY(-2px) scale(1.02);
+
+    border-radius: 20px;
+
+    background: #9b875f;           /* --border: the solid bg that appears */
+    color: #f6f4f1; 
 }
 

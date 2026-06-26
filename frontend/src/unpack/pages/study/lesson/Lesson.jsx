@@ -2,7 +2,7 @@ import { useEffect, useState, useReducer } from "react";
 import { supabase } from "../../../../lib/supabaseClient";
 import { UserAuth } from "../../../../context/AuthContext";
 import { UserDeck } from "../../../../context/CardContext";
-import { LessonVocabCard, LessonKanjiCard } from "../LessonCardContainer";
+import { LessonVocabCard, LessonKanjiCard } from "./LessonCardContainer";
 import Intro from "./stages/Intro";
 import Quiz from "./stages/Quiz";
 import Review from "./stages/Review";
@@ -53,15 +53,20 @@ function Lesson() {
         <div className={styles.page}>
             <div className={styles.header}>
                 <h1 className={styles.headerIcon}>学</h1>
+
                 <div>
                     <h1 className={styles.headerText}>Today's lesson: {cardCount} cards</h1>
                     <h1 className={styles.headerStatus}>{state.stage}</h1>
                 </div>
             </div>
-            {state.stage === "INTRO" && <Intro cards={newCards} next={() => dispatch({type: "NEXT"})}/>}
-            {state.stage === "QUIZ" && <Quiz cards={newCards} next={() => dispatch({type: "NEXT"})}/>}
-            {state.stage === "WRITING" && <Writing cards={newCards} next={() => dispatch({type: "NEXT"})} />}
-            {state.stage === "REVIEW" && <Review cards={newCards} next={() => dispatch({type: "NEXT"})}/>} 
+
+            {/*Holds the stage*/}
+            <div>
+                {state.stage === "INTRO" && <Intro cards={newCards} next={() => dispatch({type: "NEXT"})}/>}
+                {state.stage === "QUIZ" && <Quiz cards={newCards} next={() => dispatch({type: "NEXT"})}/>}
+                {state.stage === "WRITING" && <Writing cards={newCards} next={() => dispatch({type: "NEXT"})} />}
+                {state.stage === "REVIEW" && <Review cards={newCards} next={() => dispatch({type: "NEXT"})}/>} 
+            </div>
         </div>
     );
 }   
