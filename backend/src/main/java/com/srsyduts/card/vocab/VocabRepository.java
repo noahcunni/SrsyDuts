@@ -1,5 +1,7 @@
 package com.srsyduts.card.vocab;
 
+import org.springframework.data.jpa.repository.Modifying;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -61,4 +63,12 @@ public interface VocabRepository extends JpaRepository<Vocab, Long> {
     ORDER BY v.id
     """, nativeQuery = true)
     List<Vocab> getWritingVocabForUser(@Param("userId") UUID userId);
+
+    // -----
+    boolean existsByJpn(String jpn);
+
+    @Modifying
+    @Query(value = "INSERT INTO kanji_vocab (vocab_id, kanji_id) VALUES (:vocabId, :kanjiId)",
+       nativeQuery = true)
+    void linkKanji(@Param("vocabId") Long vocabId, @Param("kanjiId") Long kanjiId);
 }

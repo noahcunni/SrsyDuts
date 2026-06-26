@@ -29,4 +29,17 @@ public class KanjiService {
     public List<Kanji> getWritingKanjiForUser(UUID userId) {
         return kanjiRepository.getWritingKanjiForUser(userId);
     }
+
+    // ------
+    public Kanji save(Kanji kanji) {
+        return kanjiRepository.save(kanji);     
+    }
+    
+    public boolean existsByKanji(String kanji) {
+        return kanjiRepository.existsByKanji(kanji);
+    }
+
+    public Kanji findByKanji(String kanji) {
+        return kanjiRepository.findByKanji(kanji);
+    }
 }

@@ -13,6 +13,7 @@ import About from './pages/About.jsx';
 import Lesson from './pages/study/lesson/Lesson.jsx';
 import Writing from './pages/study/writing/Writing.jsx';
 import Typing from './pages/study/Typing.jsx';
+import Create from './Create.jsx';
 
 import ProtectedRoute from "./ProtectedRoute.jsx";
 
@@ -42,7 +43,8 @@ export const router = createBrowserRouter([
                         path: '/study', children: [
                             {path: 'lesson', element: <Lesson />},
                             {path: 'writing', element: <Writing />},
-                            {path: 'typing', element: <Typing />}
+                            {path: 'typing', element: <Typing />},
+                            {path: 'create', element: <Create />}
                         ]
                     }
                 ]

@@ -25,4 +25,14 @@ public class VocabService {
     public List<Vocab> getWritingVocabForUser(UUID userId) {
         return vocabRepository.getWritingVocabForUser(userId);
     }
+
+    //----
+    public Vocab save(Vocab vocab) {
+        return vocabRepository.save(vocab); }
+
+    public boolean existsByJpn(String jpn) {
+        return vocabRepository.existsByJpn(jpn); }
+
+    public void linkKanji(Long vocabId, Long kanjiId) {
+        vocabRepository.linkKanji(vocabId, kanjiId); }
 }

@@ -34,4 +34,9 @@ public interface KanjiRepository extends JpaRepository<Kanji, Long> {
     ORDER BY k.id
     """, nativeQuery = true)
     List<Kanji> getWritingKanjiForUser(@Param("userId") UUID userId);
+
+
+    // ------
+    boolean existsByKanji(String kanji);
+    Kanji findByKanji(String kanji);
 }
