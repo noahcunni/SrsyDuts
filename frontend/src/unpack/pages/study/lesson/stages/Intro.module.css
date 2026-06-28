@@ -31,8 +31,6 @@
     border: 2px solid rgb(43, 40, 56);
     border-radius: 20px;
     background-color: rgb(27, 25, 36);
-
-
 }
 
 .cardType { 
@@ -40,6 +38,7 @@
 
     border-radius : 40px;
     width: fit-content;
+    margin-bottom: auto; 
 
     color: rgb(255, 93, 143);
     font-size: 30px;
@@ -90,11 +89,20 @@
 }
 
 .finButton {
+
     cursor: pointer;
-    color: white;
-    padding: 10px 10px 10px 10px;
-    border: 2px solid rgb(228, 189, 189);
+    color: rgb(208, 206, 216);
+    padding: 10px 30px;
+    border: 2px solid rgb(43, 40, 56);
+    border-radius: 30px;
     background-color: rgb(124, 34, 102);
+
+    transition: all .15s ease; 
+}
+
+.finButton:hover {
+    filter: brightness(1.12) saturate(1.1);
+    transform: translateY(-2px) scale(1.02);
 }
 
 .kanjiContainer {

@@ -23,7 +23,7 @@ function Dashboard() {
 
 
     if (!summaryObject) {
-        return <p>Loading your summary...</p>
+        return <p className={styles.body}>Loading your summary...</p>
     }
 
     return (

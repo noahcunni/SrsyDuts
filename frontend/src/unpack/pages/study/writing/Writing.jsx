@@ -64,10 +64,10 @@ function Writing() {
 
 
     if (!queue)
-        return <p>loading writing cards...</p>
+        return <p className={styles.body}>loading writing cards...</p>
 
     return( 
-        <div className={styles.page}> 
+        <div className={styles.body}> 
             <div className={styles.header}>
                 <h1 className={styles.icon}>書</h1>
             </div>

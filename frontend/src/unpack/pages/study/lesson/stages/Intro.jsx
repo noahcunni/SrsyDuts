@@ -55,14 +55,15 @@ function Intro({ cards, next }) {
 
 
             <div className={styles.cardContainer}>
-                <h1 className={styles.cardType}>{order.charAt(0).toUpperCase() + order.slice(1).toLowerCase()}</h1>
+                {order !== "END" && <h1 className={styles.cardType}>{order.charAt(0).toUpperCase() + order.slice(1).toLowerCase()}</h1>}
+                {order === "END" && <h1 className={styles.cardType}>Quiz</h1>}
                 {order === "KANJI" && newKanji[index] && <KanjiContainer newKanji={newKanji[index]}/>}
                 {order === "VOCAB" && newVocab[index] && <VocabContainer newVocab={newVocab[index]}/>}
             
                 <div className={styles.buttons}>
                     <button className={styles.backButton} onClick={() => iterateBackward()}>← Back</button>
                     {order !== "END" && <button className={styles.nextButton} onClick={() => iterateForward()}>Next →</button>}
-                    {order === "END" && <button className={styles.finButton} onClick={() => next()}>FINISHED</button>}
+                    {order === "END" && <button className={styles.finButton} onClick={() => next()}>To Quiz →</button>}
                 </div>
             </div>
         </div>

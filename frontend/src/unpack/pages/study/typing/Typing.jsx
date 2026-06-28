@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../../../lib/supabaseClient";
 import { UserAuth } from "../../../../context/AuthContext";
+import styles from './Typing.module.css';
 
 function Typing() {
     const { session } = UserAuth();
@@ -9,7 +10,7 @@ function Typing() {
     useEffect(() => {
     }, [session]);
 
-    return <p>Typing on my uuh.</p>; 
+    return <p className={styles.body}>Typing on my uuh.</p>; 
 }
 
 export default Typing
