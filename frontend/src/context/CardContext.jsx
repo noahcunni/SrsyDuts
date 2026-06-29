@@ -94,9 +94,33 @@ export const CardContextProvider = ({ children }) => {
         }
     };
 
-    const loadTyping = (() => {
+    const loadTyping = async () => {
         // query for typing
-    });
+        let isAlreadyLoading = false;
+    
+        setLoading((prev) => {
+            if (prev.typing) {
+                isAlreadyLoading = true;
+                return prev;
+            }
+            return { ...prev, typing: true };
+        });
+
+        if (isAlreadyLoading) return;
+
+        try {
+            const response = await fetch("http://localhost:8080/api/cards/typing", {
+                headers: {"Authorization": `Bearer ${session.access_token}`}
+            });
+            const data = await response.json();
+            setTyping(data);
+            setLastFetchedAt(prev => ({ ...prev, typing: Date.now() }));
+        } catch (e) {
+            console.log("Failed to load typing" + e);
+        } finally {
+            setLoading(prev => ({...prev, typing:false}));
+        }
+    };
 
     const loadNewCards = async () => {
         // query for new cards

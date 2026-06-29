@@ -38,6 +38,14 @@ public class UserCardsService {
         return userCardsRepository.findByUserIdAndVocabIdAndCardTypeAndDirection(userId, cardId, cardType, direction);
     }
 
+    public boolean typingIsReady(UUID userId, Long cardId, String direction) {
+        return userCardsRepository.writingIsReady(userId, cardId, "vocab", direction);
+    }
+
+    public UserCard getTypingUserCard(UUID userId, Long cardId, String direction) {
+        return userCardsRepository.findByUserIdAndVocabIdAndCardTypeAndDirection(userId, cardId, "vocab", direction);
+    }
+
     public void save(UserCard card) {
         userCardsRepository.save(card);
     }

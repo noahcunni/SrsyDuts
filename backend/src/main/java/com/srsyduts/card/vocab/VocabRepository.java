@@ -1,14 +1,13 @@
 package com.srsyduts.card.vocab;
 
-import org.springframework.data.jpa.repository.Modifying;
-
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository
 public interface VocabRepository extends JpaRepository<Vocab, Long> {
@@ -63,6 +62,35 @@ public interface VocabRepository extends JpaRepository<Vocab, Long> {
     ORDER BY v.id
     """, nativeQuery = true)
     List<Vocab> getWritingVocabForUser(@Param("userId") UUID userId);
+
+    @Query(value = """
+        SELECT v.id, v.jpn, uc.direction
+        FROM vocab v
+        JOIN user_cards uc ON uc.vocab_id = v.id
+        WHERE uc.user_id = :userId
+        AND uc.card_type = 'vocab'
+        AND uc.direction IN ('jpn_eng', 'jpn_hira')
+        AND (uc.next_review IS NULL OR uc.next_review < NOW())
+        ORDER BY v.id
+        """, nativeQuery = true)
+    List<TypingVocab> getTypingVocabForUser(@Param("userId") UUID userId);
+
+    /**
+     * Returns answer of typing card.
+     * 
+     * Used to compare user answer with a typing card
+     */
+    @Query(value = """
+        SELECT CASE
+            WHEN :direction = 'jpn_eng'  THEN v.english
+            WHEN :direction = 'jpn_hira' THEN v.hiragana
+        END
+        FROM vocab v
+        WHERE v.id = :vocabId
+        """, nativeQuery = true)
+    String getTypingAnswer(@Param("vocabId") Long vocabId, @Param("direction") String direction);
+
+    
 
     // -----
     boolean existsByJpn(String jpn);

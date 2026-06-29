@@ -6,6 +6,12 @@
     flex: 1;
 }
 
+.stage {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
 .header {
     flex-direction: row;
     display: flex;

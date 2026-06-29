@@ -1,0 +1,23 @@
+.body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.dashboardButton {
+    color: white;
+    border: 2px solid grey;
+    border-radius: 20px;
+    background-color: lightblue;
+    cursor: pointer;
+    transition: all .15s ease; 
+    margin-top: auto;
+    margin-bottom: 75px;
+    font-size: 40px;
+    padding: 20px;
+}
+
+.dashboardButton:hover {
+    filter: brightness(1.12) saturate(1.1);
+    transform: translateY(-2px) scale(1.02);
+}

@@ -26,6 +26,20 @@ public class VocabService {
         return vocabRepository.getWritingVocabForUser(userId);
     }
 
+    public List<TypingVocab> getTypingVocabForUser(UUID userId) {
+        return vocabRepository.getTypingVocabForUser(userId);
+    }
+
+    public String getTypingAnswer(Long vocabId, String direction) {
+        return vocabRepository.getTypingAnswer(vocabId, direction);
+    }
+
+    public boolean compareTypingAnswer(String userAnswer, Long vocabId, String direction) {
+    String correct = vocabRepository.getTypingAnswer(vocabId, direction);
+    if (correct == null || userAnswer == null) return false;
+    return correct.trim().equalsIgnoreCase(userAnswer.trim());
+}
+
     //----
     public Vocab save(Vocab vocab) {
         return vocabRepository.save(vocab); }

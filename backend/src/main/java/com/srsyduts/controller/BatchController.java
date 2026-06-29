@@ -14,6 +14,7 @@ import com.srsyduts.card.kanji.Kanji;
 import com.srsyduts.card.kanji.KanjiService;
 import com.srsyduts.card.usercards.Summary;
 import com.srsyduts.card.usercards.UserCardsService;
+import com.srsyduts.card.vocab.TypingVocab;
 import com.srsyduts.card.vocab.Vocab;
 import com.srsyduts.card.vocab.VocabService;
 
@@ -53,10 +54,11 @@ public class BatchController {
         int newVocab = vocabService.getReadyVocabForUser(uuid, 8).size();
         int newKanji = kanjiService.getReadyKanjiForUser(uuid, 3).size();
 
-        int dueVocab = 0;
-        int dueKanji = 0;
+        int writing = vocabService.getWritingVocabForUser(uuid).size() 
+            + kanjiService.getWritingKanjiForUser(uuid).size();
+        int typing = vocabService.getTypingVocabForUser(uuid).size();
 
-        Summary cardSummary = new Summary(newKanji, newVocab, dueKanji, dueVocab);
+        Summary cardSummary = new Summary(newKanji, newVocab, writing, typing);
         return cardSummary;
     }
 
@@ -79,5 +81,16 @@ public class BatchController {
         List<Kanji> kanji = kanjiService.getWritingKanjiForUser(uuid);
         List<Vocab> vocab = vocabService.getWritingVocabForUser(uuid);
         return new WritingCards(kanji, vocab);
+    }
+
+    @GetMapping("/api/cards/typing")
+    public TypingCards getTypingCards(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
+
+
+        List<TypingVocab> vocab = vocabService.getTypingVocabForUser(uuid);
+
+        return new TypingCards(vocab);
     }
 }

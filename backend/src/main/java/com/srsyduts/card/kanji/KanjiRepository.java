@@ -23,6 +23,7 @@ public interface KanjiRepository extends JpaRepository<Kanji, Long> {
     LIMIT :limit
     """, nativeQuery = true)
     List<Kanji> getReadyKanjiForUser(@Param("userId") UUID userId, @Param("limit") int limit);
+    // Grabs card with no history (only new cards)
 
     @Query(value = """
     SELECT k.* FROM kanji k
@@ -34,7 +35,7 @@ public interface KanjiRepository extends JpaRepository<Kanji, Long> {
     ORDER BY k.id
     """, nativeQuery = true)
     List<Kanji> getWritingKanjiForUser(@Param("userId") UUID userId);
-
+    // Get due kanji cards
 
     // ------
     boolean existsByKanji(String kanji);

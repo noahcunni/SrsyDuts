@@ -44,7 +44,7 @@ function Writing({ cards, next }) {
     function advance(correct) {
         const restOfQueue = queue.slice(1);
         if (correct) {
-             // introduce(session, queue[0]); UNCOMMENT THIS WHEN DONE!!!!
+            // introduce(session, queue[0]); // INTRODUCES USER CARDS HERE
             setQueue(restOfQueue);
         } else {
             setQueue([...restOfQueue, queue[0]]);
@@ -54,7 +54,7 @@ function Writing({ cards, next }) {
     }
 
     if (queue.length === 0) 
-        return(<p>Done</p>);
+        next();
 
     return(
         <div className={styles.page}>

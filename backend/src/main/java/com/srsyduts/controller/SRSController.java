@@ -1,7 +1,7 @@
 package com.srsyduts.controller;
 
-import java.util.UUID;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -186,4 +186,31 @@ public class SRSController {
                 return (OffsetDateTime.now().plusDays(540));
         }
     }
+
+    @PostMapping("api/srs/typingCheck")
+    public TypingResponse typingCheck(
+        @RequestHeader ("Authorization") String authHeader,
+        @RequestBody TypingRequest request) 
+    {
+        String token = authHeader.replace("Bearer ", "");
+        UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
+
+        // First check the validity of the card be checking if its due
+        if (!userCardsService.typingIsReady(uuid, request.getCardId(), request.getDirection())) {
+            throw new Error("Card is not ready for review"); // There are better ways to handle errors
+        }
+
+        UserCard userCard = userCardsService.getTypingUserCard(uuid, request.getCardId(), request.getDirection());
+
+        // Then check if its correct and adjust 
+        
+        if (vocabService.compareTypingAnswer(request.getAnswer(), request.getCardId(), request.getDirection())) {
+            setWritingSRS(userCard, true);
+            return new TypingResponse(true, vocabService.getTypingAnswer(request.getCardId(), request.getDirection()));
+        } else {
+            setWritingSRS(userCard, false);
+            return new TypingResponse(false, vocabService.getTypingAnswer(request.getCardId(), request.getDirection()));
+        }
+    }
 }
+

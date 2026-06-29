@@ -30,7 +30,9 @@ function Dashboard() {
         <div className={styles.body}>
             <p>{JSON.stringify(summary)}</p>; 
             <h1>You have {summary.newKanji + summary.newVocab} new cards to study!</h1>
-            <h1>Too bad you have {summaryObject.dueKanji} cards to study right now though</h1>
+            <h1>Too bad you have {summaryObject.dueWriting + summaryObject.dueTyping} cards to study right now though</h1>
+            <p>There are {summaryObject.dueTyping} typing cards due!</p>
+            <p>{JSON.stringify(summaryObject.dueTyping)}</p>
         </div>
     );
 }

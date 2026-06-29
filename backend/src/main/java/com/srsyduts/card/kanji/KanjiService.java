@@ -30,7 +30,7 @@ public class KanjiService {
         return kanjiRepository.getWritingKanjiForUser(userId);
     }
 
-    // ------
+    // ------ create stuff
     public Kanji save(Kanji kanji) {
         return kanjiRepository.save(kanji);     
     }
