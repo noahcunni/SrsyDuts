@@ -52,7 +52,7 @@ function Lesson() {
     return(
         <div className={styles.page}>
             <div className={styles.header}>
-                <h1 className={styles.headerIcon}>学</h1>
+                <h1 className={styles.headerIcon}>学</h1> <button onClick={() => dispatch({type: "NEXT"})}>next</button>
 
                 <div>
                     <h1 className={styles.headerText}>Today's lesson: {cardCount} cards</h1>

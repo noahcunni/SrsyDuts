@@ -46,7 +46,6 @@ function Intro({ cards, next }) {
 
     return(
         <div className={styles.page}>
-
             <div className={styles.progress}>
                 <div>
                     <p>progress bar goes here...</p>
@@ -55,7 +54,8 @@ function Intro({ cards, next }) {
 
 
             <div className={styles.cardContainer}>
-                {order !== "END" && <h1 className={styles.cardType}>{order.charAt(0).toUpperCase() + order.slice(1).toLowerCase()}</h1>}
+                {order !== "END" && <h1 className={`${order === "KANJI" ? styles.kanjiType : styles.vocabType}`}>
+                    {order.charAt(0).toUpperCase() + order.slice(1).toLowerCase()}</h1>}
                 {order === "END" && <h1 className={styles.cardType}>Quiz</h1>}
                 {order === "KANJI" && newKanji[index] && <KanjiContainer newKanji={newKanji[index]}/>}
                 {order === "VOCAB" && newVocab[index] && <VocabContainer newVocab={newVocab[index]}/>}
@@ -72,11 +72,19 @@ function Intro({ cards, next }) {
 
 function VocabContainer({newVocab}) {
     return(
-        <div>
-            <div className={styles.kanjiCharacter}>{newVocab.jpn}</div>
-            <div className={styles.kanjiDisplay}>
-                <p>Hiragana: {newVocab.hiragana}</p>
-                <p>English: {newVocab.english}</p>
+        <div className={styles.displayContainer}>
+            <p className={styles.displayVocab}>{newVocab.jpn}</p>
+
+            <div className={styles.displayBack}>
+                <div className={styles.displayBox}>
+                    <p className={styles.displayLabel}>Hiragana:</p>
+                    <p className={styles.displayValue}>{newVocab.hiragana}</p>
+                </div>
+
+                <div className={styles.displayBox}>
+                    <p className={styles.displayLabel}>English:</p>
+                    <p className={styles.displayValue}>{newVocab.english}</p>
+                </div>
             </div>
         </div>
     );
@@ -84,9 +92,9 @@ function VocabContainer({newVocab}) {
 
 function KanjiContainer({newKanji}) {
     return(
-        <div className={styles.kanjiContainer}>
-            <p className={styles.kanjiCharacter}>{newKanji.kanji}</p>
-            <div className={styles.kanjiDisplay}>
+        <div className={styles.displayContainer}>
+            <p className={styles.displayKanji}>{newKanji.kanji}</p>
+            <div className={styles.displayBack}>
                 
                 <div className={styles.displayBox}>
                     <p className={styles.displayLabel}>Kunyomi: </p>
@@ -96,21 +104,15 @@ function KanjiContainer({newKanji}) {
                 <div className={styles.displayBox}>
                     <p className={styles.displayLabel}>Onyomi:</p> 
                     <p className={styles.displayValue}>{newKanji.onyomi}</p>
-  
                 </div>
                 
                 <div className={styles.displayBox}>
                     <p className={styles.displayLabel}>Meaning: </p>
                     <p className={styles.displayValue}>{newKanji.meaning.charAt(0).toUpperCase() + newKanji.meaning.slice(1)}</p>
                 </div>
-
             </div>
         </div>
     );
-}
-
-function iterate() {
-    
 }
 
 export default Intro

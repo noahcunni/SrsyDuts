@@ -51,14 +51,17 @@ function Quiz({ cards, next }) {
     }
 
     function handleContinue() {
+        if (queue.length === 1 && state === "correct")
+            next();
+
         advance(state === "correct");
         setState("waiting");
         setAnswer("");
     }
 
-    if (queue.length === 0) {
+    if (state === "waiting" && queue.length === 0) {
         return(
-            <button onClick={() => next()}>All done!</button>
+            <button onClick={() => next()}>On to writting session</button>
         );
     }
 
@@ -75,16 +78,17 @@ function Quiz({ cards, next }) {
 
                 {queue.length !== 0 && <Card card={queue[0]} state={state}/>}
 
-                <input className={`${styles.input} ${styles[state]}`} 
-                placeholder={queue[0].type === "vocab->eng" ? "English" : "ひらがな"} 
-                value={answer} autoComplete="off"
-                onChange={(e) => setAnswer(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleEnter()}
-                />
+                <div className={styles.inputContainer}>
+                    <input className={`${styles.input} ${styles[state]}`} 
+                    placeholder={queue[0].type === "vocab->eng" ? "English" : "ひらがな"} 
+                    value={answer} autoComplete="off"
+                    onChange={(e) => setAnswer(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && handleEnter()}
+                    />
+                    {state === "waiting" && <button className={styles.submitButton} onClick={handleEnter}>Submit →</button>}
+                </div>
 
-                {state === "waiting" && <button onClick={handleEnter}>Submit →</button>}
-
-                {state !== "waiting" && <Review correct={state === "correct"} card={queue[0]} handleEnter={handleEnter}></Review>}
+                {state !== "waiting" && <Review correct={state === "correct"} card={queue[0]} handleEnter={handleEnter} size={queue.length} next={next}></Review>}
             </div>
 
             <div className={styles.buttons}>
@@ -114,7 +118,7 @@ function Card({ card, state }) {
     }
 }
 
-function Review({correct, card, handleEnter}) {
+function Review({correct, card, handleEnter, size, next}) {
     if (correct) {
         return(
             <div>
@@ -122,7 +126,9 @@ function Review({correct, card, handleEnter}) {
 
                 <div className={styles.review}>
                     <p className={styles.correctPrompt}>✓ Correct!</p>
-                    <button className={styles.nextButton} onClick={handleEnter}>Next →</button>
+
+                    {size !== 1 && <button className={styles.nextButton} onClick={handleEnter}>Next →</button>}
+                    {size === 1 && <button className={styles.nextButton} onClick={next}>Writing →</button>} 
                 </div>
             </div>
         );
