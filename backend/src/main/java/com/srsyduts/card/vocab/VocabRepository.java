@@ -64,7 +64,7 @@ public interface VocabRepository extends JpaRepository<Vocab, Long> {
     List<Vocab> getWritingVocabForUser(@Param("userId") UUID userId);
 
     @Query(value = """
-        SELECT v.id, v.jpn, uc.direction
+        SELECT v.id, v.english, v.hiragana, v.jpn, uc.direction
         FROM vocab v
         JOIN user_cards uc ON uc.vocab_id = v.id
         WHERE uc.user_id = :userId

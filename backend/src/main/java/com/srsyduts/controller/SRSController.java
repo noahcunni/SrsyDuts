@@ -196,21 +196,31 @@ public class SRSController {
         UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
 
         // First check the validity of the card be checking if its due
-        if (!userCardsService.typingIsReady(uuid, request.getCardId(), request.getDirection())) {
-            throw new Error("Card is not ready for review"); // There are better ways to handle errors
-        }
-
         UserCard userCard = userCardsService.getTypingUserCard(uuid, request.getCardId(), request.getDirection());
 
+        if (userCard == null || !isDue(userCard))
+            throw new Error("Card is not ready for review");
+
         // Then check if its correct and adjust 
+        String correct = vocabService.getTypingAnswer(request.getCardId(), request.getDirection());
         
-        if (vocabService.compareTypingAnswer(request.getAnswer(), request.getCardId(), request.getDirection())) {
+        if (correct != null && correct.trim().equalsIgnoreCase(request.getAnswer().trim())) {
             setWritingSRS(userCard, true);
-            return new TypingResponse(true, vocabService.getTypingAnswer(request.getCardId(), request.getDirection()));
+            return new TypingResponse(true, correct);
         } else {
             setWritingSRS(userCard, false);
-            return new TypingResponse(false, vocabService.getTypingAnswer(request.getCardId(), request.getDirection()));
+            return new TypingResponse(false, correct);
         }
+    }
+
+    @PostMapping("/api/srs/typingAnser")
+    public void typingAnswer() {
+
+    }
+
+    private boolean isDue(UserCard userCard) {
+        return userCard.getNextReview() == null
+            || userCard.getNextReview().isBefore(OffsetDateTime.now());
     }
 }
 

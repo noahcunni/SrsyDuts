@@ -3,13 +3,19 @@ import { supabase } from "../../../../lib/supabaseClient";
 import { UserAuth } from "../../../../context/AuthContext";
 import styles from './Typing.module.css';
 import { UserDeck } from "../../../../context/CardContext";
-import { typingCheck } from "../../SRS/SRSController";
+import { typingCheck, typingAnswer } from "../../SRS/SRSController";
+import { Link, useLocation } from "react-router";
+
 
 function buildQueue(cards) {
   const typingVocab = cards.vocab.map(card => ({
     id: card.id,
     direction: card.direction,
-    front: card.jpn,
+    front: card.jpn,    
+    back: {
+        english: card.english,
+        hiragana: card.hiragana
+    }
   }));
 
   return [...typingVocab]
@@ -41,20 +47,26 @@ function Typing() {
     }
 
     async function handleSubmit() {
-        // Grading logic cannot be done client-side
-
-        // Send user answer to the database and let it return a true or false
+        // Grading is done on client-side for now...
         const userAnswer = answer.trim().toLowerCase();
-        const result = await typingCheck(session, queue[0], userAnswer);
 
-        console.log(JSON.stringify(result));
+        let cardAnswer = undefined;
+        if (queue[0].direction === "jpn_eng") {
+            cardAnswer = queue[0].back.english.toLowerCase();
+        }
+        else {
+            cardAnswer = queue[0].back.hiragana;
+        }
 
-        if (result.correct) {
+
+        if (cardAnswer === userAnswer) {
+            typingAnswer(session, queue[0], true);
             setState("correct");
-            console.log("CORRECT ANSWER: " + answer);
+            console.log("CORRECT ANSWER: " + cardAnswer);
         } else {
+            typingAnswer(session, queue[0], false);
             setState("incorrect");
-            console.log("INCORRECT ANSWER: " + answer);
+            console.log("INCORRECT ANSWER: " + cardAnswer);
         }
     }
 
@@ -77,6 +89,9 @@ function Typing() {
 
     if (!queue)
             return <p className={styles.body}>loading typing cards!...</p>
+
+    if (queue.length === 0)
+        return <Review/>
 
     return(
         <div className={styles.body}>
@@ -134,10 +149,34 @@ function Card({ card, state }) {
 
 function Review() {
     return(
-        <div>
-            Finish page for the typing section
+        <div className={styles.body}>
+            <p className={styles.finishedPrompt}>You have finished all your typing cards for today!</p>
+
+            <Link to='/dashboard' className={styles.dashButton}>Back to Dashboard</Link>
         </div>
     );
 }
 
 export default Typing
+
+
+/*
+In case if you want to go back to server-side grading
+    async function handleSubmit() {
+        // Grading logic shouldnt be done client-side, BUT FOR NOW ITS TOO SLOW!
+        // Grade client-side for now until you find a solution?
+
+        // Send user answer to the database and let it return a true or false
+        const userAnswer = answer.trim().toLowerCase();
+        const result = await typingCheck(session, queue[0], userAnswer);
+        console.log(JSON.stringify(result));
+
+        if (result.correct) {
+            setState("correct");
+            console.log("CORRECT ANSWER: " + cardAnswer);
+        } else {
+            setState("incorrect");
+            console.log("INCORRECT ANSWER: " + cardAnswer);
+        }
+    }
+*/

@@ -88,7 +88,6 @@ public class BatchController {
         String token = authHeader.replace("Bearer ", "");
         UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
 
-
         List<TypingVocab> vocab = vocabService.getTypingVocabForUser(uuid);
 
         return new TypingCards(vocab);
