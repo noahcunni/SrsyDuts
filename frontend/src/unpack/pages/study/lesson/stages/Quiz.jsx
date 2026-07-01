@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from './Quiz.module.css';
+import { convertRomanjiToHiragana } from "../../../SRS/Converter";
 
 function buildQueue(cards) {
   const vocabCardsEng = cards.newVocab.map(card => ({
@@ -82,7 +83,11 @@ function Quiz({ cards, next }) {
                     <input className={`${styles.input} ${styles[state]}`} 
                     placeholder={queue[0].type === "vocab->eng" ? "English" : "ひらがな"} 
                     value={answer} autoComplete="off"
-                    onChange={(e) => setAnswer(e.target.value)}
+                    onChange={(e) => {
+                        const raw = e.target.value;
+                        setAnswer(queue[0].type === "vocab->hira"
+                        ? convertRomanjiToHiragana(raw) : raw);
+                    }}
                     onKeyDown={(e) => e.key === "Enter" && handleEnter()}
                     />
                     {state === "waiting" && <button className={styles.submitButton} onClick={handleEnter}>Submit →</button>}
@@ -102,8 +107,9 @@ function Card({ card, state }) {
     if (card.type === "vocab->eng") {
         return(
             <div className={styles.card}>
-                <h1 className={styles.vocab}>{card.front}</h1>
+                <h1 className={styles.vocab} style={{ fontSize: `${260 / card.front.length}px` }}>{card.front}</h1>
                 <p className={styles.inputPrompt}>What does this word mean?</p>
+                <p>ENGLISH</p>
             </div>
         );
     }  
@@ -111,8 +117,9 @@ function Card({ card, state }) {
     if (card.type === "vocab->hira") {
         return(
             <div className={styles.card}>
-                <h1 className={styles.vocab}>{card.front}</h1>
+                <h1 className={styles.vocab} style={{ fontSize: `${260 / card.front.length}px` }}>{card.front}</h1>
                 <p className={styles.inputPrompt}>What is this words spelling?</p>
+                <p className={styles.typePrompt}>JAPANESE</p>
             </div>
         );
     }

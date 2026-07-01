@@ -16,27 +16,25 @@
 .cardContainer {
     flex-direction: column;    
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 
-    width: 900px;
-    height: 600px;
-    padding: 20px;
+    width: 1200px;
+    height: 800px;
 
-    margin: 30px;
-    padding: 20px 60px;
+    margin-top: 10px;
+    padding: 10px 0px;
 
     border: 2px solid rgb(43, 40, 56);
     border-radius: 20px;
     background-color: rgb(27, 25, 36);
 }
 
-.stage { 
+.kanjiType { 
     background-color: rgba(255, 93, 143, 0.15);
 
     border-radius : 40px;
     width: fit-content;
-    margin-bottom: auto; 
 
     color: rgb(255, 93, 143);
     font-size: 30px;
@@ -45,20 +43,46 @@
     padding: 3px 20px;
 }
 
+.vocabType {
+    background-color: rgba(157, 123, 255, 0.15);
+
+    border-radius : 40px;
+    width: fit-content;
+
+    color: rgb(157, 123, 255);
+    font-size: 30px;
+    font-weight: 800;
+
+    padding: 3px 20px;  
+}
+
 .display {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+
+    height: 540px;
+    margin-top: 10px;
+
+}
+
+.meaningContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin-bottom: 10px;
+
 }
 
 .answerButtons {
     display: flex;
     flex-direction: row;
-    gap: 50px;
-    font-size: 30px;
 
-    margin-top: 25px;
-    
+    margin-top: auto;
+    gap: 50px;
+    font-size: 30px;    
 }
 
 .answerCorrect {
@@ -82,7 +106,6 @@
 .answerIncorrect {
     color: rgb(43, 40, 56);
     cursor: pointer;
-    padding: 10px 30px;
     border: 2px solid rgb(43, 40, 56);
     border-radius: 30px;
     background-color: rgb(160, 145, 230);
@@ -95,6 +118,25 @@
     transform: translateY(-2px) scale(1.02);
 }
 
+.buttonDisabledI {
+    color: rgb(161, 160, 166);
+    padding: 0px 60px;
+    border: 2px solid rgb(43, 40, 56);
+    border-radius: 30px;
+    background-color: rgb(48, 42, 75);
+    transition: all .15s ease; 
+}
+
+.buttonDisabledC {
+    background-color: rgba(143, 225, 67, 0.307);
+    color: rgb(161, 160, 166);
+    padding: 0px 60px;
+    border: 2px solid rgb(43, 40, 56);
+    border-radius: 30px;
+    transition: all .15s ease; 
+}
+
+
 .displayLabel {
     color: grey;
 }   
@@ -102,18 +144,19 @@
 .displayMeaning {
     font-size: 40px;
     font-weight: 500;
+    line-height: 0.9;
 }
 
 .displayReadings {
     display: flex;
     flex-direction: row;
+    justify-content: space-evenly;
     border: 2px solid grey;
-    padding: 20px;
+    padding: 10px;
     border-radius: 20px;
-    gap: 25px;
 }
 
-.writeBox {
+.writeBoxKanji {
     margin-top: 25px;
     position: relative;
     width: 300px; height: 300px;
@@ -126,7 +169,26 @@
     justify-content: center;
     transition: transform .18s ease;
 }
-.writeBox:hover { 
+
+.writeBoxKanji:hover { 
+    transform: translateY(-2px); 
+}
+
+.writeBoxVocab {
+    margin-top: 25px;
+    position: relative;
+    width: 300px; height: 300px;
+    border: 2px solid rgb(43, 40, 56);
+    border-radius: 16px;
+    background: rgba(160, 145, 230, 0.15);
+    cursor: pointer;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    transition: transform .18s ease;
+}
+
+.writeBoxVocab:hover { 
     transform: translateY(-2px); 
 }
 
@@ -138,6 +200,16 @@
     
     animation: pop .3s ease both;
 }
+
+.writeVocab {
+    line-height: 1;
+    white-space: nowrap;
+    
+    color: rgb(157, 123, 255);
+    
+    animation: pop .3s ease both;
+}
+
 .writeHint { 
     color: rgb(182,173,159); 
     font-weight: 600; 
@@ -146,20 +218,17 @@
 }
 
 .displayBox {
-    align-items: flex-start;
+    align-items: center;
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    padding: 12px 16px;
-}
 
-.displayBox:not(:last-child) {
-    border-right: 2px solid rgb(43, 40, 56);
+    padding: 12px 16px;
+    
 }
 
 .displayLabel {
-    font-size: 20px;
+    font-size: 25px;
     font-weight: 700;
     letter-spacing: 0.1em;
     color: rgb(160, 140, 140);
@@ -169,7 +238,7 @@
     flex: 1;
     display: flex;
     align-items: center;
-    font-size: 20px;
+    font-size: 30px;
     font-style: bold;
     font-weight: 800;
     color: white;

@@ -90,7 +90,7 @@ function Typing() {
     if (!queue)
             return <p className={styles.body}>loading typing cards!...</p>
 
-    if (queue.length === 0)
+    if (state === "end")
         return <Review/>
 
     return(

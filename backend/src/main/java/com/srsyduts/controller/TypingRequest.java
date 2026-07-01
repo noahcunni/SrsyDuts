@@ -5,6 +5,5 @@ import lombok.Data;
 public class TypingRequest {
     private long cardId;
     private String direction;
-    
-    private String answer;
+    private boolean correct;
 }

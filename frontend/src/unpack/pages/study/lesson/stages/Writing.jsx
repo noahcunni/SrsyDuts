@@ -56,6 +56,8 @@ function Writing({ cards, next }) {
     if (queue.length === 0) 
         next();
 
+    let type = queue[0].type.charAt(0).toUpperCase() + queue[0].type.slice(1);
+
     return(
         <div className={styles.page}>
             <div className={styles.progress}>
@@ -65,19 +67,20 @@ function Writing({ cards, next }) {
             </div>
 
             <div className={styles.cardContainer}>
-                <h1 className={styles.stage}>Writing</h1>
+
+                <h1 className={styles.stage} className={`${type === "Vocab" ? styles.vocabType : styles.kanjiType}`}>Writing: {type}</h1>
 
 
                 {queue[0].type === "kanji" && <KanjiCard card={queue[0]} reveal={reveal} setReveal={setReveal}/>}
                 {queue[0].type === "vocab" && <VocabCard card={queue[0]} reveal={reveal} setReveal={setReveal}/>}
 
                 <div className={styles.answerButtons}>
-                    <button className={styles.answerIncorrect} onClick={() => {
+                    <button className={`${reveal ? styles.answerIncorrect : styles.buttonDisabledI}`} onClick={() => {
                             if (!reveal) 
                                 return;
                             advance(false)}
                         }>False</button>
-                    <button className={styles.answerCorrect} onClick={() => {
+                    <button className={`${reveal ? styles.answerCorrect : styles.buttonDisabledC}`} onClick={() => {
                         if (!reveal)
                             return;
                         advance(true)
@@ -96,8 +99,10 @@ function KanjiCard({ card, reveal, setReveal }) {
     return(
         <div className={styles.display}>
      
-            <p className={styles.displayLabel}>MEANING</p>
-            <p className={styles.displayMeaning}>{meaning}</p>
+            <div className={styles.meaningContainer}>
+                <p className={styles.displayLabel}>KANJI</p>
+                <p className={styles.displayMeaning}>{meaning}</p>
+            </div>
 
             <div className={styles.displayReadings}> 
                 <div className={styles.displayBox}>
@@ -112,7 +117,7 @@ function KanjiCard({ card, reveal, setReveal }) {
             </div>
 
 
-            <button type="button" className={styles.writeBox}
+            <button type="button" className={styles.writeBoxKanji}
                     onClick={() => setReveal(true)}>
                 {reveal
                     ? <span className={styles.writeKanji} style={{ fontSize: `${260 / card.back.length}px`}}>
@@ -126,25 +131,21 @@ function KanjiCard({ card, reveal, setReveal }) {
 
 function VocabCard({ card, reveal, setReveal }) {
     return(
-        <div>
-
-            <div className={styles.displayReadings}>
+        <div className={styles.display}>
                 <div className={styles.displayBox}>
-                    <p className={styles.displayLabel}>English:</p>
-                    <p className={styles.displayValue}>{card.eng}</p>
+                    <p className={styles.displayLabel}>MEANING</p>
+                    <p className={styles.displayMeaning}>{card.eng}</p>
                 </div>
 
                 <div className={styles.displayBox}>
-                    <p className={styles.displayLabel}>Hiragana:</p>
+                    <p className={styles.displayLabel}>SPELLING</p>
                     <p className={styles.displayValue}>{card.hira}</p>
                 </div>
 
-            </div>
-
-            <button type="button" className={styles.writeBox}
+            <button type="button" className={styles.writeBoxVocab}
                     onClick={() => setReveal(!reveal)}>
                 {reveal
-                    ? <span className={styles.writeKanji} style={{ fontSize: `${260 / card.back.length}px` }}>
+                    ? <span className={styles.writeVocab} style={{ fontSize: `${260 / card.back.length}px` }}>
                 {card.back}</span>
                     : <span className={styles.writeHint}>✍︎<br/>Write it<br/>on paper<br/>tap to flip</span>}
             </button>

@@ -203,7 +203,7 @@ public class SRSController {
 
         // Then check if its correct and adjust 
         String correct = vocabService.getTypingAnswer(request.getCardId(), request.getDirection());
-        
+        /*
         if (correct != null && correct.trim().equalsIgnoreCase(request.getAnswer().trim())) {
             setWritingSRS(userCard, true);
             return new TypingResponse(true, correct);
@@ -211,11 +211,26 @@ public class SRSController {
             setWritingSRS(userCard, false);
             return new TypingResponse(false, correct);
         }
+            */
+        return new TypingResponse(false, "All grading for typing section is done client-side, typingRequest is an outdated method.");
     }
 
     @PostMapping("/api/srs/typingAnser")
-    public void typingAnswer() {
+    public String typingAnswer(@RequestHeader ("Authorization") String authHeader,
+        @RequestBody TypingRequest request)
+    {
 
+        String token = authHeader.replace("Bearer ", "");
+        UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
+
+        UserCard userCard = userCardsService.getTypingUserCard(uuid, request.getCardId(), request.getDirection());
+
+        if (userCard == null || !isDue(userCard))
+            throw new Error("Card is not ready for review");
+
+        setWritingSRS(userCard, request.isCorrect());
+
+        return "Success, card processed";
     }
 
     private boolean isDue(UserCard userCard) {
