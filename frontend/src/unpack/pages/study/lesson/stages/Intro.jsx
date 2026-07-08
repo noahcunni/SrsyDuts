@@ -49,13 +49,6 @@ function Intro({ cards, next }) {
 
     return(
         <div className={styles.page}>
-            <div className={styles.progress}>
-                <div>
-                    <p>progress bar goes here...</p>
-                </div>
-            </div>
-
-
             <div className={styles.cardContainer}>
                 <h1 className={`${type === "Kanji" ? styles.kanjiType : styles.vocabType}`}>
                     {type}</h1>
@@ -65,7 +58,9 @@ function Intro({ cards, next }) {
                 <div className={styles.buttons}>
                     {<button className={`${i === 0 ? styles.buttonDisabled : styles.backButton}`} onClick={() => iterateBackward()}>← Back</button>}
                     {i !== queue.length - 1 && <button className={styles.nextButton} onClick={() => iterateForward()}>Next →</button>}
-                    {i === queue.length - 1 && <button className={styles.finButton} onClick={() => next()}>To Quiz →</button>}
+
+                    {i === queue.length - 1 && cards.newVocab.length !== 0 && <button className={styles.finButton} onClick={() => next()}>To Quiz →</button>}
+                    {i === queue.length - 1 && cards.newVocab.length === 0 && <button className={styles.finButton} onClick={() => {next(); next()}}>To Writing →</button>}
                 </div>
             </div>
         </div>

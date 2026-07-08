@@ -68,12 +68,6 @@ function Quiz({ cards, next }) {
 
     return(
         <div className={styles.page}>
-            <div className={styles.progress}>
-                <div>
-                    <p>progress bar goes here...</p>
-                </div>
-            </div>
-        
             <div className={styles.cardContainer}>
                 <h1 className={styles.cardType}>Quiz</h1>
 
@@ -81,7 +75,7 @@ function Quiz({ cards, next }) {
 
                 <div className={styles.inputContainer}>
                     <input className={`${styles.input} ${styles[state]}`} 
-                    placeholder={queue[0].type === "vocab->eng" ? "English" : "ひらがな"} 
+                    placeholder={queue[0].type === "vocab->eng" ? "English here..." : "ここに入力..."} 
                     value={answer} autoComplete="off"
                     onChange={(e) => {
                         const raw = e.target.value;
@@ -109,7 +103,7 @@ function Card({ card, state }) {
             <div className={styles.card}>
                 <h1 className={styles.vocab} style={{ fontSize: `${260 / card.front.length}px` }}>{card.front}</h1>
                 <p className={styles.inputPrompt}>What does this word mean?</p>
-                <p>ENGLISH</p>
+                <p className={styles.typePrompt}>ENGLISH</p>
             </div>
         );
     }  
@@ -119,7 +113,7 @@ function Card({ card, state }) {
             <div className={styles.card}>
                 <h1 className={styles.vocab} style={{ fontSize: `${260 / card.front.length}px` }}>{card.front}</h1>
                 <p className={styles.inputPrompt}>What is this words spelling?</p>
-                <p className={styles.typePrompt}>JAPANESE</p>
+                <p className={styles.typePrompt}>ひらがな</p>
             </div>
         );
     }

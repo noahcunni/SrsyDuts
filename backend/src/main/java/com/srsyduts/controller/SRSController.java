@@ -1,6 +1,7 @@
 package com.srsyduts.controller;
 
 import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -215,8 +216,8 @@ public class SRSController {
         return new TypingResponse(false, "All grading for typing section is done client-side, typingRequest is an outdated method.");
     }
 
-    @PostMapping("/api/srs/typingAnser")
-    public String typingAnswer(@RequestHeader ("Authorization") String authHeader,
+    @PostMapping("api/srs/typingAnswer")
+    public Map typingAnswer(@RequestHeader ("Authorization") String authHeader,
         @RequestBody TypingRequest request)
     {
 
@@ -229,8 +230,7 @@ public class SRSController {
             throw new Error("Card is not ready for review");
 
         setWritingSRS(userCard, request.isCorrect());
-
-        return "Success, card processed";
+        return Map.of("message", "Success, card processed");
     }
 
     private boolean isDue(UserCard userCard) {

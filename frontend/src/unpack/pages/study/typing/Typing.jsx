@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../../../../lib/supabaseClient";
 import { UserAuth } from "../../../../context/AuthContext";
 import styles from './Typing.module.css';
 import { UserDeck } from "../../../../context/CardContext";
-import { typingCheck, typingAnswer } from "../../SRS/SRSController";
-import { Link, useLocation } from "react-router";
+import { typingAnswer } from "../../SRS/SRSController";
+import { Link } from "react-router";
+
+import { convertRomanjiToHiragana } from "../../SRS/converter";
 
 
 function buildQueue(cards) {
@@ -28,6 +29,7 @@ function Typing() {
     const [ queue, setQueue ] = useState();
     const [ state, setState ] = useState("waiting");
     const [ answer, setAnswer ] = useState();
+    const [ totalNumber, setTotalNumber ] = useState(0);
 
     useEffect(() => {
         loadTyping();
@@ -35,7 +37,12 @@ function Typing() {
     
     // Stops error
     useEffect(() => {
-        if (typing) setQueue(buildQueue(typing));
+        
+        if (typing) {
+            const q = buildQueue(typing);
+            setQueue(q);
+            setTotalNumber(q.length);
+        }
     }, [typing]);
 
     function handleEnter() {
@@ -49,16 +56,17 @@ function Typing() {
     async function handleSubmit() {
         // Grading is done on client-side for now...
         const userAnswer = answer.trim().toLowerCase();
-
         let cardAnswer = undefined;
+
+        // Grab the answer to grade based on direction
         if (queue[0].direction === "jpn_eng") {
             cardAnswer = queue[0].back.english.toLowerCase();
         }
         else {
             cardAnswer = queue[0].back.hiragana;
         }
-
-
+    
+        // Grade answer
         if (cardAnswer === userAnswer) {
             typingAnswer(session, queue[0], true);
             setState("correct");
@@ -81,6 +89,7 @@ function Typing() {
         if (correct) {
             // send queue[0] back to database with correct endpoint.
             setQueue(restOfQueue);
+            setTotalNumber(totalNumber - 1);
         } else {
             // send queue[0] back to database with incorrect endpoint.
             setQueue([...restOfQueue, queue[0]]);
@@ -90,18 +99,12 @@ function Typing() {
     if (!queue)
             return <p className={styles.body}>loading typing cards!...</p>
 
-    if (state === "end")
+    if (queue.length === 0)
         return <Review/>
 
     return(
         <div className={styles.body}>
-            <p>{JSON.stringify(typing)}</p>
-            <div className={styles.progress}>
-                <div>
-                    <p>progress bar goes here...</p>
-                </div>
-            </div>
-        
+            <p className={styles.cardCount}>There are {totalNumber} cards left</p>
             <div className={styles.cardContainer}>
                 <h1 className={styles.cardType}>Typing</h1>
 
@@ -109,15 +112,17 @@ function Typing() {
 
                 <div className={styles.inputContainer}>
                     <input className={`${styles.input} ${styles[state]}`} 
-                    placeholder={queue[0].direction === "jpn_eng" ? "English" : "ひらがな"} 
+                    placeholder={queue[0].direction === "jpn_eng" ? "English here..." : "ここに入力..."} 
                     value={answer} autoComplete="off"
-                    onChange={(e) => setAnswer(e.target.value)}
+                    onChange={(e) => {
+                        const raw = e.target.value;
+                        setAnswer(queue[0].direction === "jpn_hira"
+                        ? convertRomanjiToHiragana(raw) : raw);
+                    }}
                     onKeyDown={(e) => e.key === "Enter" && handleEnter()}
                     />
                     {state === "waiting" && <button className={styles.submitButton} onClick={handleEnter}>Submit →</button>}
                 </div>
-
-                {state !== "waiting" && <Review correct={state === "correct"} card={queue[0]} handleEnter={handleEnter} size={queue.length}></Review>}
             </div>
 
             <div className={styles.buttons}>
@@ -131,8 +136,9 @@ function Card({ card, state }) {
     if (card.direction === "jpn_eng") {
         return(
             <div className={styles.card}>
-                <h1 className={styles.vocab}>{card.front}</h1>
+                <h1 className={styles.vocab} style={{ fontSize: `${260 / card.front.length}px`}}>{card.front}</h1>
                 <p className={styles.inputPrompt}>What does this word mean?</p>
+                <p className={styles.inputType}>ENGLISH</p>
             </div>
         );
     }  
@@ -140,8 +146,9 @@ function Card({ card, state }) {
     if (card.direction === "jpn_hira") {
         return(
             <div className={styles.card}>
-                <h1 className={styles.vocab}>{card.front}</h1>
+                <h1 className={styles.vocab}  style={{ fontSize: `${260 / card.front.length}px`}}>{card.front}</h1>
                 <p className={styles.inputPrompt}>What is this words spelling?</p>
+                <p className={styles.inputType}>ひらがな</p>
             </div>
         );
     }

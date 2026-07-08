@@ -77,7 +77,7 @@ export async function typingAnswer(session, card, isCorrect) {
     const payload = {
         cardId: card.id,
         direction: card.direction,
-        isCorrect: isCorrect
+        correct: isCorrect
     };
 
     try {

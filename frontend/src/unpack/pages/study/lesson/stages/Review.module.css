@@ -5,7 +5,7 @@
     align-items: center;
 
     width: 1200px;
-    height: 800px;
+    height: 400px;
 
     margin-top: 10px;
     padding: 10px 0px;
@@ -37,4 +37,36 @@
 .dashboardButton:hover {
     filter: brightness(1.12) saturate(1.1);
     transform: translateY(-2px) scale(1.02);
+}
+
+
+.finishedPrompt {
+    font-size: 30px;
+    color: rgb(138, 126, 126);
+    font-weight: 500;
+    margin-top: 45px;
+}
+
+.dashButton {
+    padding: 8px 20px;
+    font-size: 40px;
+    color: rgb(138, 126, 126);
+    font-weight: 500;
+
+    border: 2px solid #9b875f;
+    border-radius: 10px;
+
+    margin-top: 75px;
+}
+
+.dashButton:hover {
+    padding: 8px 20px 8px 20px;
+    transition: all .15s ease; 
+    filter: brightness(1.12) saturate(1.1);
+    transform: translateY(-2px) scale(1.02);
+
+    border-radius: 20px;
+
+    background: #9b875f;           /* --border: the solid bg that appears */
+    color: #f6f4f1; 
 }

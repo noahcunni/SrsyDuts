@@ -1,129 +1,281 @@
-@import url('https://googleapis.com');
-
-.body {
+.page {
+    color: white;
     display: flex;
-    flex-direction: column;
-    flex: 1;
-
+    flex-direction: column;  
     align-items: center;
-    gap: 10px;
-
     background-color: rgb(16, 15, 22);    
-    color: white;
+    padding-bottom: 30px;
 }
 
-.header {
-    padding-top: 20px;
+.cardContainer {
+    flex: 1;
+    min-height: 0;
+    max-height: 700px;
+    
+    flex-direction: column;    
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 1200px;
+    height: 650px;
+
+    margin: 10px 0 30px;
+    padding: 10px 0px;
+
+    border: 2px solid rgb(43, 40, 56);
+    border-radius: 20px;
+    background-color: rgb(27, 25, 36);
 }
 
-.icon {
-    font-family: "Zen Kaku Gothic New", sans-serif;
-    font-weight: 400;
-    line-height: 1.2;
+.kanjiType { 
+    background-color: rgba(255, 93, 143, 0.15);
+
+    border-radius : 40px;
     width: fit-content;
-    border: 2px solid rgb(164, 141, 141);
-    padding: 4px 4px 4px 4px;
-    border-radius : 10px;
-    font-size: 59px;
-    background-image: linear-gradient(to bottom right, rgb(133, 62, 62), rgb(96, 96, 17));
-    color: white;
+
+    color: rgb(255, 93, 143);
+    font-size: 24px;
+    font-weight: 800;
+
+    padding: 3px 20px;
 }
 
-.body {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.vocabType {
+    background-color: rgba(157, 123, 255, 0.15);
+
+    border-radius : 40px;
+    width: fit-content;
+
+    color: rgb(157, 123, 255);
+    font-size: 30px;
+    font-weight: 800;
+
+    padding: 3px 20px;  
 }
 
-
-.frontContainer {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    font-size: 40px;
-    min-height: 100vh;
-    justify-content: space-between;
-}
-
-.frontContainer button {
-    margin-top: auto;    /* shoves the button to the bottom */
-    margin-bottom: 20px;
-}
-
-/* ===== Kanji Front ===== */
-.kanjiFront {
-    border: 2px solid rgb(164, 141, 141);
-    padding: 4px 4px 4px 4px;
-    border-radius : 10px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* ------ BACK OF CARD ----- */
-
-.back { 
+.display {
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    gap: 10px;
-}
 
-.answer {
-    font-size: 160px;
-
-    border: 2px solid rgb(164, 141, 141);
-    padding: 10px;
-    border-radius : 10px;
-
-    background-color:rgb(35, 32, 52);
+    height: 540px;
+    margin-top: 10px;
 
 }
 
-/* ===== Back Buttons =====*/
+.meaningContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin-bottom: 10px;
+
+}
+
 .answerButtons {
     display: flex;
     flex-direction: row;
-    gap: 300px;
+    margin-top: 10px;
+    margin-bottom: 120px;
+
+    align-items: center;
+    gap: 50px;
+    font-size: 30px;    
+}
+
+.answerCorrect {
+    cursor: pointer;
+    color: rgb(43, 40, 56);
+    padding: 10px 30px;
+    border: 2px solid rgb(43, 40, 56);
+    border-radius: 30px;
+    background-color: rgb(143, 225, 67);
+
+    transition: all .15s ease; 
+
+    padding: 0px 60px;
+}
+
+.answerCorrect:hover {
+    filter: brightness(1.12) saturate(1.1);
+    transform: translateY(-2px) scale(1.02);
+}
+
+.answerIncorrect {
+    color: rgb(43, 40, 56);
+    cursor: pointer;
+    border: 2px solid rgb(43, 40, 56);
+    border-radius: 30px;
+    background-color: rgb(160, 145, 230);
+    transition: all .15s ease; 
+    padding: 0px 60px;
+}
+
+.answerIncorrect:hover {
+    filter: brightness(1.12) saturate(1.1);
+    transform: translateY(-2px) scale(1.02);
+}
+
+.buttonDisabledI {
+    color: rgb(161, 160, 166);
+    padding: 0px 60px;
+    border: 2px solid rgb(43, 40, 56);
+    border-radius: 30px;
+    background-color: rgb(48, 42, 75);
+    transition: all .15s ease; 
+}
+
+.buttonDisabledC {
+    background-color: rgba(143, 225, 67, 0.214);
+    color: rgb(161, 160, 166);
+    padding: 0px 60px;
+    border: 2px solid rgb(43, 40, 56);
+    border-radius: 30px;
+    transition: all .15s ease; 
+}
+
+.displayLabel {
+    color: grey;
+}   
+
+.displayMeaning {
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 0.9;
+}
+
+.displayReadings {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    border: 2px solid grey;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.writeBoxKanji {
+    margin-top: 25px;
+    position: relative;
+    width: 300px; height: 300px;
+    border: 2px solid rgb(43, 40, 56);
+    border-radius: 16px;
+    background: rgba(255, 93, 143, 0.15);
+    cursor: pointer;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    transition: transform .18s ease;
+}
+
+.writeBoxKanji:hover { 
+    transform: translateY(-2px); 
+}
+
+.writeBoxVocab {
+    margin-top: 25px;
+    position: relative;
+    width: 300px; height: 300px;
+    border: 2px solid rgb(43, 40, 56);
+    border-radius: 16px;
+    background: rgba(160, 145, 230, 0.15);
+    cursor: pointer;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    transition: transform .18s ease;
+}
+
+.writeBoxVocab:hover { 
+    transform: translateY(-2px); 
+}
+
+.writeKanji {
+    line-height: 1;
+    white-space: nowrap;
     
+    color: rgb(255, 93, 143);
+    
+    animation: pop .3s ease both;
+}
+
+.writeVocab {
+    line-height: 1;
+    white-space: nowrap;
+    
+    color: rgb(157, 123, 255);
+    
+    animation: pop .3s ease both;
+}
+
+.writeHint { 
+    color: rgb(182,173,159); 
+    font-weight: 600; 
+    text-align: center; 
+    line-height: 1.7; 
+}
+
+.displayBox {
+    align-items: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    padding: 12px 16px;
+    
+}
+
+.displayLabel {
+    font-size: 25px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: rgb(160, 140, 140);
+}
+
+.displayValue {
+    flex: 1;
+    display: flex;
+    align-items: center;
     font-size: 30px;
+    font-style: bold;
+    font-weight: 800;
+    color: white;
+    margin-top: -12px;
 }
 
-.trueButton {
-    border: 2px solid rgb(164, 141, 141);
-    padding: 20px;
-    border-radius : 10px;
+.finishedPrompt {
+    font-size: 30px;
+    color: rgb(138, 126, 126);
 
-    background-color: green;
+    font-weight: 500;
+
+
+    margin-top: 45px;
 }
 
-.falseButton {
-    border: 2px solid rgb(164, 141, 141);
-    padding: 20px;
-    border-radius : 10px;
+.dashButton {
+    padding: 8px 20px;
+    font-size: 40px;
+    color: rgb(138, 126, 126);
+    font-weight: 500;
 
-    background-color: rgb(151, 19, 19);
+    border: 2px solid #9b875f;
+    border-radius: 10px;
+
+    margin-top: 75px;
 }
 
-.trueButton:hover {
-    cursor: pointer;
+.dashButton:hover {
+    padding: 8px 20px 8px 20px;
+    transition: all .15s ease; 
+    filter: brightness(1.12) saturate(1.1);
+    transform: translateY(-2px) scale(1.02);
+
+    border-radius: 20px;
+
+    background: #9b875f;      
+    color: #f6f4f1; 
 }
 
-.falseButton:hover {
-    cursor: pointer;
-}
-
-
-/* ------- BUTTONS ------- */
-
-.flipButton {
-    border: 2px solid rgb(164, 141, 141);
-    padding: 4px 4px 4px 4px;
-    border-radius : 10px;
-}
-
-.flipButton:hover {
-    cursor: pointer;
-}
+@keyframes pop { from { opacity: 0; transform: scale(.8); } to { opacity: 1; transform: scale(1); } }

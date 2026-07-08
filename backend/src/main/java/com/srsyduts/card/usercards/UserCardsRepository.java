@@ -28,4 +28,24 @@ public interface UserCardsRepository extends JpaRepository<UserCard, Long>  {
         @Param("cardId") Long cardId,
         @Param("cardType") String cardType,
         @Param("cardDirection") String direction);
+
+
+    @Query(value = """
+    SELECT
+        COUNT(*) FILTER (WHERE uc.srs_level BETWEEN 0 AND 2) AS new,
+        COUNT(*) FILTER (WHERE uc.srs_level BETWEEN 3 AND 4) AS beginner,
+        COUNT(*) FILTER (WHERE uc.srs_level BETWEEN 5 AND 6) AS intermediate,
+        COUNT(*) FILTER (WHERE uc.srs_level = 7)             AS mastered,
+        COUNT(*) FILTER (WHERE uc.srs_level >= 8)            AS fluent,
+        COUNT(*) FILTER (WHERE uc.srs_level >= 7 AND uc.card_type = 'vocab') AS "vocabMastered",
+        COUNT(*) FILTER (WHERE uc.srs_level >= 7 AND uc.card_type = 'kanji') AS "kanjiMastered"   
+    FROM user_cards uc
+    WHERE uc.user_id = :userId
+    """, nativeQuery = true)
+    SrsSummary getSrsSummary(@Param("userId") UUID userId);
+
+    
 }
+
+
+

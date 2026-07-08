@@ -4,6 +4,7 @@ import { UserAuth } from "../../../../context/AuthContext";
 import { UserDeck } from "../../../../context/CardContext";
 import { writingCorrect, writingIncorrect } from '../../SRS/SRSController.jsx';
 import styles from './Writing.module.css';
+import { Link } from "react-router";
 
 function buildQueue(cards) {
   const kanjiCards = cards.kanji.map(card => ({
@@ -21,8 +22,8 @@ function buildQueue(cards) {
     type: "vocab",
     id: card.id,
     front: {
-        english: card.english,
-        hiragana: card.hiragana
+        eng: card.english,
+        hira: card.hiragana
     },
     back: card.jpn,
   }));
@@ -37,17 +38,19 @@ function Writing() {
     const { session } = UserAuth();
     const { writing, loadWriting } = UserDeck();
     const [queue, setQueue] = useState();
-    const [ flip, setFlip ] = useState(false);
+    const [ reveal, setReveal ] = useState(false);
 
+    const [ totalNumber, setTotalNumber ] = useState(); 
             
         function advance(correct) {
-            setFlip(false);
+            setReveal(false);
             const restOfQueue = queue.slice(1);
             if (correct) {
-                // send queue[0] back to database with correct endpoint.
+                writingCorrect(session, queue[0].id, queue[0].type);
                 setQueue(restOfQueue);
+                setTotalNumber(totalNumber - 1);
             } else {
-                // send queue[0] back to database with incorrect endpoint.
+                writingIncorrect(session, queue[0].id, queue[0].type);
                 setQueue([...restOfQueue, queue[0]]);
             }
         }
@@ -58,7 +61,12 @@ function Writing() {
 
         // Stops error
         useEffect(() => {
-            if (writing) setQueue(buildQueue(writing));
+            if (writing) {
+                const q = buildQueue(writing);
+                setQueue(q);
+                setTotalNumber(q.length);
+            }
+
         }, [writing]);
 
 
@@ -66,72 +74,121 @@ function Writing() {
     if (!queue)
         return <p className={styles.body}>loading writing cards...</p>
 
-    return( 
-        <div className={styles.body}> 
-            <div className={styles.header}>
-                <h1 className={styles.icon}>書</h1>
-            </div>
+    if (queue.length === 0) {
+        return <Finish/>
+    }
 
-            <div className={styles.body}>
-                {queue.length !== 0 && <Front card={queue[0]} setFlip={setFlip} flip={flip}/>}
-                {queue.length !== 0 && flip === true && <Back card={queue[0]} advance={advance} writingCorrect={writingCorrect} writingIncorrect={writingIncorrect} session={session}/>} 
-                {queue.length === 0 && <EndScreen/>}
-            </div>
-        </div> 
-    ); 
-} 
+    let type = queue[0].type.charAt(0).toUpperCase() + queue[0].type.slice(1);
 
-function Front({card, setFlip, flip}) {
     return(
-        <div className={styles.frontContainer}>
-            {card.type === "kanji" && <Kanji card={card}/>}
-            {card.type === "vocab" && <Vocab card={card}/>}
+        <div className={styles.page}>
+            <p>There are {totalNumber} cards left</p>
 
-            {flip === false && <button className={styles.flipButton} onClick={() => setFlip(true)}>Flip</button>}
-        </div>
-    );
-}
+            <div className={styles.cardContainer}>
 
-function Kanji({card}) {
-    return(
-        <div className={styles.kanjiFront}>
-            <p>{card.front.meaning}</p>
-            <p>Kunyomi</p>
-            <p>{card.front.kunyomi}</p>
-            <p>Onyomi</p>
-            <p>{card.front.onyomi}</p>
-        </div>
-    );
-}
+                <h1 className={styles.stage} className={`${type === "Vocab" ? styles.vocabType : styles.kanjiType}`}>Writing: {type}</h1>
 
-function Vocab({card}) {
-    return (
-        <div className={styles.vocabFront}>
-            <p>{card.front.english}</p>
-            <p>{card.front.hiragana}</p>
-        </div>
-    );
-}
 
-// Displays answer: kanji or vocab + buttons
-function Back({card, advance, writingCorrect, writingIncorrect, session}) {
-    return(
-        <div className={styles.back}>   
-            <h1 className={styles.answer}>{card.back}</h1>
-            <div className={styles.answerButtons}>
-                <button className={styles.falseButton} onClick={() => {advance(false); writingIncorrect(session, card.id, card.type)}}>False</button>
-                <button className={styles.trueButton} onClick={() => {advance(true); writingCorrect(session, card.id, card.type)}}>True</button>
+                {queue[0].type === "kanji" && <KanjiCard card={queue[0]} reveal={reveal} setReveal={setReveal}/>}
+                {queue[0].type === "vocab" && <VocabCard card={queue[0]} reveal={reveal} setReveal={setReveal}/>}
+
+                <div className={styles.answerButtons}>
+                    <button className={`${reveal ? styles.answerIncorrect : styles.buttonDisabledI}`} onClick={() => {
+                            if (!reveal) 
+                                return;
+                            advance(false)}
+                        }>False</button>
+                    <button className={`${reveal ? styles.answerCorrect : styles.buttonDisabledC}`} onClick={() => {
+                        if (!reveal)
+                            return;
+                        advance(true)
+                    }}>True</button>
+                </div>
             </div>
         </div>
     );
-}
+}   
 
-function EndScreen() {
+function KanjiCard({ card, reveal, setReveal }) {   
+    const meaning = card.front.meaning.charAt(0).toUpperCase() + card.front.meaning.slice(1);
+
+
+
     return(
-        <div>
-            <p>You have finished all your writing cards!</p>
+        <div className={styles.display}>
+     
+            <div className={styles.meaningContainer}>
+                <p className={styles.displayLabel}>KANJI</p>
+                <p className={styles.displayMeaning}>{meaning}</p>
+            </div>
+
+            <div className={styles.displayReadings}> 
+                <div className={styles.displayBox}>
+                    <p className={styles.displayLabel}>KUN'YOMI</p>
+                    <p className={styles.displayValue}>{card.front.kunyomi}</p>
+                </div>
+    
+                <div className={styles.displayBox}>
+                    <p className={styles.displayLabel}>ON'YOMI</p>
+                    <p className={styles.displayValue}>{card.front.onyomi}</p>
+                </div>
+            </div>
+
+
+            <button type="button" className={styles.writeBoxKanji}
+                    onClick={() => setReveal(true)}>
+                {reveal
+                    ? <span className={styles.writeKanji} style={{ fontSize: `${260 / card.back.length}px`}}>
+                    {card.back}</span>
+                    : <span className={styles.writeHint}>✍︎<br/>Write it<br/>on paper<br/>tap to flip</span>}
+            </button>
+
         </div>
     );
 }
 
+function VocabCard({ card, reveal, setReveal }) {
+    return(
+        <div className={styles.display}>
+                <div className={styles.displayBox}>
+                    <p className={styles.displayLabel}>MEANING</p>
+                    <p className={styles.displayMeaning}>{card.front.eng}</p>
+                </div>
+
+                <div className={styles.displayBox}>
+                    <p className={styles.displayLabel}>SPELLING</p>
+                    <p className={styles.displayValue}>{card.front.hira}</p>
+                </div>
+
+            <button type="button" className={styles.writeBoxVocab}
+                    onClick={() => setReveal(true)}>
+                {reveal
+                    ? <span className={styles.writeVocab} style={{ fontSize: `${260 / card.back.length}px` }}>
+                {card.back}</span>
+                    : <span className={styles.writeHint}>✍︎<br/>Write it<br/>on paper<br/>tap to flip</span>}
+            </button>
+        </div>
+    );
+}
+
+function Finish() {
+    return(
+        <div className={styles.page}>
+            <p className={styles.finishedPrompt}>You have finished all your typing cards for today!</p>
+
+            <Link to='/dashboard' className={styles.dashButton}>Back to Dashboard</Link>
+        </div>
+    );
+}
 export default Writing
+
+/*
+    useEffect(() => {
+            loadWriting();
+        }, []);
+
+        // Stops error
+        useEffect(() => {
+            if (writing) setQueue(buildQueue(writing));
+        }, [writing]);
+*/

@@ -12,6 +12,7 @@ import com.srsyduts.card.Batch;
 import com.srsyduts.card.NewCards;
 import com.srsyduts.card.kanji.Kanji;
 import com.srsyduts.card.kanji.KanjiService;
+import com.srsyduts.card.usercards.SrsSummary;
 import com.srsyduts.card.usercards.Summary;
 import com.srsyduts.card.usercards.UserCardsService;
 import com.srsyduts.card.vocab.TypingVocab;
@@ -58,7 +59,20 @@ public class BatchController {
             + kanjiService.getWritingKanjiForUser(uuid).size();
         int typing = vocabService.getTypingVocabForUser(uuid).size();
 
-        Summary cardSummary = new Summary(newKanji, newVocab, writing, typing);
+        SrsSummary srsStats = userCardsService.getSrsSummary(uuid);
+
+        int[] statArr = new int[7];
+        statArr[0] = srsStats.getNew();
+        statArr[1] = srsStats.getBeginner();
+        statArr[2] = srsStats.getIntermediate();
+        statArr[3] = srsStats.getMastered();
+        statArr[4] = srsStats.getFluent();
+        statArr[5] = srsStats.getVocabMastered();
+        statArr[6] = srsStats.getKanjiMastered();
+        
+        long totalCards = vocabService.countAll() + kanjiService.countAll();
+
+        Summary cardSummary = new Summary(newKanji, newVocab, writing, typing, statArr, totalCards);
         return cardSummary;
     }
 

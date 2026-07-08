@@ -3,7 +3,226 @@
     flex-direction: column;
     flex: 1;
 
+    align-items: center;
+
 
     background-color: rgb(16, 15, 22);    
     color: white;
+
+
+    gap: 30px;
+}
+
+.header {
+    display: flex;
+    align-self: stretch;
+    border-bottom: 2px solid rgb(206, 162, 222);
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 5px;
+
+    padding-left: 20px;
+    font-size: 34px;
+    color: rgb(240, 229, 245);
+}
+
+.dashContents {
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+    gap: 20px;
+}
+
+.cardBoxes {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-evenly;
+    margin-top: 10px;
+    gap: 40px;
+}
+
+.lessonBox {
+    border: 2px solid rgb(43, 40, 56);
+    background-color: rgb(27, 25, 36);
+    width: 500px;
+    height: 300px;
+
+    border-radius: 30px;
+    padding: 20px;
+}
+
+.lessonHeader {
+    width: fit-content;
+    padding: 2px 24px;
+
+    color: #FF5D8F;
+    background-color: rgba(255, 93, 143, 0.15);
+    border: 1px solid rgba(128, 128, 128, 0);
+    border-radius: 20px;
+    font-size: 20px;
+    
+    margin-bottom: 15px;
+
+}
+
+.newCardCount {
+    font-size: 44px;
+    color: #FF5D8F;
+    padding: 4px;
+    font-weight: 500px;
+}
+
+.newCardPrompt {
+    color: #A79FB3;
+}
+
+.lessonButton {
+    display: flex;
+
+    border: 2px solid #FF5D8F;
+    border-radius: 20px;
+
+
+    font-size: 30px;
+    justify-content: center;
+    padding: 10px 15px;
+    margin-top: 40px;
+    transition: all .15s ease;
+}
+
+.lessonButton:hover {  
+    background-color: rgba(255, 93, 143, 0.15);
+    transform: translateY(-2px);
+}
+
+
+.reviewBox {
+    border: 2px solid rgb(43, 40, 56);
+    background-color: rgb(27, 25, 36);
+    width: 500px;
+    height: 300px;
+
+    border-radius: 30px;
+    padding: 20px;
+}
+
+.reviewHeader {
+    width: fit-content;
+    padding: 2px 24px;
+
+    color: #9D7BFF;
+    background-color: rgba(157, 123, 255, 0.15);
+    border-radius: 20px;
+    font-size: 20px;
+    
+    margin-bottom: 15px;
+}
+
+.reviewCardCount {
+    font-size: 44px;
+    color: #9D7BFF;
+    padding: 4px;
+    font-weight: 500px;
+}
+
+.reviewButton {
+    display: flex;
+    border: 2px solid #9D7BFF;
+    border-radius: 20px;
+
+
+    font-size: 30px;
+    justify-content: center;
+    padding: 10px 15px;
+    margin-top: 40px;
+    transition: all .15s ease;
+}
+
+.reviewButton:hover {
+    background-color: rgba(157, 123, 255, 0.15);
+    transform: translateY(-2px)
+}
+
+.progressGraph {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    height: 300px;
+
+    background-color: #1B1924;
+    border: 2px solid #2B2838;
+    border-radius: 30px;     
+    padding: 20px;
+    align-self: auto;   
+}
+
+
+.chartBox {
+    position: relative;
+    margin-top: 30px;
+    height: 200px;
+    width: 300px;
+}
+
+.chartLabel {
+    color: #A79FB3;
+    font-size: 24px;
+    letter-spacing: 0.08em; 
+}
+
+.percentDone {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+
+    font-size: 32px;
+    font-weight: 500;
+    color: white;
+
+    pointer-events: none;
+
+    padding-bottom: 0px;
+}
+
+
+.statContainers {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+}
+
+.statBoxOne {
+    background-color: #1B1924;
+    border: 2px solid #2B2838;
+    border-radius: 30px;
+
+    height: 150px;
+    width: 500px;
+
+    padding: 30px 60px;
+}
+
+.statBoxHeader {
+    font-size: 20px;
+    color: #A79FB3;
+}
+
+.statBoxValue {
+    font-size: 40px;
+    color: white;
+}
+
+.statBoxTwo {
+    height: 150px;
+    width: 350px;
+    border-radius: 30px;
+
+    background-color: #1B1924;
+    border: 2px solid #2B2838;
+
+    padding: 30px 60px;
 }

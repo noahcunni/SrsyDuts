@@ -46,6 +46,10 @@ public class UserCardsService {
         return userCardsRepository.findByUserIdAndVocabIdAndCardTypeAndDirection(userId, cardId, "vocab", direction);
     }
 
+    public SrsSummary getSrsSummary(UUID userId) {
+        return userCardsRepository.getSrsSummary(userId);
+    }
+
     public void save(UserCard card) {
         userCardsRepository.save(card);
     }

@@ -35,10 +35,14 @@ public class VocabService {
     }
 
     public boolean compareTypingAnswer(String userAnswer, Long vocabId, String direction) {
-    String correct = vocabRepository.getTypingAnswer(vocabId, direction);
-    if (correct == null || userAnswer == null) return false;
-    return correct.trim().equalsIgnoreCase(userAnswer.trim());
-}
+        String correct = vocabRepository.getTypingAnswer(vocabId, direction);
+        if (correct == null || userAnswer == null) return false;
+        return correct.trim().equalsIgnoreCase(userAnswer.trim());
+    }
+
+    public long countAll() {
+        return vocabRepository.count() * 3;
+    }
 
     //----
     public Vocab save(Vocab vocab) {

@@ -44,7 +44,7 @@ function Writing({ cards, next }) {
     function advance(correct) {
         const restOfQueue = queue.slice(1);
         if (correct) {
-            // introduce(session, queue[0]); // INTRODUCES USER CARDS HERE
+            introduce(session, queue[0]); // INTRODUCES USER CARDS HERE
             setQueue(restOfQueue);
         } else {
             setQueue([...restOfQueue, queue[0]]);
@@ -60,11 +60,6 @@ function Writing({ cards, next }) {
 
     return(
         <div className={styles.page}>
-            <div className={styles.progress}>
-                <div>
-                    <p>progress bar goes here...</p>
-                </div>
-            </div>
 
             <div className={styles.cardContainer}>
 
@@ -143,7 +138,7 @@ function VocabCard({ card, reveal, setReveal }) {
                 </div>
 
             <button type="button" className={styles.writeBoxVocab}
-                    onClick={() => setReveal(!reveal)}>
+                    onClick={() => setReveal(true)}>
                 {reveal
                     ? <span className={styles.writeVocab} style={{ fontSize: `${260 / card.back.length}px` }}>
                 {card.back}</span>

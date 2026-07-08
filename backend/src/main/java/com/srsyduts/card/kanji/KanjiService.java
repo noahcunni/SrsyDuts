@@ -42,4 +42,8 @@ public class KanjiService {
     public Kanji findByKanji(String kanji) {
         return kanjiRepository.findByKanji(kanji);
     }
+
+    public long countAll() {
+        return kanjiRepository.count();
+    }
 }
