@@ -36,10 +36,11 @@ const Login = () => {
 
 
     return(
-        <div className={styles.container}>
+        <div className={styles.page}>
             <form onSubmit={handleLogIn} className={styles.formContainer}>
-                <h2 className='font-bold pb-2'>Sign in!</h2>
-                <p>Don't have an account? <Link to='/signup'>Click here!</Link></p>
+                <p className={styles.icon}>字</p>
+                <p className={styles.welcome}>Welcome back!</p>
+                <p className={styles.alternatePrompt}>No account? <Link className={styles.alternateLink} to='/signup'>Click here</Link></p>
                 <div className={styles.inputGroup}>
                     <input 
                     className={styles.input}

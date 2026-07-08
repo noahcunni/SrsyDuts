@@ -1,14 +1,48 @@
-.container {
+.page {
     display: flex;
+    flex: 1;
+    min-height: 0;
     flex-direction: column;
-    padding-top: 100px;
+    align-items: center;
+    padding-top: 40px;
+    background-color: #100F16 ;
+    height: 100vh;
+    color: white;
 }
 
 .formContainer {
     display: flex;
     flex-direction: column;
     align-self: center;
-    gap: 16px; 
+    align-items: center;
+    gap: 0px; 
+
+    padding: 20px 80px;
+    border: 2px solid rgb(43, 40, 56);
+    border-radius: 20px;
+    background-color: rgb(27, 25, 36);
+}
+
+.icon {
+    font-size: 50px;
+    font-weight: 600;
+    color: #FF5D8F;
+}
+
+.welcome {
+    font-size: 20px;
+    font-weight: 500px;
+    margin-bottom: 20px;
+}
+
+.alternatPrompt {
+    color: #A79FB3;
+    font-size: 15px;
+}
+
+.alternateLink {
+    font-size: 15px;
+    color: #9D7BFF;
 }
 
 .inputGroup {
@@ -17,18 +51,51 @@
     width: 100%;
     max-width: 300px;
     gap: 8px;
+    margin-top: 15px;
 }
 
 .input {
-    border: 2px solid black;
-    padding: 10px 0px 10px 5px;
+    width: 100%;
+    box-sizing: border-box;    
+
+    background-color: #100F16; 
+    border: 2px solid #2B2838;
+    border-radius: 10px;
+    padding: 10px 14px;
+
+    color: #EDEAF2;
+    font-size: 14px;
+
+    transition: border-color .15s ease;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #9D7BFF;       /* purple replaces the default focus ring */
+}
+
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px #100F16 inset;   /* fakes the background */
+    -webkit-text-fill-color: #EDEAF2;                  /* autofilled text color */
+    caret-color: #EDEAF2;
 }
 
 .submitButton {
     align-self: center;
-    border: 2px solid rgb(37, 37, 138);
-    border-radius: 3px;
-    padding: 10px 15px 10px 15px;
+    width: 98%;
+
+    background-color: #FF5D8F;
+    color: #100F16;
+    border-radius: 12px;
+    padding: 9px 0;
+
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+
+    margin-top: 20px;
 }
 
 .submitButton:hover {

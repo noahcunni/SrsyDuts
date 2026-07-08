@@ -17,7 +17,6 @@ function PublicNavbar() {
             
             <div className={styles.navbarButtonGroup}>
                 <Link to="/" className={styles.borderlessLink}>How it works</Link>
-                <Link to="/about" className={styles.borderlessLink}>About</Link>
                 <div className={styles.authButtonGroup}>
                     <Link to='/signup' className={styles.authButton}>Sign up</Link>
                     <Link to='/signin' className={styles.authButton}>Sign in</Link>

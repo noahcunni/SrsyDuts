@@ -36,10 +36,11 @@ const Signup = () => {
 
 
     return(
-        <div className={styles.container}>
+        <div className={styles.page}>
             <form onSubmit={handleSignUp} className={styles.formContainer}>
-                <h2 className='font-bold pb-2'>Sign up now!</h2>
-                <p>Already have an account? <Link to='/signin'>Sign in now!</Link></p>
+                <p className={styles.icon}>字</p>
+                <p className={styles.welcome}>Sign up here!</p>
+                <p>Have an account? <Link className={styles.alternateLink} to='/signin'>Sign in now!</Link></p>
                 <div className={styles.inputGroup}>
                     <input 
                     onChange={(e) => setEmail(e.target.value)} 
