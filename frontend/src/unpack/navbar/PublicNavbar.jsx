@@ -10,9 +10,14 @@ function PublicNavbar() {
 
     return(
         <div className={styles.navbar}>
-            <h1 className={styles.icon}>間隔学習</h1>
+            <div className={styles.iconBox}>
+                <p className={styles.icon}>学</p>
+                <p className={styles.title}>SrsyDuts</p>
+            </div>
+            
             <div className={styles.navbarButtonGroup}>
-                <Link to="/about" className={styles.aboutButton}>About</Link>
+                <Link to="/" className={styles.borderlessLink}>How it works</Link>
+                <Link to="/about" className={styles.borderlessLink}>About</Link>
                 <div className={styles.authButtonGroup}>
                     <Link to='/signup' className={styles.authButton}>Sign up</Link>
                     <Link to='/signin' className={styles.authButton}>Sign in</Link>

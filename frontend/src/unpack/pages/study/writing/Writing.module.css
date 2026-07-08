@@ -43,11 +43,11 @@
 
 .vocabType {
     background-color: rgba(157, 123, 255, 0.15);
+    color: rgb(157, 123, 255);
 
     border-radius : 40px;
     width: fit-content;
 
-    color: rgb(157, 123, 255);
     font-size: 30px;
     font-weight: 800;
 

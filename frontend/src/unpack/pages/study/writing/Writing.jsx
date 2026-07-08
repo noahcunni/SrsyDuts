@@ -72,7 +72,7 @@ function Writing() {
 
 
     if (!queue)
-        return <p className={styles.body}>loading writing cards...</p>
+        return <p className={styles.page}>loading writing cards...</p>
 
     if (queue.length === 0) {
         return <Finish/>

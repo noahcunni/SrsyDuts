@@ -4,7 +4,34 @@
     position: sticky;
     top: 0;
     z-index: 1000;;
+    
+    background-color: #100F16 ;
+
+    border-bottom: 2px solid #2B2838;
+    color: white;
+
+    padding: 15px 30px;
 }
+
+.iconBox {
+    display: flex;
+    flex-direction: row;
+    margin-right: auto;
+    margin-left: 80px;
+    gap: 20px;
+}
+
+.icon {
+    font-size: 38px;
+    font-weight: 600;
+    color: #FF5D8F;
+}
+
+.title {
+    font-size: 34px;
+    color: white;
+}
+
 
 /**/
 .navbarButtonGroup {
@@ -14,6 +41,17 @@
     gap: 30px;
 }
 
+.borderlessLink {
+    color: #A79FB3;
+    transition: all .15s ease;
+}
+
+.borderlessLink:hover {
+    color: white;
+    transform: translateY(-2px);
+}
+
+
 /**/
 .authButtonGroup {
     display: flex;
@@ -21,34 +59,19 @@
 }   
 
 .authButton {
-    border: 2px solid rgb(37, 37, 138);
-    border-radius: 3px;
+    border-radius: 20px;
     padding: 10px 15px 10px 15px;  
-    gap: 20px
+    gap: 20px;
+    border: 1px solid #2B2838;
+    transition: all 0.15s ease;
 }
 
 .authButton:hover {
     cursor: pointer;
     background-color: grey;
-}
-
-
-.aboutButton {
-    border: 2px solid rgb(37, 37, 138);
-    border-radius: 3px;
-    padding: 10px 15px 10px 15px;  
-}
-
-.aboutButton:hover {
-    cursor: pointer;
-    background-color: grey;
+    transform: translateY(-2px);
 }
 
 .dashContainer {
     justify-content: left;
-}
-
-.icon {
-    size: 30px;
-    
 }

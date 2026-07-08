@@ -1,0 +1,178 @@
+.page {
+    color: white;
+    background-color: #100F16 ;
+
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    align-items: center;
+}
+
+.contentBox {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.textContentBox {
+    display: flex;
+    flex-direction: column;
+    width: 650px;
+    margin-right: 20px;
+}
+
+.subHeader {
+    border-radius : 40px;
+    background-color: rgba(157, 123, 255, 0.15);
+    color: rgb(157, 123, 255);
+    padding: 0px 20px;
+    width: fit-content;
+    font-size: 20px;
+
+    margin-bottom: 20px;
+}
+
+.header {
+    font-size: 45px;
+    font-weight: 600;
+}
+
+.paragraph {
+    font-size: 25px;
+    color: #A79FB3;
+}
+
+.buttonGroup {
+    display: flex;
+    margin-top: 30px;
+    font-size: 30px;
+    gap: 60px;
+}
+
+.signUpButton {
+    border-radius : 20px;
+    color: rgb(22, 18, 33);
+    padding: 10px 20px;
+
+    background-color: #FF5D8F;
+    transition: all .15s ease;
+}
+
+.signUpButton:hover {
+    filter: brightness(1.1) saturate(1.05);
+    transform: translateY(-2px);
+}
+
+.demoButton {
+    border-radius : 20px;
+    border: 2px solid rgb(157, 123, 255);
+    color: rgb(157, 123, 255);
+
+    padding: 10px 30px;
+    transition: all .15s ease;
+}
+
+.demoButton:hover {
+    background-color: rgba(157, 123, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.cardDemo {
+    width: 400px;
+    background-color: #1B1924;
+    border: 1px solid #2B2838;
+    border-radius: 20px;
+    padding: 26px 36px;
+    text-align: center;
+    justify-content: center;
+}
+
+.demoPrompt {
+    width: fit-content;
+    margin: 0 auto 14px;
+    padding: 5px 15px;
+
+    border-radius: 30px;
+    background-color: rgba(143, 225, 67, 0.15);
+    color: #8FE143;
+    font-size: 20px;
+}
+
+.demoKanji {
+    font-size: 90px;
+    font-weight: 700;
+    color: #FF5D8F;
+}
+
+.kanjiPrompt {
+    font-size: 20px;
+    color: #A79FB3;
+    margin-bottom: 20px;
+}
+
+.demoInput {
+    width: 200px;
+    background-color: #100F16;    
+    border: 2px solid #2B2838;    
+    border-radius: 10px;
+    padding: 10px 14px;
+
+    color: #EDEAF2;             
+    font-size: 36px;
+    text-align: center;
+
+    transition: border-color .15s ease;
+    margin-bottom: 20px;
+}
+
+.demoInput:focus {
+    outline: none; 
+    border-color: #9D7BFF;      
+}
+
+.demoInputCorrect {
+    border-color: #8FE143;
+    background-color: rgba(143, 225, 67, 0.08); 
+}
+.demoInputCorrect:focus {
+    border-color: #8FE143;
+}
+
+
+
+.romanjiPrompt {
+    color: #A79FB3;
+    font-size: 20px;
+}
+
+.correctPrompt {
+    color: #8FE143;
+    font-size: 20px;
+}
+
+.explainContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 45px;
+}
+
+.explainBox {
+    border: 2px solid rgb(43, 40, 56);
+    border-radius: 20px; 
+    padding: 20px;
+    background-color: #1B1924;   
+    width: 325px;
+    height: 200px;
+}
+
+.contentHeader {
+    font-size: 27px;
+}
+
+.contentParagraph {
+    font-size: 17px;
+    color: #A79FB3;
+}
+
