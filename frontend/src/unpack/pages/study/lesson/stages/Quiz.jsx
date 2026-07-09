@@ -89,10 +89,6 @@ function Quiz({ cards, next }) {
 
                 {state !== "waiting" && <Review correct={state === "correct"} card={queue[0]} handleEnter={handleEnter} size={queue.length} next={next}></Review>}
             </div>
-
-            <div className={styles.buttons}>
-                            
-            </div>
         </div>
     );
 }

@@ -31,7 +31,7 @@ function Dashboard() {
     }, [loadSummary, summary]);
 
 
-    if (!summary) {
+    if (!summary || !summary.statArr) {
         return <p className={styles.body}>Loading your summary...</p>
     }
 

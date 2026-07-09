@@ -100,7 +100,7 @@ function Typing() {
             return <p className={styles.page}>loading typing cards!...</p>
 
     if (queue.length === 0)
-        return <Review/>
+        return <Finished/>
 
     return(
         <div className={styles.body}>
@@ -123,11 +123,10 @@ function Typing() {
                     />
                     {state === "waiting" && <button className={styles.submitButton} onClick={handleEnter}>Submit →</button>}
                 </div>
+
+                {state !== "waiting" && <Review correct={state === "correct"} card={queue[0]} handleEnter={handleEnter}></Review>}
             </div>
 
-            <div className={styles.buttons}>
-                            
-            </div>
         </div>
     );  
 }
@@ -154,7 +153,7 @@ function Card({ card, state }) {
     }
 }
 
-function Review() {
+function Finished() {
     return(
         <div className={styles.body}>
             <p className={styles.finishedPrompt}>You have finished all your typing cards for today!</p>
@@ -164,8 +163,33 @@ function Review() {
     );
 }
 
-export default Typing
+function Review({correct, card, handleEnter}) {
+    if (correct) {
+        return(
+            <div>
+                <div className={styles.divider}></div>
 
+                <div className={styles.review}>
+                    <p className={styles.correctPrompt}>✓ Correct!</p>
+                    <button className={styles.nextButton} onClick={handleEnter}>Next →</button>
+                </div>
+            </div>
+        );
+    } else {
+        return(
+            <div>
+                <div className={styles.divider}></div>
+                <div className={styles.review}>
+                    {card.direction === "jpn_eng" && <p className={styles.incorrectPrompt}>✗ Answer: {card.back.english}</p>}
+                    {card.direction === "jpn_hira" && <p className={styles.incorrectPrompt}>✗ Answer: {card.back.hiragana}</p>}
+                    <button className={styles.nextButton} onClick={handleEnter}>Next →</button>
+                </div>
+            </div>
+        );
+    }
+}
+
+export default Typing
 
 /*
 In case if you want to go back to server-side grading
