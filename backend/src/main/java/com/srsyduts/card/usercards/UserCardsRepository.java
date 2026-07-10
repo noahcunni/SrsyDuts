@@ -44,7 +44,13 @@ public interface UserCardsRepository extends JpaRepository<UserCard, Long>  {
     """, nativeQuery = true)
     SrsSummary getSrsSummary(@Param("userId") UUID userId);
 
-    
+    @Query(value = """
+        SELECT COUNT(DISTINCT uc.vocab_id) FROM user_cards uc
+        WHERE uc.user_id = :userId
+            AND uc.card_type = :cardType
+            AND uc.created_at >= date_trunc('day', now())
+    """, nativeQuery = true)
+    int countIntroducedToday(@Param("userId") UUID userId, @Param("cardType") String cardType);
 }
 
 

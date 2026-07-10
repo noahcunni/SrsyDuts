@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.srsyduts.card.Batch;
 import com.srsyduts.card.NewCards;
 import com.srsyduts.card.kanji.Kanji;
 import com.srsyduts.card.kanji.KanjiService;
@@ -22,6 +21,9 @@ import com.srsyduts.card.vocab.VocabService;
 @CrossOrigin(origins = "*") // Prevents browser CORS blocks 
 @RestController // Tell spring that this accepts http requests
 public class BatchController {
+    private static final int KANJI_LIMIT = 3;
+    private static final int VOCAB_LIMIT = 8;
+    
     private final JwtUtil jwtUtil;
 
     private final UserCardsService userCardsService;
@@ -35,25 +37,19 @@ public class BatchController {
         this.jwtUtil = jwtUtil;
     }
 
-    @GetMapping("/api/getBatch") // Where the request comes from
-    public Batch getBatch(@RequestHeader("Authorization") String authHeader) { 
-        // Return a giant JSON containing all the relevant cards for the user.
-        String token = authHeader.replace("Bearer ", "");
-        UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
-
-        List<Vocab> newVocab = vocabService.getReadyVocabForUser(uuid, 10);
-        List<Kanji> newKanji = kanjiService.getReadyKanjiForUser(uuid, 10);
-
-        return new Batch(uuid, new NewCards(newKanji, newVocab));
-    } 
-
     @GetMapping("/api/cards/summary")
     public Summary getSummary(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");
         UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
 
-        int newVocab = vocabService.getReadyVocabForUser(uuid, 8).size();
-        int newKanji = kanjiService.getReadyKanjiForUser(uuid, 3).size();
+        int newVocabLimit = VOCAB_LIMIT - userCardsService.countIntroducedToday(uuid, "vocab");
+        int newKanjiLimit = KANJI_LIMIT - userCardsService.countIntroducedToday(uuid, "kanji");
+
+        int newKanjiCount = kanjiService.getReadyKanjiForUser(uuid, newKanjiLimit).size();
+        int newVocabCount = vocabService.getReadyVocabForUser(uuid, newVocabLimit).size(); 
+
+        //int newVocab = vocabService.getReadyVocabForUser(uuid, 8).size();
+        //int newKanji = kanjiService.getReadyKanjiForUser(uuid, 3).size();
 
         int writing = vocabService.getWritingVocabForUser(uuid).size() 
             + kanjiService.getWritingKanjiForUser(uuid).size();
@@ -72,7 +68,7 @@ public class BatchController {
         
         long totalCards = vocabService.countAll() + kanjiService.countAll();
 
-        Summary cardSummary = new Summary(newKanji, newVocab, writing, typing, statArr, totalCards);
+        Summary cardSummary = new Summary(newKanjiCount, newVocabCount, writing, typing, statArr, totalCards);
         return cardSummary;
     }
 
@@ -81,8 +77,11 @@ public class BatchController {
         String token = authHeader.replace("Bearer ", "");
         UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
 
-        List<Vocab> newVocab = vocabService.getReadyVocabForUser(uuid, 8);
-        List<Kanji> newKanji = kanjiService.getReadyKanjiForUser(uuid, 3);
+        int newVocabCount = VOCAB_LIMIT - userCardsService.countIntroducedToday(uuid, "vocab");
+        int newKanjiCount = KANJI_LIMIT - userCardsService.countIntroducedToday(uuid, "kanji");
+
+        List<Vocab> newVocab = vocabService.getReadyVocabForUser(uuid, newVocabCount);
+        List<Kanji> newKanji = kanjiService.getReadyKanjiForUser(uuid, newKanjiCount);
 
         return new NewCards(newKanji, newVocab);
     }

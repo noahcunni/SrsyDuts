@@ -17,6 +17,9 @@ import com.srsyduts.card.vocab.VocabService;
 @CrossOrigin(origins = "*") // Prevents browser CORS blocks 
 @RestController // Tell spring that this accepts http requests
 public class SRSController {
+    private static final int KANJI_LIMIT = 3;
+    private static final int VOCAB_LIMIT = 8;
+
     private final JwtUtil jwtUtil;
     private final UserCardsService userCardsService;
     private final VocabService vocabService;
@@ -38,6 +41,13 @@ public class SRSController {
 
         // Before posting to database VALIDATE!
         // Check if the card the user is trying to introduce is even available for them, or hasn't been introduced before.
+
+        if (request.getCardType().compareTo("kanji") == 0 && KANJI_LIMIT <= userCardsService.countIntroducedToday(uuid, "kanji")) 
+            return "Cannot introduce: Reached daily kanji lesson limit.";
+
+        if (request.getCardType().compareTo("vocab") == 0 && VOCAB_LIMIT <= userCardsService.countIntroducedToday(uuid, "vocab")) 
+            return "Cannot introduce: Reached daily vocab lesson limit.";
+
 
         // If the card does exist
         if (!userCardsService.existsByUserIdAndVocabIdAndCardType(uuid, request.getCardId(), request.getCardType())) {

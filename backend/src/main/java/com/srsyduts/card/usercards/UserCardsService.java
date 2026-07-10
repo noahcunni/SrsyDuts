@@ -50,6 +50,10 @@ public class UserCardsService {
         return userCardsRepository.getSrsSummary(userId);
     }
 
+    public int countIntroducedToday(UUID userId, String cardType) {
+        return userCardsRepository.countIntroducedToday(userId, cardType);
+    }
+
     public void save(UserCard card) {
         userCardsRepository.save(card);
     }

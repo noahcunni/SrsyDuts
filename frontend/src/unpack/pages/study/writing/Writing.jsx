@@ -72,7 +72,7 @@ function Writing() {
 
 
     if (!queue)
-        return <p className={styles.page}>loading writing cards...</p>
+        return <p className={styles.body}>loading writing cards...</p>
 
     if (queue.length === 0) {
         return <Finish/>
@@ -173,7 +173,7 @@ function VocabCard({ card, reveal, setReveal }) {
 
 function Finish() {
     return(
-        <div className={styles.page}>
+        <div className={styles.body}>
             <p className={styles.finishedPrompt}>You have finished all your typing cards for today!</p>
 
             <Link to='/dashboard' className={styles.dashButton}>Back to Dashboard</Link>
