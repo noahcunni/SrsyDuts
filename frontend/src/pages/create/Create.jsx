@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from './Create.module.css';
-import { UserAuth } from '../../../context/AuthContext.jsx';
+import { UserAuth } from '../../context/AuthContext.jsx';
 
 async function postCard(url, body, token) {
     const res = await fetch(url, {

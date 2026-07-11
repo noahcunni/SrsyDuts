@@ -65,14 +65,17 @@ public class SRSController {
                 if (vocabService.isVocabReadyForUser(uuid, request.getCardId())) {
                     // ADD VOCAB HERE
                     makeVocabCard(uuid, request);
-                    return "Added vocab to user_cardsm, id: " + request.getCardId();
+                    return "Added vocab to user_cards, id: " + request.getCardId();
                 } 
-                return "Vocab isn't ready for review, id: " + request.getCardId();
+                throw new ResponseStatusException(HttpStatus.CONFLICT, 
+                    "Vocab isn't ready for review, id: " + request.getCardId());
             } else {
-                return "type does not match kanji or vocab: " + request.getCardType();
+                throw new ResponseStatusException(HttpStatus.CONFLICT, 
+                    "type does not match kanji or vocab: " + request.getCardType());
             }
         } else {
-            return "Card already exists in user_cards";
+            throw new ResponseStatusException(HttpStatus.CONFLICT, 
+                "Card already exists in user_cards: " + request.getCardId());
         }
     }
 

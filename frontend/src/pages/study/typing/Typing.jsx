@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { UserAuth } from "../../../../context/AuthContext";
+import { UserAuth } from "../../../context/AuthContext";
 import styles from './Typing.module.css';
-import { UserDeck } from "../../../../context/CardContext";
-import { typingAnswer } from "../../../../api/srs";
+import { UserDeck } from "../../../context/CardContext";
+import { typingAnswer } from "../../../api/srs";
 import { Link } from "react-router";
 
-import { convertRomanjiToHiragana } from "../../../../lib/Converter";
+import { convertRomanjiToHiragana } from "../../../lib/Converter";
 
 
 function buildQueue(cards) {
@@ -25,7 +25,7 @@ function buildQueue(cards) {
 
 function Typing() {
     const { session } = UserAuth();
-    const { typing, loadTyping } = UserDeck();
+    const { typing, loadTyping, clearTyping } = UserDeck();
     const [ queue, setQueue ] = useState();
     const [ state, setState ] = useState("waiting");
     const [ answer, setAnswer ] = useState("");
@@ -34,6 +34,7 @@ function Typing() {
 
     useEffect(() => {
         loadTyping();
+        return () => clearTyping();
     }, []);
     
     // Stops error

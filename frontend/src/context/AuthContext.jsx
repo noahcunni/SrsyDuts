@@ -9,17 +9,22 @@ export const AuthContextProvider = ({ children }) => {
 
     //Sign up
     const signUpNewUser = async (email, password) => {
-        const { data, error } = await supabase.auth.signUp({
-            email: email,
-            password: password,
-        });
+        try {
+            const { data, error } = await supabase.auth.signUp({
+                email: email,
+                password: password,
+            });
 
-    if (error) {
-        console.error("There was a problem signing up: ", error);
-        return {success: false, error};
-    }
+            if (error) {
+                console.error("There was a problem signing up: ", error);
+                return {success: false, error: error.message};
+            }
 
-        return {success: true, data};
+            return {success: true, data};
+        } catch (error) {
+            console.error("There was an error signing up: ", error);
+            return { success: false, error: "Network error — please try again later." };
+        }
     }
 
     // login
@@ -35,10 +40,10 @@ export const AuthContextProvider = ({ children }) => {
                 return { success: false, error: error.message };
             }
 
-            console.log("Sign-in success: ", data);
             return {success: true, data};
         } catch (error) {
-            console.error("There was an error logging in: ", error);
+            console.error("There was an error signing up: ", error);
+            return { success: false, error: "Network error — please try again later." };
         }
     }
 

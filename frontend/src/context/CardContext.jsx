@@ -158,9 +158,12 @@ export const CardContextProvider = ({ children }) => {
         }
     };
 
+    const clearWriting = () => setWriting(undefined);
+    const clearTyping = () => setTyping(undefined);
+
     return (
         <CardContext.Provider value={{ summary, loadSummary, writing, loadWriting,
-         typing, loadTyping, newCards, loadNewCards }}>
+         typing, loadTyping, newCards, loadNewCards, clearWriting, clearTyping }}>
             {children}
         </CardContext.Provider>
     );

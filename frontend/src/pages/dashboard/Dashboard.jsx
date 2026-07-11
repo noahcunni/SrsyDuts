@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../../../lib/supabaseClient";
-import { UserAuth } from "../../../context/AuthContext";
-import { UserDeck } from "../../../context/CardContext";
+import { supabase } from "../../lib/supabaseClient";
+import { UserAuth } from "../../context/AuthContext";
+import { UserDeck } from "../../context/CardContext";
 import { Link } from "react-router";
 
 import { Pie } from 'react-chartjs-2';

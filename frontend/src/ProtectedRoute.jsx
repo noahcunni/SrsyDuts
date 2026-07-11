@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useNavigate } from "react-router";
-import { UserAuth } from "../context/AuthContext"
+import { UserAuth } from "./context/AuthContext"
 
 function ProtectedRoute() {
     const auth = UserAuth();

@@ -1,71 +1,97 @@
-import { useEffect, useState } from "react";
-import { UserAuth } from "../../../../../context/AuthContext";
-import { introduce } from "../../../../../api/srs";
+import { useEffect, useState } from "react"; 
+import { UserAuth } from "../../../context/AuthContext";
+import { UserDeck } from "../../../context/CardContext";
+import { writingCorrect, writingIncorrect } from '../../../api/srs.js';
 import styles from './Writing.module.css';
+import { Link } from "react-router";
 
 function buildQueue(cards) {
-  const kanjiCards = cards.newKanji.map(card => ({
-    id: card.id,
+  const kanjiCards = cards.kanji.map(card => ({
     type: "kanji",
-    meaning: card.meaning,
-    onyomi: card.onyomi,
-    kunyomi: card.kunyomi,
+    id: card.id,
+    front: {
+        meaning: card.meaning,
+        kunyomi: card.kunyomi,
+        onyomi: card.onyomi
+    },
     back: card.kanji,
   }));
 
-  const vocabCards = cards.newVocab.map(card => ({
-    id: card.id,
+  const vocabCards = cards.vocab.map(card => ({
     type: "vocab",
-    eng: card.english,
-    hira: card.hiragana,
+    id: card.id,
+    front: {
+        eng: card.english,
+        hira: card.hiragana
+    },
     back: card.jpn,
   }));
+
   return [...kanjiCards, ...vocabCards]
     .sort(() => Math.random() - 0.5);
 }
 
-
-function Writing({ cards, next }) {
-    const [queue, setQueue] = useState(() => buildQueue(cards));
-    const [ reveal, setReveal ] = useState(false);
-
+function Writing() { 
+    const [message, setMessage] = useState('Loading writing info...'); 
+    const [ cards, setCards ] = useState();
     const { session } = UserAuth();
+    const { writing, loadWriting, clearWriting } = UserDeck();
+    const [queue, setQueue] = useState();
+    const [ reveal, setReveal ] = useState(false);
+    const [saveFailed, setSaveFailed] = useState(false);
 
-    useEffect(() => {
-        function onKey(e) {
-            if (e.key === " ") {
-                setReveal(true);
-                e.preventDefault();
-            } 
+    const [ totalNumber, setTotalNumber ] = useState(); 
+            
+        async function advance(correct) {
+            setReveal(false);
+            const restOfQueue = queue.slice(1);
+
+            if (correct) {
+                setQueue(restOfQueue);
+                setTotalNumber(totalNumber - 1);
+            } else {
+                setQueue([...restOfQueue, queue[0]]);
+            }
+
+            let saved = undefined;
+            if (correct) 
+                saved = await writingCorrect(session, queue[0].id, queue[0].type);
+            else
+                saved = await writingIncorrect(session, queue[0].id, queue[0].type);
+
+            if (!saved) setSaveFailed(true);
         }
-        window.addEventListener("keydown", onKey);
-        return () => window.removeEventListener("keydown", onKey); 
-    }, []);
     
-    function advance(correct) {
-        const restOfQueue = queue.slice(1);
-        if (correct) {
-            introduce(session, queue[0]); // INTRODUCES USER CARDS HERE
-            setQueue(restOfQueue);
-        } else {
-            setQueue([...restOfQueue, queue[0]]);
-        }
+        useEffect(() => {
+            loadWriting();
+            return () => clearWriting();
+        }, []);
 
-        setReveal(false);
+        // Stops error
+        useEffect(() => {
+            if (writing) {
+                const q = buildQueue(writing);
+                setQueue(q);
+                setTotalNumber(q.length);
+            }
+
+        }, [writing]);
+
+
+
+    if (!queue)
+        return <p className={styles.body}>loading writing cards...</p>
+
+    if (queue.length === 0) {
+        return <Finish/>
     }
-  
-    useEffect(() => {
-        if (queue.length === 0) next();
-    }, [queue, next]);
-
-    // Stops the render.
-    if (queue.length === 0)
-        return null;
 
     let type = queue[0].type.charAt(0).toUpperCase() + queue[0].type.slice(1);
 
     return(
-        <div className={styles.page}>
+        <div className={styles.body}>
+            <p>There are {totalNumber} cards left</p>
+            {saveFailed && <p className={styles.saveWarning}>A review failed to save — unsaved cards will reappear next session.</p>}
 
             <div className={styles.cardContainer}>
 
@@ -93,7 +119,7 @@ function Writing({ cards, next }) {
 }   
 
 function KanjiCard({ card, reveal, setReveal }) {   
-    const meaning = card.meaning.charAt(0).toUpperCase() + card.meaning.slice(1);
+    const meaning = card.front.meaning.charAt(0).toUpperCase() + card.front.meaning.slice(1);
 
 
 
@@ -108,12 +134,12 @@ function KanjiCard({ card, reveal, setReveal }) {
             <div className={styles.displayReadings}> 
                 <div className={styles.displayBox}>
                     <p className={styles.displayLabel}>KUN'YOMI</p>
-                    <p className={styles.displayValue}>{card.kunyomi}</p>
+                    <p className={styles.displayValue}>{card.front.kunyomi}</p>
                 </div>
     
                 <div className={styles.displayBox}>
                     <p className={styles.displayLabel}>ON'YOMI</p>
-                    <p className={styles.displayValue}>{card.onyomi}</p>
+                    <p className={styles.displayValue}>{card.front.onyomi}</p>
                 </div>
             </div>
 
@@ -135,12 +161,12 @@ function VocabCard({ card, reveal, setReveal }) {
         <div className={styles.display}>
                 <div className={styles.displayBox}>
                     <p className={styles.displayLabel}>MEANING</p>
-                    <p className={styles.displayMeaning}>{card.eng}</p>
+                    <p className={styles.displayMeaning}>{card.front.eng}</p>
                 </div>
 
                 <div className={styles.displayBox}>
                     <p className={styles.displayLabel}>SPELLING</p>
-                    <p className={styles.displayValue}>{card.hira}</p>
+                    <p className={styles.displayValue}>{card.front.hira}</p>
                 </div>
 
             <button type="button" className={styles.writeBoxVocab}
@@ -154,4 +180,24 @@ function VocabCard({ card, reveal, setReveal }) {
     );
 }
 
+function Finish() {
+    return(
+        <div className={styles.body}>
+            <p className={styles.finishedPrompt}>You have finished all your typing cards for today!</p>
+
+            <Link to='/dashboard' className={styles.dashButton}>Back to Dashboard</Link>
+        </div>
+    );
+}
 export default Writing
+
+/*
+    useEffect(() => {
+            loadWriting();
+        }, []);
+
+        // Stops error
+        useEffect(() => {
+            if (writing) setQueue(buildQueue(writing));
+        }, [writing]);
+*/

@@ -1,12 +1,11 @@
 import { useEffect, useState, useReducer } from "react";
-import { supabase } from "../../../../lib/supabaseClient";
-import { UserAuth } from "../../../../context/AuthContext";
-import { UserDeck } from "../../../../context/CardContext";
+import { UserAuth } from "../../../context/AuthContext";
+import { UserDeck } from "../../../context/CardContext";
 import { LessonVocabCard, LessonKanjiCard } from "./LessonCardContainer";
 import Intro from "./stages/Intro";
 import Quiz from "./stages/Quiz";
 import Review from "./stages/Review";
-import Writing from "./stages/Writing";
+import Writing from "./stages/WritingStage";
 import styles from "./LessonCard.module.css";
 
 // Each lesson should start with

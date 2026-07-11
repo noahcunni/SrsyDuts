@@ -1,30 +1,26 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import PublicLayout from './unpack/layouts/PublicLayout.jsx';
-import AuthLayout from './unpack/layouts/AuthLayout.jsx';
-import AppLayout from './unpack/layouts/AppLayout.jsx';
+import PublicLayout from './layouts/PublicLayout.jsx';
+import AuthLayout from './layouts/AuthLayout.jsx';
+import AppLayout from './layouts/AppLayout.jsx';
 
-import Landing from './unpack/pages/Landing.jsx';
-import Signup from './unpack/pages/auth/Signup.jsx';
-import Signin from './unpack/pages/auth/SignIn.jsx';
-import Dashboard from './unpack/pages/dashboard/Dashboard.jsx';
-import About from './unpack/About.jsx';
+import Landing from './pages/landing/Landing.jsx';
+import Signup from './pages/auth/SignUp.jsx';
+import Signin from './pages/auth/SignIn.jsx';
+import Dashboard from './pages/dashboard/Dashboard.jsx';
 
-import Lesson from './unpack/pages/study/lesson/Lesson.jsx';
-import Writing from './unpack/pages/study/writing/Writing.jsx';
-import Typing from './unpack/pages/study/typing/Typing.jsx';
-import Create from './unpack/pages/create/Create.jsx';
+import Lesson from './pages/study/lesson/Lesson.jsx';
+import Writing from './pages/study/writing/Writing.jsx';
+import Typing from './pages/study/typing/Typing.jsx';
+import Create from './pages/create/Create.jsx';
 
-import ProtectedRoute from "./unpack/ProtectedRoute.jsx";
-
-import "./../index.css"
+import ProtectedRoute from "./ProtectedRoute.jsx";
 
 export const router = createBrowserRouter([
     {
         element: <PublicLayout />,
         children: [
             {path: '/', element: <Landing/>},
-            {path: '/about', element: <About/>}
         ]
     },{
         element: <AuthLayout />,

@@ -1,31 +1,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { UserAuth } from '../../../context/AuthContext';
+import { UserAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 import styles from './Sign.module.css';
 
-const Signup = () => {
+const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const { signUpNewUser } = UserAuth();
+    const { logInUser } = UserAuth();
     const navigate = useNavigate();
     
-    const handleSignUp = async (e) => {
+    const handleLogIn = async (e) => {
         e.preventDefault();
         setLoading(true);
-
+        
         try {
-            const result = await signUpNewUser(email, password);
+            const result = await logInUser(email, password);
 
             if (result.success) {
                 navigate('/dashboard');
             } else {
-                setError(result.error.message);
+                setError(result.error);
             }
         } catch (err) {
             setError("an error occured")
@@ -37,28 +37,28 @@ const Signup = () => {
 
     return(
         <div className={styles.page}>
-            <form onSubmit={handleSignUp} className={styles.formContainer}>
+            <form onSubmit={handleLogIn} className={styles.formContainer}>
                 <p className={styles.icon}>字</p>
-                <p className={styles.welcome}>Sign up here!</p>
-                <p>Have an account? <Link className={styles.alternateLink} to='/signin'>Sign in now!</Link></p>
+                <p className={styles.welcome}>Welcome back!</p>
+                <p className={styles.alternatePrompt}>No account? <Link className={styles.alternateLink} to='/signup'>Click here</Link></p>
                 <div className={styles.inputGroup}>
                     <input 
+                    className={styles.input}
                     onChange={(e) => setEmail(e.target.value)} 
                     placeholder='Email' 
-                    className={styles.input} 
                     type="email"
                     />
                     <input 
+                    className={styles.input}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder='Password'
-                    className={styles.input} 
                     type="password"/>
-                    <button type='submit'disabled={loading} className={styles.submitButton}>Sign up!</button>
-                    {error && <p className="text-red-600 text-center pt-4">{error}</p>}
                 </div>
+                <button type='submit' disabled={loading} className={styles.submitButton}>Sign in!</button>
+                    {error && <p className="text-red-600 text-center pt-4">{error}</p>}
             </form>
         </div>
     );
 }
 
-export default Signup
+export default Login
