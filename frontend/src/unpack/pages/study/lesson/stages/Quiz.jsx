@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from './Quiz.module.css';
-import { convertRomanjiToHiragana } from "../../../SRS/Converter";
+import { convertRomanjiToHiragana } from "../../../../../lib/Converter";
 
 function buildQueue(cards) {
   const vocabCardsEng = cards.newVocab.map(card => ({

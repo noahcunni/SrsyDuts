@@ -1,0 +1,49 @@
+package com.srsyduts.kanji;
+
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class KanjiService {
+
+    private final KanjiRepository kanjiRepository;
+
+    public KanjiService(KanjiRepository kanjiRepository) {
+        this.kanjiRepository = kanjiRepository;
+    }
+
+    public List<Kanji> getAllKanji() {
+        return kanjiRepository.findAll();
+    }
+
+    public Kanji getKanjiById(Long id) {
+        return kanjiRepository.findById(id).orElseThrow();
+    }
+
+    public List<Kanji> getReadyKanjiForUser(UUID userId, int limit) {
+        return kanjiRepository.getReadyKanjiForUser(userId, limit);
+    }
+
+    public List<Kanji> getWritingKanjiForUser(UUID userId) {
+        return kanjiRepository.getWritingKanjiForUser(userId);
+    }
+
+    // ------ create stuff
+    public Kanji save(Kanji kanji) {
+        return kanjiRepository.save(kanji);     
+    }
+    
+    public boolean existsByKanji(String kanji) {
+        return kanjiRepository.existsByKanji(kanji);
+    }
+
+    public Kanji findByKanji(String kanji) {
+        return kanjiRepository.findByKanji(kanji);
+    }
+
+    public long countAll() {
+        return kanjiRepository.count();
+    }
+}

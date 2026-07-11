@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { UserAuth } from "../../../../../context/AuthContext";
-import { introduce } from "../../../SRS/SRSController";
+import { introduce } from "../../../../../api/srs";
 import styles from './Writing.module.css';
 
 function buildQueue(cards) {
@@ -33,9 +33,10 @@ function Writing({ cards, next }) {
 
     useEffect(() => {
         function onKey(e) {
-            if (e.key === " ") 
+            if (e.key === " ") {
                 setReveal(true);
-            e.preventDefault();
+                e.preventDefault();
+            } 
         }
         window.addEventListener("keydown", onKey);
         return () => window.removeEventListener("keydown", onKey); 
@@ -52,9 +53,14 @@ function Writing({ cards, next }) {
 
         setReveal(false);
     }
+  
+    useEffect(() => {
+        if (queue.length === 0) next();
+    }, [queue, next]);
 
-    if (queue.length === 0) 
-        next();
+    // Stops the render.
+    if (queue.length === 0)
+        return null;
 
     let type = queue[0].type.charAt(0).toUpperCase() + queue[0].type.slice(1);
 
@@ -63,7 +69,7 @@ function Writing({ cards, next }) {
 
             <div className={styles.cardContainer}>
 
-                <h1 className={styles.stage} className={`${type === "Vocab" ? styles.vocabType : styles.kanjiType}`}>Writing: {type}</h1>
+                <h1 className={`${type === "Vocab" ? styles.vocabType : styles.kanjiType}`}>Writing: {type}</h1>
 
 
                 {queue[0].type === "kanji" && <KanjiCard card={queue[0]} reveal={reveal} setReveal={setReveal}/>}

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "../../../../lib/supabaseClient";
 import { UserAuth } from "../../../../context/AuthContext";
 import { UserDeck } from "../../../../context/CardContext";
-import { writingCorrect, writingIncorrect } from '../../SRS/SRSController.jsx';
+import { writingCorrect, writingIncorrect } from '../../../../api/srs.js';
 import styles from './Writing.module.css';
 import { Link } from "react-router";
 

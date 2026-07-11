@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { UserAuth } from "../../../../context/AuthContext";
 import styles from './Typing.module.css';
 import { UserDeck } from "../../../../context/CardContext";
-import { typingAnswer } from "../../SRS/SRSController";
+import { typingAnswer } from "../../../../api/srs";
 import { Link } from "react-router";
 
-import { convertRomanjiToHiragana } from "../../SRS/converter";
+import { convertRomanjiToHiragana } from "../../../../lib/Converter";
 
 
 function buildQueue(cards) {
@@ -189,24 +189,3 @@ function Review({correct, card, handleEnter}) {
 }
 
 export default Typing
-
-/*
-In case if you want to go back to server-side grading
-    async function handleSubmit() {
-        // Grading logic shouldnt be done client-side, BUT FOR NOW ITS TOO SLOW!
-        // Grade client-side for now until you find a solution?
-
-        // Send user answer to the database and let it return a true or false
-        const userAnswer = answer.trim().toLowerCase();
-        const result = await typingCheck(session, queue[0], userAnswer);
-        console.log(JSON.stringify(result));
-
-        if (result.correct) {
-            setState("correct");
-            console.log("CORRECT ANSWER: " + cardAnswer);
-        } else {
-            setState("incorrect");
-            console.log("INCORRECT ANSWER: " + cardAnswer);
-        }
-    }
-*/

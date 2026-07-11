@@ -1,7 +1,7 @@
 import { Link } from 'react-router';
 import styles from './Landing.module.css';
 import { useState } from 'react';
-import { convertRomanjiToHiragana } from './SRS/converter';
+import { convertRomanjiToHiragana } from '../../lib/Converter';
 import { IconRepeat, IconKeyboard, IconPencil } from '@tabler/icons-react';
 
 function Landing() {
