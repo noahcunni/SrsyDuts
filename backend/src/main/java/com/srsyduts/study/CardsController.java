@@ -3,13 +3,12 @@ package com.srsyduts.study;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.srsyduts.kanji.Kanji;
 import com.srsyduts.kanji.KanjiService;
-import com.srsyduts.security.JwtUtil;
 import com.srsyduts.usercards.SrsSummary;
 import com.srsyduts.usercards.UserCardsService;
 import com.srsyduts.vocab.TypingVocab;
@@ -18,23 +17,19 @@ import com.srsyduts.vocab.VocabService;
 
 @RestController // Tell spring that this accepts http requests
 public class CardsController {
-    private final JwtUtil jwtUtil;
-
     private final UserCardsService userCardsService;
     private final KanjiService kanjiService;
     private final VocabService vocabService;
 
-    public CardsController(UserCardsService userCardsService, KanjiService kanjiService, VocabService vocabService, JwtUtil jwtUtil) {
+    public CardsController(UserCardsService userCardsService, KanjiService kanjiService, VocabService vocabService) {
         this.userCardsService = userCardsService;
         this.kanjiService = kanjiService;
         this.vocabService = vocabService;
-        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping("/api/cards/summary")
-    public Summary getSummary(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.replace("Bearer ", "");
-        UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
+    public Summary getSummary(Authentication auth) {
+        UUID uuid = UUID.fromString(auth.getName());
 
         int newVocabLimit = Math.max(0, userCardsService.VOCAB_LIMIT - userCardsService.countIntroducedToday(uuid, "vocab"));
         int newKanjiLimit = Math.max(0, userCardsService.KANJI_LIMIT - userCardsService.countIntroducedToday(uuid, "kanji"));
@@ -67,9 +62,8 @@ public class CardsController {
     }
 
     @GetMapping("/api/cards/newCards")
-    public NewCards getNewCards(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.replace("Bearer ", "");
-        UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
+    public NewCards getNewCards(Authentication auth) {
+        UUID uuid = UUID.fromString(auth.getName());
 
         int newVocabCount = userCardsService.VOCAB_LIMIT - userCardsService.countIntroducedToday(uuid, "vocab");
         int newKanjiCount = userCardsService.KANJI_LIMIT - userCardsService.countIntroducedToday(uuid, "kanji");
@@ -81,9 +75,8 @@ public class CardsController {
     }
 
     @GetMapping("/api/cards/writing")
-    public WritingCards getWritingCards(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.replace("Bearer ", "");
-        UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
+    public WritingCards getWritingCards(Authentication auth) {
+        UUID uuid = UUID.fromString(auth.getName());
 
         List<Kanji> kanji = kanjiService.getWritingKanjiForUser(uuid);
         List<Vocab> vocab = vocabService.getWritingVocabForUser(uuid);
@@ -91,10 +84,8 @@ public class CardsController {
     }
 
     @GetMapping("/api/cards/typing")
-    public TypingCards getTypingCards(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.replace("Bearer ", "");
-        UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
-
+    public TypingCards getTypingCards(Authentication auth) {
+        UUID uuid = UUID.fromString(auth.getName());
         List<TypingVocab> vocab = vocabService.getTypingVocabForUser(uuid);
 
         return new TypingCards(vocab);

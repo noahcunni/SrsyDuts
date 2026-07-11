@@ -5,37 +5,30 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.srsyduts.security.JwtUtil;
 import com.srsyduts.usercards.UserCard;
 import com.srsyduts.usercards.UserCardsService;
 import com.srsyduts.vocab.VocabService;
 
 @RestController // Tell spring that this accepts http requests
 public class SRSController {
-    private final JwtUtil jwtUtil;
     private final UserCardsService userCardsService;
     private final VocabService vocabService;
 
-    public SRSController(JwtUtil jwtUtil, UserCardsService userCardsService, VocabService vocabService) {
-        this.jwtUtil = jwtUtil;
+    public SRSController(UserCardsService userCardsService, VocabService vocabService) {
         this.userCardsService = userCardsService;
         this.vocabService = vocabService;
     }
 
     @PostMapping("api/introduce")
-    public String introduceCard(@RequestHeader("Authorization") String authHeader,
+    public String introduceCard(Authentication auth,
             @RequestBody IntroduceRequest request) {
-
-        // Takes two params, 
-        // Gives the userCard section introductions to the card 
-        String token = authHeader.replace("Bearer ", "");
-        UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
+        UUID uuid = UUID.fromString(auth.getName());
 
         // Before posting to database VALIDATE!
         // Check if the card the user is trying to introduce is even available for them, or hasn't been introduced before.
@@ -115,10 +108,11 @@ public class SRSController {
     }
 
     @PostMapping("api/srs/writingCorrect")
-    public String writingCorrect(@RequestHeader("Authorization") String authHeader,
+    public String writingCorrect(Authentication auth,
             @RequestBody WritingRequest request) {
-        String token = authHeader.replace("Bearer ", "");
-        UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
+        UUID uuid = UUID.fromString(auth.getName());
+
+
         // Validate first if this card can be even be updated.
         // UserCardService.updateCard
         if (userCardsService.writingIsReady(uuid, request.getCardId(), request.getCardType(), "writing")) {
@@ -131,10 +125,11 @@ public class SRSController {
     }
 
     @PostMapping("api/srs/writingIncorrect")
-    public String writingIncorrect(@RequestHeader("Authorization") String authHeader,
+    public String writingIncorrect(Authentication auth,
             @RequestBody WritingRequest request) {
-        String token = authHeader.replace("Bearer ", "");
-        UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
+        
+        UUID uuid = UUID.fromString(auth.getName());
+
         // Validate first if this card can be even be updated.
         // UserCardService.updateCard
         if (userCardsService.writingIsReady(uuid, request.getCardId(), request.getCardType(), "writing")) {
@@ -193,12 +188,10 @@ public class SRSController {
     }
 
     @PostMapping("api/srs/typingAnswer")
-    public Map typingAnswer(@RequestHeader ("Authorization") String authHeader,
+    public Map typingAnswer(Authentication auth,
         @RequestBody TypingRequest request)
     {
-
-        String token = authHeader.replace("Bearer ", "");
-        UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
+        UUID uuid = UUID.fromString(auth.getName());
 
         UserCard userCard = userCardsService.getTypingUserCard(uuid, request.getCardId(), request.getDirection());
 

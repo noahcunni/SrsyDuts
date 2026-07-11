@@ -1,10 +1,18 @@
-import { Link, useLocation } from "react-router";
-
+import { Link, useLocation, useNavigate } from "react-router";
+import { UserAuth } from "../../context/AuthContext";
 import styles from './AppNavbar.module.css';
 
 function AppNavbar() {
     const location = useLocation();
     const isActive = (path) => location.pathname === path; // evals current path
+    const navigate = useNavigate();
+    const { signOut } = UserAuth();
+
+    const handleSignOut = async () => {
+        await signOut();
+        navigate('/');          // your login/home route
+    };
+
 
     return (
 
@@ -20,7 +28,7 @@ function AppNavbar() {
                 <Link to='/study/create' className={`${styles.studyButton} ${isActive('/study/create') ? styles.activeButton : ''}`}>Create</Link>
             </div>
             <div>
-                <Link className={styles.signOut}>Sign Out</Link>
+                <button className={styles.signOut} onClick={handleSignOut}>Sign Out</button>
             </div>
         </div>
     );

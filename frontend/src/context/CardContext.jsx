@@ -60,6 +60,7 @@ export const CardContextProvider = ({ children }) => {
             setSummary(data);
             setLastFetchedAt(prev => ({ ...prev, summary: Date.now() }));
             console.log("SUCCESSFULLY LOADED SUMMARY")
+            return response.ok;
         } catch (e) {
             console.log("Failed to load summary" + e);
         } finally {

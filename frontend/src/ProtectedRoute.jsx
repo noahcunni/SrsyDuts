@@ -1,18 +1,18 @@
-import { Navigate, Outlet, useNavigate } from "react-router";
+import { Navigate, Outlet } from "react-router";
 import { UserAuth } from "./context/AuthContext"
 
 function ProtectedRoute() {
-    const auth = UserAuth();
-    const navigate = useNavigate();
+    const { session } = UserAuth();
 
-    if (!auth.session) {
-        return(
-            <Navigate to='/'/>
-        );
-    } else
-        return (
-            <Outlet />
-        ); 
+    if (session === undefined) {
+            return <div>Loading...</div>
+    } 
+
+    if (session === null) {
+        return <Navigate to='/' replace />
+    }
+    
+    return <Outlet />
 }
 
 export default ProtectedRoute
