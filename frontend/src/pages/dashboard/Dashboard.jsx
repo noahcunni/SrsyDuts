@@ -19,7 +19,7 @@ function Dashboard() {
 
     useEffect(() => {
         loadSummary();
-            if (summary) { 
+            if (summary && summary.statArr) { 
             try {
                 setNewCards(summary.newKanji + summary.newVocab);
                 setDueCards(summary.dueWriting + summary.dueTyping);

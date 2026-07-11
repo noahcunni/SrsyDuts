@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styles from './Create.module.css';
 import { UserAuth } from '../../context/AuthContext.jsx';
+import { API } from "../../api/config.js";
 
 async function postCard(url, body, token) {
     const res = await fetch(url, {
@@ -63,7 +64,7 @@ function Create() {
         if (!session) return;
         setError("");
         try {
-            await postCard("http://localhost:8080/api/create/kanji", kanjiFormData, session.access_token);
+            await postCard(`${API}/api/create/kanji`, kanjiFormData, session.access_token);
             setKanjiFormData({ kanji: '', kunyomi: '', onyomi: '', meaning: '' });
         } catch (err) {
             setError(err.message);
@@ -74,7 +75,7 @@ function Create() {
             if (!session) return;
             setError("");
         try {
-            await postCard("http://localhost:8080/api/create/vocab", vocabFormData, session.access_token);
+            await postCard(`${API}/api/create/vocab`, vocabFormData, session.access_token);
             setVocabFormData({ jpn: '', hiragana: '', english: '' });
         } catch (err) {
             setError(err.message);

@@ -3,7 +3,6 @@ package com.srsyduts.study;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +16,6 @@ import com.srsyduts.vocab.TypingVocab;
 import com.srsyduts.vocab.Vocab;
 import com.srsyduts.vocab.VocabService;
 
-@CrossOrigin(origins = "*") // Prevents browser CORS blocks 
 @RestController // Tell spring that this accepts http requests
 public class CardsController {
     private final JwtUtil jwtUtil;

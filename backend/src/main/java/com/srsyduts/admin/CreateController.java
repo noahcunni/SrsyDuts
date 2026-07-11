@@ -5,7 +5,6 @@ import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +15,6 @@ import com.srsyduts.kanji.KanjiService;
 import com.srsyduts.vocab.Vocab;
 import com.srsyduts.vocab.VocabService;
 
-@CrossOrigin(origins = "*")
 @RestController
 public class CreateController {
 

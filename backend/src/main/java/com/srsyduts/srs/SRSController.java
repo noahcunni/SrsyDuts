@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -17,7 +16,6 @@ import com.srsyduts.usercards.UserCard;
 import com.srsyduts.usercards.UserCardsService;
 import com.srsyduts.vocab.VocabService;
 
-@CrossOrigin(origins = "*") // Prevents browser CORS blocks 
 @RestController // Tell spring that this accepts http requests
 public class SRSController {
     private final JwtUtil jwtUtil;

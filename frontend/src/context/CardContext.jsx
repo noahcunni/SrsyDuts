@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { UserAuth } from "./AuthContext";
+import { API } from "../api/config";
 
 const CardContext = createContext();
 
@@ -50,7 +51,7 @@ export const CardContextProvider = ({ children }) => {
         if (isAlreadyLoading) return;
 
         try {
-            const response = await fetch('http://localhost:8080/api/cards/summary', {
+            const response = await fetch(`${API}/api/cards/summary`, {
                     headers: {
                         "Authorization": `Bearer ${session.access_token}`
                     }
@@ -81,7 +82,7 @@ export const CardContextProvider = ({ children }) => {
         if (isAlreadyLoading) return;
 
         try {
-            const response = await fetch("http://localhost:8080/api/cards/writing", {
+            const response = await fetch(`${API}/api/cards/writing`, {
                 headers: {"Authorization": `Bearer ${session.access_token}`}
             });
             const data = await response.json();
@@ -109,7 +110,7 @@ export const CardContextProvider = ({ children }) => {
         if (isAlreadyLoading) return;
 
         try {
-            const response = await fetch("http://localhost:8080/api/cards/typing", {
+            const response = await fetch(`${API}/api/cards/typing`, {
                 headers: {"Authorization": `Bearer ${session.access_token}`}
             });
             const data = await response.json();
@@ -142,7 +143,7 @@ export const CardContextProvider = ({ children }) => {
         if (isAlreadyLoading) return;
 
         try {
-            const response = await fetch('http://localhost:8080/api/cards/newCards', {
+            const response = await fetch(`${API}/api/cards/newCards`, {
                     headers: {
                         "Authorization": `Bearer ${session.access_token}`
                     }

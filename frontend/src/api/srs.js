@@ -1,9 +1,11 @@
+import { API } from './config'
+
 export async function introduce(session, card) {
     if (!session) { // Check the session
         console.log('Session invalid!');
         return false;}
             try { // Go for it
-                const response = await fetch('http://localhost:8080/api/introduce', {
+                const response = await fetch(`${API}/api/introduce`, {
                     method: 'POST',
                     headers: {
                         "Authorization": `Bearer ${session.access_token}`,
@@ -28,7 +30,7 @@ export async function writingCorrect (session, cardId, cardType) {
         return false;}
     const payLoad = JSON.stringify({cardId, cardType});
     try {
-        const response = await fetch('http://localhost:8080/api/srs/writingCorrect', {
+        const response = await fetch(`${API}/api/srs/writingCorrect`, {
             method: 'POST',
             headers: {
                 "Authorization": `Bearer ${session.access_token}`,
@@ -51,7 +53,7 @@ export async function writingIncorrect (session, cardId, cardType) {
     const payLoad = JSON.stringify({ cardId, cardType });
 
     try {
-        const response = await fetch('http://localhost:8080/api/srs/writingIncorrect', {
+        const response = await fetch(`${API}/api/srs/writingIncorrect`, {
             method: 'POST',
             headers: {
                 "Authorization": `Bearer ${session.access_token}`,
@@ -77,7 +79,7 @@ export async function typingAnswer(session, card, isCorrect) {
     };
 
     try {
-        const response = await fetch('http://localhost:8080/api/srs/typingAnswer', {
+        const response = await fetch(`${API}/api/srs/typingAnswer`, {
             method: 'POST',
             headers: {
                 "Authorization": `Bearer ${session.access_token}`,

@@ -2,6 +2,7 @@ package com.srsyduts.security;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,17 +15,19 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
+    @Value("${app.cors.allowed-origins:http://localhost:*}")
+    private String allowedOrigins;
     // 1. THIS BEAN EXPLICITLY SEPARATES AND ALLOWS CORS SYSTEM-WIDE
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
         // Allows requests from your local React/Vite dev servers
-        configuration.setAllowedOriginPatterns(List.of("http://localhost:*")); 
+        configuration.setAllowedOriginPatterns(List.of(allowedOrigins.split(",")));
         
         // Allows standard web interaction request methods
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
