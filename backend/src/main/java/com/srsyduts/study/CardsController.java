@@ -65,8 +65,8 @@ public class CardsController {
     public NewCards getNewCards(Authentication auth) {
         UUID uuid = UUID.fromString(auth.getName());
 
-        int newVocabCount = userCardsService.VOCAB_LIMIT - userCardsService.countIntroducedToday(uuid, "vocab");
-        int newKanjiCount = userCardsService.KANJI_LIMIT - userCardsService.countIntroducedToday(uuid, "kanji");
+        int newVocabCount = Math.max(0, userCardsService.VOCAB_LIMIT - userCardsService.countIntroducedToday(uuid, "vocab"));
+        int newKanjiCount = Math.max(0, userCardsService.KANJI_LIMIT - userCardsService.countIntroducedToday(uuid, "kanji"));
 
         List<Vocab> newVocab = vocabService.getReadyVocabForUser(uuid, newVocabCount);
         List<Kanji> newKanji = kanjiService.getReadyKanjiForUser(uuid, newKanjiCount);

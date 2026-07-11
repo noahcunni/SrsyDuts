@@ -155,7 +155,7 @@ public class SRSController {
             } else if (last.compareTo(next) >= 0) { 
                 // Last is a sentinal value and tells the card to derank in this case 
                 userCard.setLastReview(now);
-                userCard.setNextReview(setNextDate(srs));
+                userCard.setNextReview(setNextDate((short) Math.max(0, srs - 2)));                
                 userCard.setSrsLevel((short) (srs - 1));
 
             } else if (next.compareTo(now) < 0) {

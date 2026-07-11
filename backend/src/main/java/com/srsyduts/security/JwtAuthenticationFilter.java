@@ -1,9 +1,10 @@
 package com.srsyduts.security;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 import java.security.interfaces.ECPublicKey;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,7 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.auth0.jwk.JwkProvider;
-import com.auth0.jwk.UrlJwkProvider;
+import com.auth0.jwk.JwkProviderBuilder;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -25,19 +26,22 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private static final String ADMIN_UUID = "1cff3197-8c86-4647-8fa4-a3d09534c64f";
     private final String JWKS_URL = "https://mhwvagjiwhvydgeisrnw.supabase.co/auth/v1/.well-known/jwks.json";
+
+    private final JwkProvider provider; 
+
+    public JwtAuthenticationFilter() {
+        try {
+            provider = new JwkProviderBuilder(URI.create(JWKS_URL).toURL())
+                    .cached(3, 24, TimeUnit.HOURS)   // keep up to 3 keys for 24h
+                    .build();
+        } catch (java.net.MalformedURLException e) {
+            throw new IllegalStateException("Bad JWKS URL", e);
+        }
+    }
     
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        
-        // 1. Handle Browser Pre-flight OPTIONS checks instantly
-        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-            response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Cache-Control");
-            response.setStatus(HttpServletResponse.SC_OK);
-            return;
-        }
 
         String bearerToken = request.getHeader("Authorization");
 
@@ -47,7 +51,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String token = bearerToken.substring(7);
                 
                 DecodedJWT jwt = JWT.decode(token);
-                JwkProvider provider = new UrlJwkProvider(new URL(JWKS_URL));
                 ECPublicKey publicKey = (ECPublicKey) provider.get(jwt.getKeyId()).getPublicKey();
                 Algorithm algorithm = Algorithm.ECDSA256(publicKey, null);
                 JWTVerifier verifier = JWT.require(algorithm).build();

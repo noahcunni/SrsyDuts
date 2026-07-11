@@ -56,11 +56,12 @@ export const CardContextProvider = ({ children }) => {
                         "Authorization": `Bearer ${session.access_token}`
                     }
             });
+            if (!response.ok) throw new Error(`summary: HTTP ${response.status}`);
+
             const data = await response.json();
             setSummary(data);
             setLastFetchedAt(prev => ({ ...prev, summary: Date.now() }));
             console.log("SUCCESSFULLY LOADED SUMMARY")
-            return response.ok;
         } catch (e) {
             console.log("Failed to load summary" + e);
         } finally {
@@ -86,6 +87,8 @@ export const CardContextProvider = ({ children }) => {
             const response = await fetch(`${API}/api/cards/writing`, {
                 headers: {"Authorization": `Bearer ${session.access_token}`}
             });
+            if (!response.ok) throw new Error(`writing: HTTP ${response.status}`);
+
             const data = await response.json();
             setWriting(data);
             setLastFetchedAt(prev => ({ ...prev, writing: Date.now() }));
@@ -114,6 +117,8 @@ export const CardContextProvider = ({ children }) => {
             const response = await fetch(`${API}/api/cards/typing`, {
                 headers: {"Authorization": `Bearer ${session.access_token}`}
             });
+            if (!response.ok) throw new Error(`typing: HTTP ${response.status}`);
+
             const data = await response.json();
             setTyping(data);
             setLastFetchedAt(prev => ({ ...prev, typing: Date.now() }));
@@ -149,6 +154,8 @@ export const CardContextProvider = ({ children }) => {
                         "Authorization": `Bearer ${session.access_token}`
                     }
             });
+            if (!response.ok) throw new Error(`newCards: HTTP ${response.status}`);
+
             const data = await response.json();
             setNewCards(data);
             setLastFetchedAt(prev => ({ ...prev, newCards: Date.now() }));
