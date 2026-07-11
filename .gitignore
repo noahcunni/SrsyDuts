@@ -1,0 +1,7 @@
+# JVM crash dumps — the JVM writes these to the working directory when it dies
+hs_err_pid*
+replay_pid*
+*.log
+# OS junk
+Thumbs.db
+.DS_Store
