@@ -11,13 +11,10 @@ export async function writingCorrect (session, cardId, cardType) {
             },
             body: payLoad, // Converts JSX state object into a JSON string
         });
-
-        if (response.ok) {
-            const data = await response.text();
-            console.log("Success:", data);
-        }
+        return response.ok;
     } catch (error) {
-        console.error("Error sending data:", error);
+        console.error("Error sending data: ", error);
+        return false;
     }
 }
 
@@ -33,13 +30,10 @@ export async function writingIncorrect (session, cardId, cardType) {
             },
             body: payLoad, // Converts JSX state object into a JSON string
         });
-
-        if (response.ok) {
-            const data = await response.text();
-            console.log("Success:", data);
-        }
+        return response.ok;
     } catch (error) {
-        console.error("Error sending data:", error);
+        console.error("Error sending data: ", error);
+        return false;
     }
 }
 
@@ -99,7 +93,8 @@ export async function typingAnswer(session, card, isCorrect) {
             return data;
         }
     } catch (error) {
-        console.error("Error sending typingCheck: ", error);
+        console.error("Error sending typingAnswer: ", error);
+        return false;
     }
 }
 

@@ -17,13 +17,11 @@ import com.srsyduts.card.usercards.UserCardsService;
 import com.srsyduts.card.vocab.TypingVocab;
 import com.srsyduts.card.vocab.Vocab;
 import com.srsyduts.card.vocab.VocabService;
+import com.srsyduts.security.JwtUtil;
 
 @CrossOrigin(origins = "*") // Prevents browser CORS blocks 
 @RestController // Tell spring that this accepts http requests
 public class BatchController {
-    private static final int KANJI_LIMIT = 3;
-    private static final int VOCAB_LIMIT = 8;
-    
     private final JwtUtil jwtUtil;
 
     private final UserCardsService userCardsService;
@@ -42,8 +40,8 @@ public class BatchController {
         String token = authHeader.replace("Bearer ", "");
         UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
 
-        int newVocabLimit = VOCAB_LIMIT - userCardsService.countIntroducedToday(uuid, "vocab");
-        int newKanjiLimit = KANJI_LIMIT - userCardsService.countIntroducedToday(uuid, "kanji");
+        int newVocabLimit = Math.max(0, userCardsService.VOCAB_LIMIT - userCardsService.countIntroducedToday(uuid, "vocab"));
+        int newKanjiLimit = Math.max(0, userCardsService.KANJI_LIMIT - userCardsService.countIntroducedToday(uuid, "kanji"));
 
         int newKanjiCount = kanjiService.getReadyKanjiForUser(uuid, newKanjiLimit).size();
         int newVocabCount = vocabService.getReadyVocabForUser(uuid, newVocabLimit).size(); 
@@ -77,8 +75,8 @@ public class BatchController {
         String token = authHeader.replace("Bearer ", "");
         UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
 
-        int newVocabCount = VOCAB_LIMIT - userCardsService.countIntroducedToday(uuid, "vocab");
-        int newKanjiCount = KANJI_LIMIT - userCardsService.countIntroducedToday(uuid, "kanji");
+        int newVocabCount = userCardsService.VOCAB_LIMIT - userCardsService.countIntroducedToday(uuid, "vocab");
+        int newKanjiCount = userCardsService.KANJI_LIMIT - userCardsService.countIntroducedToday(uuid, "kanji");
 
         List<Vocab> newVocab = vocabService.getReadyVocabForUser(uuid, newVocabCount);
         List<Kanji> newKanji = kanjiService.getReadyKanjiForUser(uuid, newKanjiCount);

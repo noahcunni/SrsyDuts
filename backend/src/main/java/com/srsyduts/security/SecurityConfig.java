@@ -1,4 +1,4 @@
-package com.srsyduts.filter;
+package com.srsyduts.security;
 
 import java.util.List;
 
@@ -50,7 +50,8 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             .requestMatchers("/api/public/**").permitAll()
             .requestMatchers("/error").permitAll()
-            .anyRequest().authenticated()  // /api/hello will require auth now
+            .requestMatchers("/api/create/**").hasRole("ADMIN")
+            .anyRequest().authenticated() // /api/hello will require auth now
         )
         .addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 

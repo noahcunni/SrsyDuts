@@ -4,22 +4,22 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.srsyduts.card.usercards.UserCard;
 import com.srsyduts.card.usercards.UserCardsService;
 import com.srsyduts.card.vocab.VocabService;
+import com.srsyduts.security.JwtUtil;
 
 @CrossOrigin(origins = "*") // Prevents browser CORS blocks 
 @RestController // Tell spring that this accepts http requests
 public class SRSController {
-    private static final int KANJI_LIMIT = 3;
-    private static final int VOCAB_LIMIT = 8;
-
     private final JwtUtil jwtUtil;
     private final UserCardsService userCardsService;
     private final VocabService vocabService;
@@ -42,11 +42,14 @@ public class SRSController {
         // Before posting to database VALIDATE!
         // Check if the card the user is trying to introduce is even available for them, or hasn't been introduced before.
 
-        if (request.getCardType().compareTo("kanji") == 0 && KANJI_LIMIT <= userCardsService.countIntroducedToday(uuid, "kanji")) 
-            return "Cannot introduce: Reached daily kanji lesson limit.";
+        if (request.getCardType().compareTo("kanji") == 0 && userCardsService.KANJI_LIMIT <= userCardsService.countIntroducedToday(uuid, "kanji")) 
+            throw new ResponseStatusException(HttpStatus.CONFLICT, 
+        "Cannot introduce: Reached daily kanji lesson limit.");
 
-        if (request.getCardType().compareTo("vocab") == 0 && VOCAB_LIMIT <= userCardsService.countIntroducedToday(uuid, "vocab")) 
-            return "Cannot introduce: Reached daily vocab lesson limit.";
+
+        if (request.getCardType().compareTo("vocab") == 0 && userCardsService.VOCAB_LIMIT <= userCardsService.countIntroducedToday(uuid, "vocab")) 
+            throw new ResponseStatusException(HttpStatus.CONFLICT, 
+        "Cannot introduce: Reached daily vocab lesson limit.");
 
 
         // If the card does exist
@@ -121,7 +124,7 @@ public class SRSController {
             UserCard userCard = userCardsService.getWritingUserCard(uuid, request.getCardId(), request.getCardType(), "writing");
             setWritingSRS(userCard, true);
         } else {
-            return "Failed to update card, reason: Next_Review > Now";
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Card is not due");
         }
         return "Success, added card: " + request.getCardId() + " " + request.getCardType();
     }
@@ -153,12 +156,12 @@ public class SRSController {
                 userCard.setLastReview(now);
                 userCard.setNextReview(setNextDate(srs));
                 userCard.setSrsLevel((short) (srs + 1));
-            } else if (last.compareTo(next) >= 0) {
+            } else if (last.compareTo(next) >= 0) { 
+                // Last is a sentinal value and tells the card to derank in this case 
                 userCard.setLastReview(now);
                 userCard.setNextReview(setNextDate(srs));
-                if (userCard.getSrsLevel() != 0) {
-                    userCard.setSrsLevel((short) (srs - 1));
-                }
+                userCard.setSrsLevel((short) (srs - 1));
+
             } else if (next.compareTo(now) < 0) {
                 userCard.setLastReview(now);
                 userCard.setNextReview(setNextDate(srs));
@@ -174,56 +177,18 @@ public class SRSController {
     }
 
     private OffsetDateTime setNextDate(short srs) {
-        switch (srs) {
-            case 0: 
-                return (OffsetDateTime.now().plusHours(4));
-            case 1: 
-                return (OffsetDateTime.now().plusHours(8));
-            case 2:
-                return (OffsetDateTime.now().plusDays(1));
-            case 3:
-                return (OffsetDateTime.now().plusDays(2));
-            case 4:
-                return (OffsetDateTime.now().plusDays(7));
-            case 5:
-                return (OffsetDateTime.now().plusDays(14));
-            case 6:
-                return (OffsetDateTime.now().plusDays(30));
-            case 7:
-                return (OffsetDateTime.now().plusDays(120));
-            case 8:
-                return (OffsetDateTime.now().plusDays(270));
-            default: 
-                return (OffsetDateTime.now().plusDays(540));
-        }
-    }
-
-    @PostMapping("api/srs/typingCheck")
-    public TypingResponse typingCheck(
-        @RequestHeader ("Authorization") String authHeader,
-        @RequestBody TypingRequest request) 
-    {
-        String token = authHeader.replace("Bearer ", "");
-        UUID uuid = UUID.fromString(jwtUtil.extractUuid(token));
-
-        // First check the validity of the card be checking if its due
-        UserCard userCard = userCardsService.getTypingUserCard(uuid, request.getCardId(), request.getDirection());
-
-        if (userCard == null || !isDue(userCard))
-            throw new Error("Card is not ready for review");
-
-        // Then check if its correct and adjust 
-        String correct = vocabService.getTypingAnswer(request.getCardId(), request.getDirection());
-        /*
-        if (correct != null && correct.trim().equalsIgnoreCase(request.getAnswer().trim())) {
-            setWritingSRS(userCard, true);
-            return new TypingResponse(true, correct);
-        } else {
-            setWritingSRS(userCard, false);
-            return new TypingResponse(false, correct);
-        }
-            */
-        return new TypingResponse(false, "All grading for typing section is done client-side, typingRequest is an outdated method.");
+        return switch (srs) {
+            case 0 -> OffsetDateTime.now().plusHours(4);
+            case 1 -> OffsetDateTime.now().plusHours(8);
+            case 2 -> OffsetDateTime.now().plusDays(1);
+            case 3 -> OffsetDateTime.now().plusDays(2);
+            case 4 -> OffsetDateTime.now().plusDays(7);
+            case 5 -> OffsetDateTime.now().plusDays(14);
+            case 6 -> OffsetDateTime.now().plusDays(30);
+            case 7 -> OffsetDateTime.now().plusDays(120);
+            case 8 -> OffsetDateTime.now().plusDays(270);
+            default -> OffsetDateTime.now().plusDays(540);
+        };
     }
 
     @PostMapping("api/srs/typingAnswer")
@@ -237,7 +202,7 @@ public class SRSController {
         UserCard userCard = userCardsService.getTypingUserCard(uuid, request.getCardId(), request.getDirection());
 
         if (userCard == null || !isDue(userCard))
-            throw new Error("Card is not ready for review");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Card is not due");
 
         setWritingSRS(userCard, request.isCorrect());
         return Map.of("message", "Success, card processed");

@@ -28,8 +28,9 @@ function Typing() {
     const { typing, loadTyping } = UserDeck();
     const [ queue, setQueue ] = useState();
     const [ state, setState ] = useState("waiting");
-    const [ answer, setAnswer ] = useState();
+    const [ answer, setAnswer ] = useState("");
     const [ totalNumber, setTotalNumber ] = useState(0);
+    const [saveFailed, setSaveFailed] = useState(false);
 
     useEffect(() => {
         loadTyping();
@@ -58,6 +59,7 @@ function Typing() {
         const userAnswer = answer.trim().toLowerCase();
         let cardAnswer = undefined;
 
+
         // Grab the answer to grade based on direction
         if (queue[0].direction === "jpn_eng") {
             cardAnswer = queue[0].back.english.toLowerCase();
@@ -67,15 +69,11 @@ function Typing() {
         }
     
         // Grade answer
-        if (cardAnswer === userAnswer) {
-            typingAnswer(session, queue[0], true);
-            setState("correct");
-            console.log("CORRECT ANSWER: " + cardAnswer);
-        } else {
-            typingAnswer(session, queue[0], false);
-            setState("incorrect");
-            console.log("INCORRECT ANSWER: " + cardAnswer);
-        }
+        const isCorrect = cardAnswer === userAnswer;
+        setState(isCorrect ? "correct" : "incorrect");
+
+        const saved = await typingAnswer(session, queue[0], isCorrect);
+        if (!saved) setSaveFailed(true);
     }
 
     function handleContinue() {
@@ -105,6 +103,7 @@ function Typing() {
     return(
         <div className={styles.body}>
             <p className={styles.cardCount}>There are {totalNumber} cards left</p>
+            {saveFailed && <p className={styles.saveWarning}>A review failed to save — unsaved cards will reappear next session.</p>}
             <div className={styles.cardContainer}>
                 <h1 className={styles.cardType}>Typing</h1>
 

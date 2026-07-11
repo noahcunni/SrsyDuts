@@ -39,20 +39,28 @@ function Writing() {
     const { writing, loadWriting } = UserDeck();
     const [queue, setQueue] = useState();
     const [ reveal, setReveal ] = useState(false);
+    const [saveFailed, setSaveFailed] = useState(false);
 
     const [ totalNumber, setTotalNumber ] = useState(); 
             
-        function advance(correct) {
+        async function advance(correct) {
             setReveal(false);
             const restOfQueue = queue.slice(1);
+
             if (correct) {
-                writingCorrect(session, queue[0].id, queue[0].type);
                 setQueue(restOfQueue);
                 setTotalNumber(totalNumber - 1);
             } else {
-                writingIncorrect(session, queue[0].id, queue[0].type);
                 setQueue([...restOfQueue, queue[0]]);
             }
+
+            let saved = undefined;
+            if (correct) 
+                saved = await writingCorrect(session, queue[0].id, queue[0].type);
+            else
+                saved = await writingIncorrect(session, queue[0].id, queue[0].type);
+
+            if (!saved) setSaveFailed(true);
         }
     
         useEffect(() => {
@@ -83,10 +91,11 @@ function Writing() {
     return(
         <div className={styles.page}>
             <p>There are {totalNumber} cards left</p>
+            {saveFailed && <p className={styles.saveWarning}>A review failed to save — unsaved cards will reappear next session.</p>}
 
             <div className={styles.cardContainer}>
 
-                <h1 className={styles.stage} className={`${type === "Vocab" ? styles.vocabType : styles.kanjiType}`}>Writing: {type}</h1>
+                <h1 className={`${type === "Vocab" ? styles.vocabType : styles.kanjiType}`}>Writing: {type}</h1>
 
 
                 {queue[0].type === "kanji" && <KanjiCard card={queue[0]} reveal={reveal} setReveal={setReveal}/>}

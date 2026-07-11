@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserCardsService {
+    public static final int KANJI_LIMIT = 3;
+    public static final int VOCAB_LIMIT = 8;
 
     private final UserCardsRepository userCardsRepository;
 

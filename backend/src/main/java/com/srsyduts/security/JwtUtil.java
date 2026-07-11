@@ -1,4 +1,4 @@
-package com.srsyduts.controller;
+package com.srsyduts.security;
 
 import java.security.interfaces.ECPublicKey;
 

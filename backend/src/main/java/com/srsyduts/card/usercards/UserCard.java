@@ -40,5 +40,5 @@ public class UserCard {
     private OffsetDateTime lastReview;  
 
     @Column(name = "created_at")
-    private OffsetDateTime createdAt = OffsetDateTime.now();;
+    private OffsetDateTime createdAt = OffsetDateTime.now();
 }

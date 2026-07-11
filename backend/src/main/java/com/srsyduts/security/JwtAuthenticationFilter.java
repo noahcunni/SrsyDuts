@@ -1,11 +1,12 @@
-package com.srsyduts.filter;
+package com.srsyduts.security;
 
 import java.io.IOException;
 import java.net.URL;
 import java.security.interfaces.ECPublicKey;
-import java.util.Collections;
+import java.util.List;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -22,9 +23,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
+    private static final String ADMIN_UUID = "1cff3197-8c86-4647-8fa4-a3d09534c64f";
     private final String JWKS_URL = "https://mhwvagjiwhvydgeisrnw.supabase.co/auth/v1/.well-known/jwks.json";
-
+    
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -54,8 +55,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 DecodedJWT verifiedJwt = verifier.verify(token);
                 String supabaseUserId = verifiedJwt.getSubject();
 
-                UsernamePasswordAuthenticationToken authentication = 
-                        new UsernamePasswordAuthenticationToken(supabaseUserId, null, Collections.emptyList());
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(supabaseUserId, null,
+                            supabaseUserId.equals(ADMIN_UUID)
+                                ? List.of(new SimpleGrantedAuthority("ROLE_ADMIN"))
+                                : List.of());
                 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 

@@ -20,6 +20,17 @@
     margin-bottom: -20px;
 }
 
+.saveWarning {
+    color: rgb(255, 196, 87);
+    background-color: rgba(255, 196, 87, 0.12);
+    border: 1px solid rgba(255, 196, 87, 0.4);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 14px;
+    width: fit-content;
+    margin: 8px auto;
+}
+
 .progress {
     border: 2px solid rgb(228, 189, 189);
     width: fit-content;
