@@ -25,7 +25,6 @@ function AppNavbar() {
                 <Link to='/study/lesson' className={`${styles.studyButton} ${isActive('/study/lesson') ? styles.activeButton : ''}`}>Lesson</Link>
                 <Link to='/study/writing' className={`${styles.studyButton} ${isActive('/study/writing') ? styles.activeButton : ''}`}>Writing</Link>
                 <Link to='/study/typing' className={`${styles.studyButton} ${isActive('/study/typing') ? styles.activeButton : ''}`}>Typing</Link>
-                <Link to='/study/create' className={`${styles.studyButton} ${isActive('/study/create') ? styles.activeButton : ''}`}>Create</Link>
             </div>
             <div>
                 <button className={styles.signOut} onClick={handleSignOut}>Sign Out</button>
