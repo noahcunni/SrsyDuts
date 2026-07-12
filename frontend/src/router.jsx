@@ -40,7 +40,6 @@ export const router = createBrowserRouter([
                             {path: 'lesson', element: <Lesson />},
                             {path: 'writing', element: <Writing />},
                             {path: 'typing', element: <Typing />},
-                            {path: 'create', element: <Create />}
                         ]
                     }
                 ]

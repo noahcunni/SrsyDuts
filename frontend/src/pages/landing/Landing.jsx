@@ -11,7 +11,7 @@ function Landing() {
         <div className={styles.page}>
             <div className={styles.contentBox}>
                 <div className={styles.textContentBox}>
-                    <p className={styles.subHeader}>Interactive Spaced Repitition</p>
+                    <p className={styles.subHeader}>Interactive Spaced Repetition</p>
 
                     <h1 className={styles.header}>Learn Japanese in an order that sticks</h1>
                     <p className={styles.paragraph}>Kanji first, then the words built from them. Every card is 
