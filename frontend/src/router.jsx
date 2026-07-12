@@ -41,7 +41,8 @@ export const router = createBrowserRouter([
                             {path: 'writing', element: <Writing />},
                             {path: 'typing', element: <Typing />},
                         ]
-                    }
+                    },
+                    {path: '/create', element: <Create />},
                 ]
             }
         ]
