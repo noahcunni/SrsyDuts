@@ -15,8 +15,9 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-      - id: ecr
-        uses: aws-actions/amazon-ecr-login@v2
-      - run: |
-          docker build -t ${{ steps.ecr.outputs.registry }}/srsyduts-backend:latest backend
-          docker push ${{ steps.ecr.outputs.registry }}/srsyduts-backend:latest
+      - name: Install lightsailctl
+        run: |
+          sudo curl -sSL https://s3.us-west-2.amazonaws.com/lightsailctl/latest/linux-amd64/lightsailctl -o /usr/local/bin/lightsailctl
+          sudo chmod +x /usr/local/bin/lightsailctl
+      - run: docker build -t srsyduts-backend backend
+      - run: aws lightsail push-container-image --region us-east-1 --service-name srsyduts-backend --label app --image srsyduts-backend:latest
