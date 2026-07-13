@@ -2,7 +2,11 @@
     <img src="./docs/banner.svg" alt="SrsyDutsBanner" width="800">
 </p>
 
-# SrsyDuts
+#
+
+<p align="center">
+    [SrsyDuts.com](https://www.srsyduts.com)
+</p>
 SrsyDuts is a interactive Spaced-Repititon Japanese vocabulary tool, with a heavy focus on learning kanji. There are 3 features, lessons, writing practice, and typing.
 
 ## Pics
