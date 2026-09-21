@@ -82,7 +82,7 @@ export const CardContextProvider = ({ children }) => {
         });
 
         if (isAlreadyLoading) return;
-
+        
         try {
             const response = await fetch(`${API}/api/cards/writing`, {
                 headers: {"Authorization": `Bearer ${session.access_token}`}
