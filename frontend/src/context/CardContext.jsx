@@ -5,14 +5,15 @@ import { API } from "../api/config";
 const CardContext = createContext();
 
 export const CardContextProvider = ({ children }) => {
-    const { session } = UserAuth();
+    const { session } = UserAuth(); // Get session info
 
+    // Storage for different types of info. 
     const [ summary, setSummary ] = useState();
     const [ writing, setWriting ] = useState();
     const [ typing, setTyping ] = useState();
     const [ newCards, setNewCards ] = useState();
 
-    // Blocks fast requests
+    // Keeps track of whats loading, used to block multiple requests.
     const [ loading, setLoading ] = useState({
         summary: false,
         writing: false,
@@ -20,7 +21,8 @@ export const CardContextProvider = ({ children }) => {
         newCards: false
     });
 
-    // PLAN TO BLOCK REPEATED REQUESTS
+    // Keep track of time of last request, limits the rate at which 
+    // card info is grabbed.
     const [ lastFetchedAt, setLastFetchedAt ] = useState({
         summary: null,
         writing: null,
@@ -28,15 +30,12 @@ export const CardContextProvider = ({ children }) => {
         newCards: null
     });
 
-    const loadThreshold = 1_000;
+    const loadThreshold = 1_000; // One minute
 
-
-    // ANY LOAD METHOD NEEDS TO BE GAURDED FROM MULTIPLE REQUESTS
     const loadSummary = async () => {
-        // Check if a minute has passed
+        // Check if a minute has not passed
         if (lastFetchedAt.summary && (Date.now() - lastFetchedAt.summary <= loadThreshold))
-            return;
-
+            return; // Return early
 
         let isAlreadyLoading = false;
     

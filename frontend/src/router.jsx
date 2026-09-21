@@ -29,6 +29,7 @@ export const router = createBrowserRouter([
             {path: '/signin', element: <Signin/>}
         ]
     },{
+        // Any attempt to access these url's, check for valid user sessions.
         element: <ProtectedRoute />,
         children: [
             {
